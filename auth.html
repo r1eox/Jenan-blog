@@ -491,6 +491,15 @@
 </div>
 
 <script>
+  /* ===== إعادة توجيه تلقائية إذا كان مسجّلاً مسبقاً ===== */
+  (function() {
+    try {
+      var t = localStorage.getItem('jb-token');
+      var u = JSON.parse(localStorage.getItem('jb-user') || '{}');
+      if (t && u.email) { window.location.replace('/dashboard'); }
+    } catch(e) { localStorage.removeItem('jb-token'); localStorage.removeItem('jb-user'); }
+  })();
+
   /* ===== Panel switch ===== */
   function show(name) {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -533,11 +542,16 @@
     const ico = document.getElementById('login-icon');
     btn.disabled=true; txt.textContent='جاري الدخول...'; spin.style.display='block'; ico.style.display='none';
     setTimeout(() => {
-      const existing = JSON.parse(localStorage.getItem('jb-user') || '{}');
-      const nameToUse = existing.name && existing.name !== 'المستخدم' && existing.name !== 'مستخدم جديد'
-        ? existing.name : u.includes('@') ? u.split('@')[0] : u;
-      localStorage.setItem('jb-user', JSON.stringify({ name: nameToUse, email: u, username: existing.username || '' }));
-      localStorage.setItem('jb-token', 'email:' + u.trim().toLowerCase());
+      try {
+        const existing = JSON.parse(localStorage.getItem('jb-user') || '{}');
+        const nameToUse = existing.name && existing.name !== 'المستخدم' && existing.name !== 'مستخدم جديد'
+          ? existing.name : u.includes('@') ? u.split('@')[0] : u;
+        localStorage.setItem('jb-user', JSON.stringify({ name: nameToUse, email: u, username: existing.username || '' }));
+        localStorage.setItem('jb-token', 'email:' + u.trim().toLowerCase());
+      } catch(e) {
+        localStorage.setItem('jb-user', JSON.stringify({ name: u.includes('@') ? u.split('@')[0] : u, email: u, username: '' }));
+        localStorage.setItem('jb-token', 'email:' + u.trim().toLowerCase());
+      }
       window.location.href = '/dashboard';
     }, 1400);
   });

@@ -28,12 +28,12 @@
   --glass-border:rgba(78,115,194,.22);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;height:100%;overflow:hidden}
 body{
   font-family:'Tajawal',sans-serif;
   background:var(--bg);color:var(--text);
-  min-height:100vh;display:flex;
-  transition:background .3s,color .3s;overflow-x:hidden;
+  height:100%;display:flex;
+  transition:background .3s,color .3s;overflow:hidden;
   background-image:
     radial-gradient(circle at 20% 80%, rgba(78,115,194,.08) 0%,transparent 50%),
     radial-gradient(circle at 80% 20%, rgba(30,58,138,.07) 0%,transparent 45%),
@@ -596,7 +596,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .logout-btn:hover{background:rgba(231,76,60,.15);color:#f87171}
 
 /* MAIN */
-.main{margin-right:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh;position:relative}
+.main{margin-right:var(--sidebar);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;position:relative}
 
 /* ════ علامة مائية احترافية ════ */
 .brand-wm{
@@ -684,7 +684,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 }
 
 /* CONTENT */
-.content{flex:1;padding:.5rem 1.75rem 2rem;position:relative;z-index:1}
+.content{flex:1;padding:.5rem 1.75rem 2rem;position:relative;z-index:1;overflow-y:auto;height:0}
 .page{display:none!important}
 .page.active{display:block!important;animation:fadeUp .35s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -1788,6 +1788,322 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .inv-analyze-btn{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-radius:10px;border:1.5px solid rgba(14,165,233,.4);background:rgba(14,165,233,.08);color:#38bdf8;cursor:pointer;font-family:inherit;font-size:.82rem;font-weight:700;transition:var(--tr);width:100%;margin-bottom:.75rem;justify-content:center}
 .inv-analyze-btn:hover{background:rgba(14,165,233,.2);border-color:#0ea5e9}
 @media(max-width:500px){.inv-adv-drawer{width:100%;border-radius:16px 16px 0 0}}
+
+/* ══════════════════════════════════════════════════════
+   NO-SCROLL: شاشة تحليل المشروع وإعداد دراسة الجدوى
+   تجعل خطوة-0 تتسع في شاشة واحدة بلا تمرير
+══════════════════════════════════════════════════════ */
+
+/* منع تمرير صفحة المحتوى عند عرض الخطوة 0 للبوابة */
+.content:has(#page-robot.active),
+.content:has(#page-analysis.active){
+  overflow:hidden;
+  padding-bottom:0;
+  height:calc(100vh - 64px);
+}
+.content.page-fit-no-scroll{
+  overflow:hidden !important;
+  padding-bottom:0 !important;
+  height:calc(100vh - 64px) !important;
+}
+#page-robot.active,
+#page-analysis.active{
+  height:100%;
+  overflow:hidden;
+  display:flex !important;
+  flex-direction:column;
+}
+
+/* تحليل المشروع — الخطوة 0 */
+#pa-step-0{
+  display:flex !important;
+  flex-direction:column;
+  height:100%;
+  overflow:hidden;
+  gap:.55rem;
+}
+/* إخفاء الصفحة الثانية والثالثة من الـ flow لعدم تأثيرهم على الارتفاع */
+#page-robot #pa-step-1,
+#page-robot #pa-step-2{ position:absolute;top:0;left:0;right:0 }
+
+/* إخفاء Hero بالكامل لتوفير المساحة */
+#pa-step-0 .pa-hero{
+  display:block !important;
+  flex-shrink:0;
+  margin-bottom:0 !important;
+}
+/* Pipeline Hero - الرسم البياني للمراحل مدمج بالهيرو */
+#pa-step-0 .pa-hero > div{
+  display:block !important;
+}
+
+/* الpipeline مدمج - لا حاجة لضغط شريط الخطوات */
+
+/* بطاقتا الباقتين */
+#pa-step-0 > div:nth-child(2){
+  flex:1;
+  min-height:0;
+  margin-bottom:0 !important;
+  overflow:hidden;
+  align-items:stretch;
+}
+#pa-step-0 > div:nth-child(2) > div{
+  overflow:hidden;
+}
+/* ضغط header البطاقتين */
+#pa-step-0 > div:nth-child(2) > div [style*="padding:1.6rem 1.75rem"]{
+  padding:.8rem 1.2rem .6rem !important;
+}
+/* ضغط features + button */
+#pa-step-0 > div:nth-child(2) > div [style*="padding:1.2rem 1.75rem"],
+#pa-step-0 > div:nth-child(2) > div [style*="padding:1.1rem 1.75rem"],
+#pa-step-0 > div:nth-child(2) > div [style*="padding:1.2rem 1.75rem;flex:1"]{
+  padding:.6rem 1.2rem .7rem !important;
+}
+/* تصغير السعر */
+#pa-step-0 [style*="font-size:2.4rem"]{font-size:1.55rem !important}
+/* تصغير قائمة الميزات */
+#pa-step-0 [style*="margin-bottom:1.4rem"]{
+  gap:.42rem !important;
+  margin-bottom:.6rem !important;
+}
+/* نص الميزات - واضح */
+#pa-step-0 [style*="font-size:.82rem;color:rgba(255,255,255,.85)"]{
+  font-size:.84rem !important;
+  color:rgba(255,255,255,.95) !important;
+}
+#pa-step-0 [style*="font-size:.82rem;color:rgba(255,255,255,.85)"] strong{
+  color:#fff !important;
+  font-weight:800 !important;
+}
+/* عناوين سكشن البطاقة المميزة */
+#pa-step-0 [style*="margin-bottom:.9rem"]{margin-bottom:.5rem !important}
+#pa-step-0 [style*="font-size:.77rem"]{
+  font-size:.82rem !important;
+  color:rgba(255,255,255,.88) !important;
+}
+#pa-step-0 [style*="font-size:.72rem;font-weight:900"]{
+  font-size:.8rem !important;
+  letter-spacing:.03em !important;
+}
+/* ملاحظة أسفل البطاقتين */
+#pa-step-0 > p:last-child{
+  margin:0 !important;
+  font-size:.66rem !important;
+  flex-shrink:0;
+}
+
+/* ══ إعداد دراسة الجدوى — الخطوة 0 ══ */
+#page-analysis.active{
+  display:flex !important;
+  flex-direction:column;
+}
+#page-analysis > div:first-child{
+  flex-shrink:0;
+}
+#fs-step-0{
+  flex:1;
+  min-height:0;
+  display:flex !important;
+  flex-direction:column;
+  overflow:hidden;
+  gap:.5rem;
+}
+/* إخفاء الخطوات الأخرى من الـ flow */
+#page-analysis #fs-step-1,
+#page-analysis #fs-step-2,
+#page-analysis #fs-step-3{position:absolute;top:0;left:0;right:0}
+
+/* إعادة إظهار hero دراسة الجدوى كشريط مضغوط احترافي */
+#fs-step-0 > div:first-child{
+  display:block !important;
+  flex-shrink:0;
+  margin-bottom:0 !important;
+}
+/* تعطيل القواعد القديمة للـ hero */
+#fs-step-0 > div:first-child > div{ padding:unset !important; border-radius:unset !important; display:unset !important; }
+#fs-step-0 > div:first-child svg{ display:block !important }
+#fs-step-0 > div:first-child p{ display:block !important }
+#fs-step-0 > div:first-child [style*="display:inline-flex;align-items:center;gap:.45rem"]{ margin-bottom:unset !important; font-size:unset !important; padding:unset !important; }
+#fs-step-0 > div:first-child h2{ font-size:unset !important; margin:unset !important; line-height:unset !important; white-space:unset; }
+#fs-step-0 > div:first-child [style*="display:flex;gap:1rem;flex-shrink:0"]{ gap:unset !important; }
+#fs-step-0 > div:first-child [style*="background:rgba(255,255,255,.05)"]{ padding:unset !important; min-width:unset !important; }
+#fs-step-0 > div:first-child [style*="font-size:1.1rem;font-weight:900"]{ font-size:unset !important; }
+#fs-step-0 > div:first-child [style*="font-size:.63rem"]{ font-size:unset !important; margin-top:unset !important; }
+
+@keyframes fsNodePulse{
+  0%,100%{ box-shadow:0 0 10px rgba(78,115,194,.5),0 0 22px rgba(78,115,194,.2); }
+  50%{ box-shadow:0 0 16px rgba(78,115,194,.9),0 0 36px rgba(78,115,194,.4); }
+}
+@keyframes fsBounce{
+  0%,100%{ transform:translateY(0); opacity:1; }
+  50%{ transform:translateY(3px); opacity:.75; }
+}
+/* عنوان اختيار النوع */
+#fs-step-0 .sec-hd{
+  margin-bottom:0 !important;
+  flex-shrink:0;
+}
+#fs-step-0 .sec-hd h2{font-size:.88rem !important;margin:0 0 .2rem !important}
+#fs-step-0 .sec-hd p {font-size:.73rem !important;margin:0 !important}
+/* شبكة بطاقات الدراسة */
+#fs-step-0 .study-types-grid{
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  align-items:stretch;
+  margin-top:0 !important;
+}
+/* ضغط بطاقات الدراسة */
+#fs-step-0 .study-card{
+  padding:.85rem 1rem !important;
+  overflow:hidden;
+  display:flex !important;
+  flex-direction:column;
+}
+#fs-step-0 .study-badge{margin-bottom:.45rem !important}
+#fs-step-0 .study-card > div:first-of-type{margin-bottom:.5rem !important}
+#fs-step-0 .study-card h3{font-size:.9rem !important}
+#fs-step-0 .study-card > p {font-size:.72rem !important;margin-bottom:.35rem !important;flex-shrink:0}
+#fs-step-0 .study-price{font-size:1.4rem !important;margin-bottom:.1rem !important}
+#fs-step-0 .study-price-note{font-size:.63rem !important;margin-bottom:.4rem !important}
+#fs-step-0 .study-features{
+  gap:.18rem !important;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  margin:0 !important;
+}
+#fs-step-0 .study-features li{font-size:.71rem !important}
+/* زر البدء */
+#fs-step-0 > div:last-child{
+  margin-top:.5rem !important;
+  flex-shrink:0;
+}
+#fs-step-0 > div:last-child p{
+  margin-top:.3rem !important;
+  font-size:.7rem !important;
+}
+
+/* تحسين احترافي لبطاقات دراسة الجدوى (عرضي أكثر) */
+#page-analysis #fs-step-0 .study-types-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:.75rem !important;
+}
+#page-analysis #fs-step-0 .study-card{
+  background:linear-gradient(145deg,rgba(10,16,35,.92),rgba(17,27,58,.92)) !important;
+  border:1px solid rgba(123,158,212,.28) !important;
+  border-radius:14px !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.25),0 0 0 1px rgba(123,158,212,.06) inset !important;
+}
+#page-analysis #fs-step-0 .study-card.selected{
+  border-color:rgba(74,222,128,.8) !important;
+  background:linear-gradient(145deg,rgba(6,31,20,.96),rgba(10,39,27,.96)) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,.28),0 0 0 1px rgba(74,222,128,.15) inset !important;
+}
+#page-analysis #fs-step-0 .study-card:hover{
+  transform:translateY(-2px) !important;
+  border-color:rgba(123,158,212,.5) !important;
+}
+#page-analysis #fs-step-0 .study-card h3{
+  color:#fff !important;
+  letter-spacing:.01em;
+}
+#page-analysis #fs-step-0 .study-card > p{
+  color:rgba(255,255,255,.66) !important;
+  line-height:1.6 !important;
+}
+#page-analysis #fs-step-0 .study-price{
+  color:#60a5fa !important;
+  line-height:1;
+}
+#page-analysis #fs-step-0 #sc-detailed .study-price{
+  color:#fbbf24 !important;
+}
+#page-analysis #fs-step-0 .study-price-note{
+  color:rgba(255,255,255,.55) !important;
+}
+
+/* توزيع النقاط بالعرض على عمودين */
+#page-analysis #fs-step-0 .study-features{
+  display:grid !important;
+  grid-template-columns:1fr 1fr;
+  column-gap:.5rem;
+  row-gap:.25rem !important;
+}
+#page-analysis #fs-step-0 .study-features li{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+  padding:.22rem .42rem;
+  color:rgba(255,255,255,.82) !important;
+  align-items:flex-start;
+  gap:.35rem;
+}
+#page-analysis #fs-step-0 .study-features li i{
+  color:#4ade80 !important;
+  margin-top:.12rem;
+}
+
+@media(max-width:980px){
+  #page-analysis #fs-step-0 .study-types-grid{grid-template-columns:1fr !important}
+  #page-analysis #fs-step-0 .study-features{grid-template-columns:1fr !important}
+}
+
+/* تصغير الأيقونات بشكل واضح في صفحتي التحليل والجدوى */
+#page-robot i[class*="fa-"],
+#page-analysis i[class*="fa-"]{
+  font-size:.78em !important;
+}
+/* استثناء أيقونات الـ pipeline من التصغير */
+#pa-step-0 .pa-hero i[class*="fa-"]{
+  font-size:1.1rem !important;
+}
+
+/* تصغير حاويات الأيقونات الشائعة */
+#page-robot [style*="width:48px;height:48px"],
+#page-analysis [style*="width:48px;height:48px"]{
+  width:34px !important;
+  height:34px !important;
+  border-radius:10px !important;
+}
+#page-robot [style*="width:46px;height:46px"],
+#page-analysis [style*="width:46px;height:46px"]{
+  width:33px !important;
+  height:33px !important;
+  border-radius:10px !important;
+}
+#page-robot [style*="width:40px;height:40px"],
+#page-analysis [style*="width:40px;height:40px"]{
+  width:29px !important;
+  height:29px !important;
+}
+#page-robot [style*="width:38px;height:38px"],
+#page-analysis [style*="width:38px;height:38px"]{
+  width:27px !important;
+  height:27px !important;
+}
+#page-robot [style*="width:32px;height:32px"],
+#page-analysis [style*="width:32px;height:32px"]{
+  width:23px !important;
+  height:23px !important;
+}
+#page-robot [style*="width:28px;height:28px"],
+#page-analysis [style*="width:28px;height:28px"]{
+  width:21px !important;
+  height:21px !important;
+}
+#page-robot [style*="width:26px;height:26px"],
+#page-analysis [style*="width:26px;height:26px"]{
+  width:19px !important;
+  height:19px !important;
+}
+
+/* تصغير أيقونات أزرار البدء داخل البطاقات */
+#page-robot button i[class*="fa-"],
+#page-analysis button i[class*="fa-"]{
+  font-size:.72em !important;
+}
 </style>
 <script>
 /* دوال الـ topbar — معرّفة مبكراً لضمان عملها دائماً */
@@ -1820,6 +2136,17 @@ function closeSidebar(){
   if(sb) sb.classList.remove('open');
   var ov=document.getElementById('overlay');
   if(ov) ov.style.display='none';
+}
+function _syncGatewayViewportLock(){
+  var content = document.querySelector('.content');
+  if(!content) return;
+
+  var activePage = document.querySelector('.page.active');
+  var pageName = activePage ? (activePage.id || '').replace('page-','') : '';
+  var robotLanding = (pageName === 'robot') && !!document.querySelector('#pa-step-0.active');
+  var analysisLanding = (pageName === 'analysis') && !!document.querySelector('#fs-step-0.active');
+
+  content.classList.toggle('page-fit-no-scroll', robotLanding || analysisLanding);
 }
 function goto(page){
   if(!page) return;
@@ -1856,6 +2183,7 @@ function goto(page){
   if(typeof loadReferralData==='function' && page==='referral') loadReferralData();
   if(typeof _jbSyncPage==='function') _jbSyncPage();
   if(typeof _syncInvAdvisorBtn==='function') _syncInvAdvisorBtn();
+  _syncGatewayViewportLock();
 }
 function gotoSub(page,groupId,subItemId){
   if(!page||!groupId||!subItemId) return;
@@ -1884,11 +2212,13 @@ function gotoSub(page,groupId,subItemId){
   if(typeof initCompliancePage==='function' && page==='compliance') initCompliancePage();
   if(typeof _jbSyncPage==='function') _jbSyncPage();
   if(typeof _syncInvAdvisorBtn==='function') _syncInvAdvisorBtn();
+  _syncGatewayViewportLock();
 }
 function goToPricingPage(){
   window.location.href='pricing.html';
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanModal();});
+window.addEventListener('load', _syncGatewayViewportLock);
 </script>
 </head>
 <body>
@@ -2032,7 +2362,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
       <div class="user-av" id="user-av">م</div>
       <div>
         <span class="user-name" id="user-name">المستخدم</span>
-        <span class="user-plan">الباقة المجانية</span>
+        <span class="user-plan">حساب مسجّل</span>
       </div>
     </div>
     <div class="logout-btn" onclick="logout()">تسجيل الخروج
@@ -2429,165 +2759,75 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
 
         <!-- ══ Hero Banner ══ -->
         <div class="pa-hero" style="padding:0;overflow:hidden;border:none;background:none;display:block;margin-bottom:2rem">
-          <div style="background:linear-gradient(135deg,#040c1e 0%,#081840 40%,#0c2060 70%,#081535 100%);border-radius:22px;padding:2.75rem 2.5rem 2.25rem;position:relative;overflow:hidden;border:1px solid rgba(78,115,194,.25);box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 1px rgba(78,115,194,.1) inset">
-            <!-- SVG background decoration -->
-            <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 820 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="hg1" cx="75%" cy="25%" r="55%">
-                  <stop offset="0%" stop-color="#3b6fd4" stop-opacity=".22"/>
-                  <stop offset="100%" stop-color="#3b6fd4" stop-opacity="0"/>
-                </radialGradient>
-                <radialGradient id="hg2" cx="15%" cy="85%" r="40%">
-                  <stop offset="0%" stop-color="#6042b8" stop-opacity=".15"/>
-                  <stop offset="100%" stop-color="#6042b8" stop-opacity="0"/>
-                </radialGradient>
-                <filter id="hblur"><feGaussianBlur stdDeviation="2.5"/></filter>
-                <linearGradient id="linegrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#4E73C2" stop-opacity="0"/>
-                  <stop offset="30%" stop-color="#7eb8ff" stop-opacity=".7"/>
-                  <stop offset="70%" stop-color="#93c5fd" stop-opacity=".9"/>
-                  <stop offset="100%" stop-color="#7eb8ff" stop-opacity=".4"/>
-                </linearGradient>
-              </defs>
-              <!-- background glows -->
-              <rect width="820" height="290" fill="url(#hg1)"/>
-              <rect width="820" height="290" fill="url(#hg2)"/>
-              <!-- grid — fine mesh -->
-              <g stroke="#4E73C2" stroke-opacity=".13" stroke-width=".5">
-                <line x1="0" y1="58" x2="820" y2="58"/>
-                <line x1="0" y1="116" x2="820" y2="116"/>
-                <line x1="0" y1="174" x2="820" y2="174"/>
-                <line x1="0" y1="232" x2="820" y2="232"/>
-                <line x1="164" y1="0" x2="164" y2="290"/>
-                <line x1="328" y1="0" x2="328" y2="290"/>
-                <line x1="492" y1="0" x2="492" y2="290"/>
-                <line x1="656" y1="0" x2="656" y2="290"/>
-              </g>
-              <!-- glowing area fill -->
-              <path d="M0,240 C80,200 160,185 260,170 S400,115 500,90 S640,55 720,35 L820,18 L820,290 L0,290Z"
-                fill="rgba(78,115,194,.06)"/>
-              <!-- main chart line with glow -->
-              <path d="M0,240 C80,200 160,185 260,170 S400,115 500,90 S640,55 720,35 L820,18"
-                stroke="url(#linegrad)" stroke-width="1.5" fill="none" filter="url(#hblur)"/>
-              <path d="M0,240 C80,200 160,185 260,170 S400,115 500,90 S640,55 720,35 L820,18"
-                stroke="url(#linegrad)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-
-              <!-- data points with rings -->
-              <g filter="url(#hblur)" opacity=".6">
-                <circle cx="260" cy="170" r="8" fill="rgba(126,184,255,.3)"/>
-                <circle cx="500" cy="90"  r="8" fill="rgba(126,184,255,.3)"/>
-                <circle cx="720" cy="35"  r="10" fill="rgba(126,184,255,.3)"/>
-              </g>
-              <circle cx="260" cy="170" r="4" fill="#7eb8ff"/>
-              <circle cx="500" cy="90"  r="4" fill="#93c5fd"/>
-              <circle cx="720" cy="35"  r="5.5" fill="#bfdbfe"/>
-
-              <!-- animated pulse on last point -->
-              <circle cx="720" cy="35" r="12" fill="none" stroke="#93c5fd" stroke-width="1.5" opacity=".5">
-                <animate attributeName="r" from="8" to="22" dur="2.5s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" from=".6" to="0" dur="2.5s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- bar chart accent (right side) -->
-              <g opacity=".18" fill="#4E73C2">
-                <rect x="570" y="200" width="14" height="70"/>
-                <rect x="592" y="175" width="14" height="95"/>
-                <rect x="614" y="155" width="14" height="115"/>
-                <rect x="636" y="130" width="14" height="140"/>
-              </g>
-
-              <!-- large orbit rings -->
-              <circle cx="720" cy="50" r="70" fill="none" stroke="#4E73C2" stroke-width=".8" stroke-opacity=".12"/>
-              <circle cx="720" cy="50" r="45" fill="none" stroke="#4E73C2" stroke-width=".8" stroke-opacity=".1"/>
-              <!-- sparkle dots -->
-              <circle cx="100" cy="40"  r="1.5" fill="#7eb8ff" opacity=".5"/>
-              <circle cx="140" cy="80"  r="1"   fill="#7eb8ff" opacity=".4"/>
-              <circle cx="350" cy="30"  r="1.5" fill="#93c5fd" opacity=".45"/>
-              <circle cx="460" cy="240" r="1.5" fill="#7eb8ff" opacity=".35"/>
-            </svg>
-
-            <!-- Content -->
-            <div style="position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap">
-              <!-- Right: text block -->
-              <div style="flex:1;min-width:260px">
-                <!-- live badge -->
-                <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(78,115,194,.18);border:1px solid rgba(78,115,194,.4);color:#a5c8ff;border-radius:30px;padding:.3rem 1rem;font-size:.7rem;font-weight:800;letter-spacing:.05em;margin-bottom:1.25rem;backdrop-filter:blur(8px)">
-                  <span style="width:7px;height:7px;border-radius:50%;background:#4fb;display:inline-block;box-shadow:0 0 8px #4fb;animation:pulse2 2s infinite"></span>
-                  محرك التحليل الاقتصادي — جنان بيز
-                </div>
-                <h2 style="font-size:1.75rem;font-weight:900;color:#fff;margin:0 0 .75rem;line-height:1.4;letter-spacing:-.01em">
-                  اعرف <span style="background:linear-gradient(90deg,#7eb8ff,#a5f3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">حقيقة أرقامك</span><br>قبل أن تُصرف ريالاً واحداً
-                </h2>
-                <p style="font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.9;margin:0 0 1.5rem;max-width:420px">
-                  أدخل بيانات مشروعك — وفي ثوانٍ تحصل على:<br>
-                  <strong style="color:rgba(255,255,255,.8)">هامش الربح · ROI · نقطة التعادل · خطة التحسين</strong>
-                </p>
-                <!-- trust strip -->
-                <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
-                  <div style="display:flex;align-items:center;gap:.5rem">
-                    <div style="width:32px;height:32px;border-radius:9px;background:rgba(78,115,194,.18);border:1px solid rgba(78,115,194,.28);display:flex;align-items:center;justify-content:center;color:#7eb8ff;font-size:.8rem"><i class="fa-solid fa-bolt"></i></div>
-                    <div><div style="font-size:.76rem;font-weight:800;color:#fff">نتائج فورية</div><div style="font-size:.64rem;color:rgba(255,255,255,.4)">أقل من 60 ثانية</div></div>
-                  </div>
-                  <div style="width:1px;height:28px;background:rgba(78,115,194,.25)"></div>
-                  <div style="display:flex;align-items:center;gap:.5rem">
-                    <div style="width:32px;height:32px;border-radius:9px;background:rgba(78,115,194,.18);border:1px solid rgba(78,115,194,.28);display:flex;align-items:center;justify-content:center;color:#7eb8ff;font-size:.8rem"><i class="fa-solid fa-lock"></i></div>
-                    <div><div style="font-size:.76rem;font-weight:800;color:#fff">بياناتك محمية</div><div style="font-size:.64rem;color:rgba(255,255,255,.4)">لا تُحفظ أبداً</div></div>
-                  </div>
-                  <div style="width:1px;height:28px;background:rgba(78,115,194,.25)"></div>
-                  <div style="display:flex;align-items:center;gap:.5rem">
-                    <div style="width:32px;height:32px;border-radius:9px;background:rgba(78,115,194,.18);border:1px solid rgba(78,115,194,.28);display:flex;align-items:center;justify-content:center;color:#7eb8ff;font-size:.8rem"><i class="fa-solid fa-users"></i></div>
-                    <div><div style="font-size:.76rem;font-weight:800;color:#fff">+2,400 تحليل</div><div style="font-size:.64rem;color:rgba(255,255,255,.4)">أُجري حتى الآن</div></div>
-                  </div>
-                </div>
+          <div style="background:linear-gradient(135deg,#040c1e 0%,#081840 45%,#0d2360 100%);border-radius:18px;padding:.85rem 1.3rem .9rem;position:relative;overflow:hidden;border:1px solid rgba(78,115,194,.25);box-shadow:0 12px 40px rgba(0,0,0,.4)">
+            <!-- Background glow orbs -->
+            <div style="position:absolute;top:-50px;right:-20px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(78,115,194,.18),transparent 65%);pointer-events:none"></div>
+            <div style="position:absolute;bottom:-40px;left:80px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(96,66,184,.12),transparent 65%);pointer-events:none"></div>
+            <!-- Grid lines decoration -->
+            <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 600 130" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><line x1="0" y1="43" x2="600" y2="43" stroke="#4E73C2" stroke-opacity=".15" stroke-width=".5"/><line x1="0" y1="86" x2="600" y2="86" stroke="#4E73C2" stroke-opacity=".1" stroke-width=".5"/><line x1="150" y1="0" x2="150" y2="130" stroke="#4E73C2" stroke-opacity=".09" stroke-width=".5"/><line x1="300" y1="0" x2="300" y2="130" stroke="#4E73C2" stroke-opacity=".09" stroke-width=".5"/><line x1="450" y1="0" x2="450" y2="130" stroke="#4E73C2" stroke-opacity=".09" stroke-width=".5"/></svg>
+            <!-- Title + trust row -->
+            <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.7rem;flex-wrap:wrap">
+              <div>
+                <div style="display:inline-flex;align-items:center;gap:.35rem;background:rgba(78,115,194,.16);border:1px solid rgba(78,115,194,.3);color:#a5c8ff;border-radius:20px;padding:.16rem .7rem;font-size:.6rem;font-weight:800;margin-bottom:.25rem"><span style="width:6px;height:6px;border-radius:50%;background:#4fb;display:inline-block;box-shadow:0 0 6px #4fb;animation:pulse2 2s infinite"></span> محرك التحليل الاقتصادي — جنان بيز</div>
+                <h2 style="font-size:.95rem;font-weight:900;color:#fff;margin:0;line-height:1.3">اعرف <span style="background:linear-gradient(90deg,#7eb8ff,#a5f3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">حقيقة أرقامك</span> — 7 مراحل تحليل احترافية</h2>
               </div>
-
-              <!-- Left: mini animated dashboard mockup -->
-              <div style="flex-shrink:0;width:170px;align-self:center;display:flex;flex-direction:column;gap:.6rem;opacity:.88">
-                <!-- mini KPIs -->
-                <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.75rem 1rem;backdrop-filter:blur(8px)">
-                  <div style="font-size:.62rem;color:rgba(255,255,255,.45);margin-bottom:.25rem">صافي الربح</div>
-                  <div style="font-size:1.15rem;font-weight:900;color:#4fb;letter-spacing:-.01em">+34.2%</div>
-                </div>
-                <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.75rem 1rem;backdrop-filter:blur(8px)">
-                  <div style="font-size:.62rem;color:rgba(255,255,255,.45);margin-bottom:.25rem">نقطة التعادل</div>
-                  <div style="font-size:1.15rem;font-weight:900;color:#7eb8ff">8.4 أشهر</div>
-                </div>
-                <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.75rem 1rem;backdrop-filter:blur(8px)">
-                  <div style="font-size:.62rem;color:rgba(255,255,255,.45);margin-bottom:.25rem">عائد الاستثمار</div>
-                  <div style="font-size:1.15rem;font-weight:900;color:#fbbf24">ROI 128%</div>
-                </div>
+              <div style="display:flex;align-items:center;gap:.4rem;flex-shrink:0">
+                <div style="display:flex;align-items:center;gap:.28rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:.2rem .6rem"><i class="fa-solid fa-bolt" style="color:#4fb;font-size:.55rem"></i><span style="font-size:.58rem;color:rgba(255,255,255,.75);font-weight:700">نتائج فورية</span></div>
+                <div style="display:flex;align-items:center;gap:.28rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:.2rem .6rem"><i class="fa-solid fa-lock" style="color:#7eb8ff;font-size:.55rem"></i><span style="font-size:.58rem;color:rgba(255,255,255,.75);font-weight:700">بياناتك محمية</span></div>
+                <div style="display:flex;align-items:center;gap:.28rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:.2rem .6rem"><i class="fa-solid fa-users" style="color:#a78bfa;font-size:.55rem"></i><span style="font-size:.58rem;color:rgba(255,255,255,.75);font-weight:700">+2,400 تحليل</span></div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- ══ Steps Strip ══ -->
-        <div style="margin-bottom:2rem">
-          <div style="display:flex;align-items:center;gap:0;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:1rem 1.5rem;overflow-x:auto;position:relative">
-            <!-- label -->
-            <div style="position:absolute;top:-10px;right:1.25rem;background:var(--bg2);border:1px solid var(--border);color:var(--muted);font-size:.63rem;font-weight:700;padding:.15rem .7rem;border-radius:20px;white-space:nowrap">مراحل التحليل — 7 خطوات</div>
-            <style>
-              @keyframes pulse2{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.15)}}
-              @keyframes fadeSlideIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-              .pa-stp{display:flex;align-items:center;gap:.5rem;flex-shrink:0;animation:fadeSlideIn .4s both}
-              .pa-stp-n{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1E3A8A,#4E73C2);color:#fff;font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(78,115,194,.35)}
-              .pa-stp-t{font-size:.75rem;font-weight:700;white-space:nowrap}
-              .pa-stp-s{font-size:.63rem;color:var(--muted);white-space:nowrap}
-              .pa-sep{flex-shrink:0;height:1px;width:22px;background:linear-gradient(90deg,rgba(78,115,194,.4),rgba(78,115,194,.1));margin:0 .4rem}
-            </style>
-            <div class="pa-stp" style="animation-delay:.05s"><div class="pa-stp-n">1</div><div><div class="pa-stp-t">المشروع</div><div class="pa-stp-s">الاسم · النوع</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.1s"><div class="pa-stp-n">2</div><div><div class="pa-stp-t">دراسة السوق</div><div class="pa-stp-s">الطلب · المنافسون</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.15s"><div class="pa-stp-n">3</div><div><div class="pa-stp-t">الإيرادات</div><div class="pa-stp-s">المبيعات</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.2s"><div class="pa-stp-n">4</div><div><div class="pa-stp-t">التكاليف الثابتة</div><div class="pa-stp-s">الإيجار · الرواتب</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.25s"><div class="pa-stp-n">5</div><div><div class="pa-stp-t">التكاليف المتغيرة</div><div class="pa-stp-s">بضاعة · تسويق</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.28s"><div class="pa-stp-n">6</div><div><div class="pa-stp-t">التشغيل</div><div class="pa-stp-s">الفريق · التراخيص</div></div></div>
-            <div class="pa-sep"></div>
-            <div class="pa-stp" style="animation-delay:.33s"><div class="pa-stp-n">7</div><div><div class="pa-stp-t">الخبرة والسوق</div><div class="pa-stp-s">منافسة · تجربتك</div></div></div>
+            <!-- Pipeline: 7 circles -->
+            <div style="position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1E3A8A,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(59,130,246,.5),0 0 0 3px rgba(59,130,246,.15)"><i class="fa-solid fa-building"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">المشروع</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">الاسم · النوع</div>
+                <div style="font-size:.5rem;background:rgba(59,130,246,.22);color:#93c5fd;border-radius:20px;padding:.04rem .45rem;font-weight:900">①</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1e40af,#2563eb);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(37,99,235,.5),0 0 0 3px rgba(37,99,235,.15)"><i class="fa-solid fa-chart-line"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">دراسة السوق</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">الطلب · المنافسون</div>
+                <div style="font-size:.5rem;background:rgba(37,99,235,.22);color:#93c5fd;border-radius:20px;padding:.04rem .45rem;font-weight:900">②</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#155e75,#0891b2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(8,145,178,.5),0 0 0 3px rgba(8,145,178,.15)"><i class="fa-solid fa-coins"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">الإيرادات</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">المبيعات</div>
+                <div style="font-size:.5rem;background:rgba(8,145,178,.22);color:#67e8f9;border-radius:20px;padding:.04rem .45rem;font-weight:900">③</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#065f46,#059669);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(5,150,105,.5),0 0 0 3px rgba(5,150,105,.15)"><i class="fa-solid fa-receipt"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">التكاليف الثابتة</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">الإيجار · الرواتب</div>
+                <div style="font-size:.5rem;background:rgba(5,150,105,.22);color:#6ee7b7;border-radius:20px;padding:.04rem .45rem;font-weight:900">④</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#7c2d12,#ea580c);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(234,88,12,.5),0 0 0 3px rgba(234,88,12,.15)"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">التكاليف المتغيرة</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">بضاعة · تسويق</div>
+                <div style="font-size:.5rem;background:rgba(234,88,12,.22);color:#fdba74;border-radius:20px;padding:.04rem .45rem;font-weight:900">⑤</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#4c1d95,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(124,58,237,.5),0 0 0 3px rgba(124,58,237,.15)"><i class="fa-solid fa-gears"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">التشغيل</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">الفريق · التراخيص</div>
+                <div style="font-size:.5rem;background:rgba(124,58,237,.22);color:#c4b5fd;border-radius:20px;padding:.04rem .45rem;font-weight:900">⑥</div>
+              </div>
+              <div style="flex-shrink:0;padding-top:16px;color:rgba(100,140,220,.55);font-size:.5rem"><i class="fa-solid fa-chevron-left"></i></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;flex:1">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#78350f,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 4px 18px rgba(217,119,6,.5),0 0 0 3px rgba(217,119,6,.15)"><i class="fa-solid fa-trophy"></i></div>
+                <div style="font-size:.65rem;font-weight:800;color:#fff;text-align:center;white-space:nowrap">الخبرة والسوق</div>
+                <div style="font-size:.52rem;color:rgba(255,255,255,.45);text-align:center;white-space:nowrap">منافسة · تجربتك</div>
+                <div style="font-size:.5rem;background:rgba(217,119,6,.22);color:#fcd34d;border-radius:20px;padding:.04rem .45rem;font-weight:900">⑦</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2603,25 +2843,22 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
 
             <!-- header -->
             <div style="padding:1.6rem 1.75rem 1.1rem;position:relative">
-              <!-- free pill -->
-              <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.28);color:#4ade80;border-radius:20px;padding:.22rem .85rem;font-size:.65rem;font-weight:800;margin-bottom:1rem">
-                <i class="fa-solid fa-check-circle"></i> مجاني دائماً · بدون بطاقة
+              <!-- basic tier pill -->
+              <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(78,115,194,.14);border:1px solid rgba(78,115,194,.32);color:#a5c8ff;border-radius:20px;padding:.22rem .85rem;font-size:.65rem;font-weight:800;margin-bottom:1rem">
+                <i class="fa-solid fa-calculator"></i> تحليل مالي ذاتي · حسابات فورية
               </div>
               <!-- icon + title row -->
               <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem">
-                <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#1E3A8A,#4E73C2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 6px 18px rgba(78,115,194,.4);flex-shrink:0">
+                <div onclick="startProjectAnalysisWizard()" style="width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#1E3A8A,#4E73C2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.25rem;color:#fff;box-shadow:0 6px 18px rgba(78,115,194,.4);flex-shrink:0;cursor:pointer;gap:.18rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 10px 28px rgba(78,115,194,.6)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 18px rgba(78,115,194,.4)'">
                   <i class="fa-solid fa-calculator"></i>
+                  <span style="font-size:.62rem;font-weight:900;letter-spacing:.02em;color:#fff;line-height:1">ابدأ الإعداد</span>
                 </div>
                 <div>
-                  <div style="font-size:1.05rem;font-weight:900;color:#fff;line-height:1.2">تحليل المشروع</div>
-                  <div style="font-size:.72rem;color:rgba(255,255,255,.45);margin-top:.15rem">حسابات مالية دقيقة · نتائج فورية</div>
+                  <div style="font-size:1.2rem;font-weight:900;color:#fff;line-height:1.2">تحليل المشروع</div>
+                  <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.2rem">حسابات مالية دقيقة · نتائج فورية</div>
                 </div>
               </div>
-              <!-- price -->
-              <div style="display:flex;align-items:baseline;gap:.35rem">
-                <span style="font-size:2.4rem;font-weight:900;color:#fff;line-height:1">0</span>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.4);font-weight:600">ريال</span>
-              </div>
+
             </div>
 
             <!-- divider -->
@@ -2656,12 +2893,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
                 </div>
               </div>
 
-              <button onclick="startProjectAnalysisWizard()"
-                style="width:100%;padding:.95rem;background:linear-gradient(135deg,#1E3A8A,#3b63c8);color:#fff;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 6px 20px rgba(78,115,194,.28);transition:all .2s;letter-spacing:.01em"
-                onmouseover="this.style.background='linear-gradient(135deg,#2d52b5,#4E73C2)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 28px rgba(78,115,194,.45)'"
-                onmouseout="this.style.background='linear-gradient(135deg,#1E3A8A,#3b63c8)';this.style.transform='';this.style.boxShadow='0 6px 20px rgba(78,115,194,.28)'">
-                <i class="fa-solid fa-play-circle"></i> ابدأ تحليل مشروعك مجاناً
-              </button>
+
             </div>
           </div>
 
@@ -2689,20 +2921,16 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
               </div>
               <!-- icon + title -->
               <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem;position:relative">
-                <div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#78350f,#d97706);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;box-shadow:0 6px 18px rgba(245,158,11,.35);flex-shrink:0">
+                <div onclick="startProjectAnalysisWizard('premium')" style="width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#78350f,#d97706);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.25rem;color:#fff;box-shadow:0 6px 18px rgba(245,158,11,.35);flex-shrink:0;cursor:pointer;gap:.18rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 10px 28px rgba(245,158,11,.55)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 18px rgba(245,158,11,.35)'">
                   <i class="fa-solid fa-brain"></i>
+                  <span style="font-size:.62rem;font-weight:900;letter-spacing:.02em;color:#fff;line-height:1">ابدأ الإعداد</span>
                 </div>
                 <div>
-                  <div style="font-size:1.05rem;font-weight:900;color:#fff;line-height:1.2">حلّل مشروعك بالذكاء</div>
-                  <div style="font-size:.72rem;color:rgba(255,255,255,.45);margin-top:.15rem">تقرير AI معمّق · مخصص لمشروعك</div>
+                  <div style="font-size:1.2rem;font-weight:900;color:#fff;line-height:1.2">حلّل مشروعك بالذكاء</div>
+                  <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.2rem">تقرير AI معمّق · مخصص لمشروعك</div>
                 </div>
               </div>
-              <!-- price -->
-              <div style="display:flex;align-items:baseline;gap:.4rem;position:relative">
-                <span style="font-size:1rem;color:rgba(255,255,255,.3);text-decoration:line-through;font-weight:500">99</span>
-                <span style="font-size:2.4rem;font-weight:900;color:#fbbf24;line-height:1;text-shadow:0 0 20px rgba(251,191,36,.4)">49</span>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.4);font-weight:600">ريال · مرة واحدة</span>
-              </div>
+
             </div>
 
             <!-- divider -->
@@ -2773,19 +3001,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
                 </div>
               </div>
 
-              <button onclick="startProjectAnalysisWizard('premium')"
-                style="width:100%;padding:.95rem;background:linear-gradient(135deg,#92400e,#c2740a,#e8960d);color:#fff;border:none;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 6px 24px rgba(245,158,11,.32);transition:all .2s;letter-spacing:.01em"
-                onmouseover="this.style.background='linear-gradient(135deg,#b45309,#d97706,#f59e0b)';this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 32px rgba(245,158,11,.5)'"
-                onmouseout="this.style.background='linear-gradient(135deg,#92400e,#c2740a,#e8960d)';this.style.transform='';this.style.boxShadow='0 6px 24px rgba(245,158,11,.32)'">
-                <i class="fa-solid fa-crown"></i> ابدأ تحليل مشروعك بالذكاء
-              </button>
+
 
             </div>
           </div>
         </div>
 
         <p style="font-size:.73rem;color:var(--muted);text-align:center">
-          <i class="fa-solid fa-clock" style="margin-left:.3rem;color:rgba(255,255,255,.3)"></i>التحليل المجاني يستغرق ~5 دقائق · بياناتك لا تُحفظ ولا تُشارك مع أي طرف
+          <i class="fa-solid fa-clock" style="margin-left:.3rem;color:rgba(255,255,255,.3)"></i>التحليل يستغرق ~5 دقائق · بياناتك لا تُحفظ ولا تُشارك مع أي طرف
         </p>
       </div>
 
@@ -2898,7 +3121,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
               <div style="font-weight:800;font-size:.95rem">تحليل مجاني</div>
               <div style="font-size:.72rem;color:var(--muted)">Lead Magnet — للاستكشاف</div>
             </div>
-            <span style="margin-right:auto;background:#10b981;color:#fff;font-size:.66rem;font-weight:700;padding:.15rem .6rem;border-radius:20px">مجاني</span>
+            <span style="margin-right:auto;background:#10b981;color:#fff;font-size:.66rem;font-weight:700;padding:.15rem .6rem;border-radius:20px">أساسي</span>
           </div>
           <ul style="list-style:none;padding:0;margin:0;font-size:.82rem;color:var(--muted);display:flex;flex-direction:column;gap:.5rem">
             <li><i class="fa-solid fa-check" style="color:#10b981;margin-left:.4rem;width:14px"></i>تقييم مبدئي (High-level SWOT)</li>
@@ -2908,7 +3131,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
             <li style="opacity:.5"><i class="fa-solid fa-xmark" style="color:#ef4444;margin-left:.4rem;width:14px"></i>لا جاهزية للمستثمر</li>
           </ul>
           <button onclick="gotoSub('robot','navgrp-gateway','nav-robot')" style="margin-top:1.25rem;width:100%;border:1px solid #10b981;background:transparent;color:#10b981;padding:.6rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer">
-            ابدأ المجاني <i class="fa-solid fa-arrow-left"></i>
+            ابدأ التحليل الأساسي <i class="fa-solid fa-arrow-left"></i>
           </button>
         </div>
 
@@ -3029,73 +3252,99 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
 
     <!-- ===== ANALYSIS ===== -->
     <div class="page" id="page-analysis">
-      <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.25rem;padding:.6rem 1rem;background:rgba(78,115,194,.08);border-radius:10px;border:1px solid rgba(78,115,194,.2)">
-        <button onclick="gotoSub('robot','navgrp-gateway','nav-robot')" style="background:none;border:none;cursor:pointer;color:var(--primary);font-family:inherit;font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:.4rem"><i class="fa-solid fa-arrow-right"></i> بوابة الجاهزية</button>
-        <span style="color:var(--muted);font-size:.85rem">/ إعداد دراسات الجدوى</span>
-      </div>
 
       <!-- ══ STEP 0: اختيار نوع الدراسة ══ -->
       <div id="fs-step-0" class="fs-step active">
 
-        <!-- ── AI Hero Banner ── -->
-        <div style="background:linear-gradient(135deg,#040c1e 0%,#0a1a40 50%,#050e22 100%);border-radius:18px;padding:2rem 2.25rem 1.75rem;position:relative;overflow:hidden;border:1px solid rgba(78,115,194,.22);box-shadow:0 16px 48px rgba(0,0,0,.4);margin-bottom:2rem">
-          <!-- SVG BG -->
-          <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.25" viewBox="0 0 800 170" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <radialGradient id="ag1" cx="80%" cy="40%" r="50%"><stop offset="0%" stop-color="#4E73C2" stop-opacity=".3"/><stop offset="100%" stop-color="#4E73C2" stop-opacity="0"/></radialGradient>
-            </defs>
-            <rect width="800" height="170" fill="url(#ag1)"/>
-            <g stroke="#4E73C2" stroke-opacity=".15" stroke-width=".5">
-              <line x1="0" y1="42" x2="800" y2="42"/><line x1="0" y1="84" x2="800" y2="84"/><line x1="0" y1="126" x2="800" y2="126"/>
-              <line x1="200" y1="0" x2="200" y2="170"/><line x1="400" y1="0" x2="400" y2="170"/><line x1="600" y1="0" x2="600" y2="170"/>
+        <!-- ── Hero + Pipeline + اختر الدراسة ── -->
+        <div style="background:linear-gradient(135deg,#040c1e 0%,#071535 55%,#040e22 100%);border-radius:16px;overflow:hidden;border:1px solid rgba(78,115,194,.22);box-shadow:0 12px 40px rgba(0,0,0,.45);margin-bottom:.6rem;flex-shrink:0;position:relative">
+
+          <!-- شبكة SVG خلفية -->
+          <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 900 160" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs><radialGradient id="fhg2" cx="75%" cy="30%" r="55%"><stop offset="0%" stop-color="#4E73C2" stop-opacity=".16"/><stop offset="100%" stop-color="#4E73C2" stop-opacity="0"/></radialGradient>
+            <radialGradient id="fhg3" cx="20%" cy="80%" r="40%"><stop offset="0%" stop-color="#7c3aed" stop-opacity=".08"/><stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/></radialGradient></defs>
+            <rect width="900" height="160" fill="url(#fhg2)"/><rect width="900" height="160" fill="url(#fhg3)"/>
+            <g stroke="#4E73C2" stroke-opacity=".07" stroke-width=".6">
+              <line x1="0" y1="40" x2="900" y2="40"/><line x1="0" y1="80" x2="900" y2="80"/><line x1="0" y1="120" x2="900" y2="120"/>
+              <line x1="180" y1="0" x2="180" y2="160"/><line x1="360" y1="0" x2="360" y2="160"/><line x1="540" y1="0" x2="540" y2="160"/><line x1="720" y1="0" x2="720" y2="160"/>
             </g>
-            <!-- document icon lines -->
-            <rect x="620" y="25" width="60" height="80" rx="6" fill="none" stroke="#4E73C2" stroke-opacity=".3" stroke-width="1.2"/>
-            <line x1="630" y1="50" x2="670" y2="50" stroke="#4E73C2" stroke-opacity=".25" stroke-width="1"/>
-            <line x1="630" y1="62" x2="670" y2="62" stroke="#4E73C2" stroke-opacity=".2" stroke-width="1"/>
-            <line x1="630" y1="74" x2="655" y2="74" stroke="#4E73C2" stroke-opacity=".15" stroke-width="1"/>
-            <circle cx="700" cy="115" r="30" fill="none" stroke="#4E73C2" stroke-opacity=".15" stroke-width="1"/>
-            <circle cx="700" cy="115" r="18" fill="none" stroke="#4E73C2" stroke-opacity=".12" stroke-width="1"/>
           </svg>
-          <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap">
-            <div style="flex:1;min-width:200px">
-              <!-- AI badge -->
-              <div style="display:inline-flex;align-items:center;gap:.45rem;background:rgba(78,115,194,.18);border:1px solid rgba(78,115,194,.38);color:#a5c8ff;border-radius:30px;padding:.25rem .95rem;font-size:.68rem;font-weight:800;letter-spacing:.05em;margin-bottom:1rem">
-                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="3" fill="#4E73C2" opacity=".6"><animate attributeName="r" from="2" to="4" dur="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" from=".8" to="0" dur="1.8s" repeatCount="indefinite"/></circle><circle cx="5" cy="5" r="2" fill="#7eb8ff"/></svg>
-                مدعوم بالذكاء الاصطناعي · جنان بيز
+
+          <div style="position:relative;z-index:1;padding:.6rem 1.2rem .65rem">
+
+            <!-- ══ شريط Pipeline ══ -->
+            <div style="display:flex;align-items:center;gap:0;margin-bottom:.6rem;overflow-x:auto">
+              <button onclick="gotoSub('robot','navgrp-gateway','nav-robot')" style="all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.15rem;flex-shrink:0">
+                <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#14532d,#16a34a);border:2px solid #4ade80;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#fff;box-shadow:0 0 8px rgba(74,222,128,.35)"><i class="fa-solid fa-check"></i></div>
+                <span style="font-size:.56rem;color:#4ade80;font-weight:700;white-space:nowrap">بوابة الجاهزية</span>
+              </button>
+              <div style="flex:1;min-width:16px;max-width:36px;height:2px;background:linear-gradient(90deg,#4ade80,rgba(78,115,194,.4));margin:0 .25rem;margin-bottom:13px;position:relative"><div style="position:absolute;top:-2px;right:-3px;width:5px;height:5px;border-radius:50%;background:#4ade80;box-shadow:0 0 5px #4ade80"></div></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;flex-shrink:0">
+                <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1E3A8A,#4E73C2);border:2.5px solid #7eb8ff;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#fff;font-weight:900;animation:fsNodePulse 2.2s ease-in-out infinite">1</div>
+                <span style="font-size:.57rem;color:#7eb8ff;font-weight:800;white-space:nowrap">اختر الدراسة</span>
               </div>
-              <h2 style="font-size:1.45rem;font-weight:900;color:#fff;margin:0 0 .6rem;line-height:1.35">
-                ابدأ إعداد دراسة الجدوى<br><span style="background:linear-gradient(90deg,#7eb8ff,#a5f3fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">بالذكاء الاصطناعي</span>
-              </h2>
-              <p style="font-size:.82rem;color:rgba(255,255,255,.5);line-height:1.8;margin:0">
-                أجب على أسئلة مشروعك — وتحصل على دراسة جدوى موثقة احترافياً<br>
-                <strong style="color:rgba(255,255,255,.72)">معتمدة ومصادق عليها · احترافية عالية</strong>
-              </p>
+              <div style="flex:1;min-width:16px;max-width:36px;height:2px;background:linear-gradient(90deg,rgba(78,115,194,.45),rgba(78,115,194,.12));margin:0 .25rem;margin-bottom:13px"></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;flex-shrink:0">
+                <div style="width:24px;height:24px;border-radius:50%;background:rgba(78,115,194,.1);border:1.5px solid rgba(78,115,194,.25);display:flex;align-items:center;justify-content:center;font-size:.58rem;color:rgba(255,255,255,.3);font-weight:700">2</div>
+                <span style="font-size:.56rem;color:rgba(255,255,255,.28);white-space:nowrap">أسئلة الدراسة</span>
+              </div>
+              <div style="flex:1;min-width:16px;max-width:36px;height:2px;background:rgba(78,115,194,.08);margin:0 .25rem;margin-bottom:13px"></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;flex-shrink:0">
+                <div style="width:24px;height:24px;border-radius:50%;background:rgba(78,115,194,.08);border:1.5px solid rgba(78,115,194,.18);display:flex;align-items:center;justify-content:center;font-size:.58rem;color:rgba(255,255,255,.25);font-weight:700">3</div>
+                <span style="font-size:.56rem;color:rgba(255,255,255,.22);white-space:nowrap">الدفع</span>
+              </div>
+              <div style="flex:1;min-width:16px;max-width:36px;height:2px;background:rgba(78,115,194,.06);margin:0 .25rem;margin-bottom:13px"></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:.15rem;flex-shrink:0">
+                <div style="width:24px;height:24px;border-radius:50%;background:rgba(245,158,11,.06);border:1.5px solid rgba(245,158,11,.18);display:flex;align-items:center;justify-content:center;font-size:.52rem;color:rgba(251,191,36,.3);font-weight:700"><i class="fa-solid fa-file-pdf"></i></div>
+                <span style="font-size:.56rem;color:rgba(251,191,36,.32);white-space:nowrap">التقرير PDF</span>
+              </div>
             </div>
-            <!-- mini stats -->
-            <div style="display:flex;gap:1rem;flex-shrink:0;flex-wrap:wrap">
-              <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.75rem 1.1rem;text-align:center;min-width:75px">
-                <div style="font-size:1.1rem;font-weight:900;color:#7eb8ff">+500</div>
-                <div style="font-size:.63rem;color:rgba(255,255,255,.4);margin-top:.2rem">دراسة أُعدّت</div>
+
+            <!-- ══ الصف السفلي: العنوان + سهمان نحو البطاقتين ══ -->
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem">
+
+              <!-- العنوان والوصف -->
+              <div style="flex:1;min-width:0">
+                <div style="font-size:.92rem;font-weight:900;color:#fff;margin-bottom:.15rem">اختر نوع الدراسة المناسبة لمشروعك</div>
+                <div style="font-size:.68rem;color:rgba(255,255,255,.42)">ادفع رسومها · أجب على الأسئلة · احصل على تقريرك الاحترافي</div>
               </div>
-              <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.75rem 1.1rem;text-align:center;min-width:75px">
-                <div style="font-size:1.1rem;font-weight:900;color:#4ade80">دقائق</div>
-                <div style="font-size:.63rem;color:rgba(255,255,255,.4);margin-top:.2rem">وتُنجز الدراسة</div>
-              </div>
-              <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:.75rem 1.1rem;text-align:center;min-width:75px">
-                <div style="font-size:1.1rem;font-weight:900;color:#fbbf24">PDF</div>
-                <div style="font-size:.63rem;color:rgba(255,255,255,.4);margin-top:.2rem">تقرير جاهز</div>
+
+              <!-- سهمان نحو البطاقتين -->
+              <div style="display:flex;gap:.6rem;flex-shrink:0;align-items:stretch">
+
+                <!-- سهم الجدوى المبسطة -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:.18rem;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.28);border-radius:10px;padding:.35rem .8rem;min-width:90px;position:relative;overflow:hidden">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(5,150,105,.08));pointer-events:none"></div>
+                  <div style="font-size:.62rem;font-weight:800;color:#4ade80;white-space:nowrap">دراسة مبسطة</div>
+                  <div style="font-size:.7rem;font-weight:900;color:#fff">99 ريال</div>
+                  <!-- سهم متحرك -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:.1rem;animation:fsBounce 1.6s ease-in-out infinite">
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(74,222,128,.9);line-height:1"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(74,222,128,.55);line-height:1"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(74,222,128,.2);line-height:1"></i>
+                  </div>
+                </div>
+
+                <!-- سهم الجدوى المفصلة -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:.18rem;background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.3);border-radius:10px;padding:.35rem .8rem;min-width:90px;position:relative;overflow:hidden">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(217,119,6,.08));pointer-events:none"></div>
+                  <div style="font-size:.62rem;font-weight:800;color:#fbbf24;white-space:nowrap">دراسة مفصّلة ★</div>
+                  <div style="font-size:.7rem;font-weight:900;color:#fff">299 ريال</div>
+                  <!-- سهم متحرك -->
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:1px;margin-top:.1rem;animation:fsBounce 1.6s ease-in-out infinite;animation-delay:.3s">
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(251,191,36,.9);line-height:1"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(251,191,36,.55);line-height:1"></i>
+                    <i class="fa-solid fa-chevron-down" style="font-size:.5rem;color:rgba(251,191,36,.2);line-height:1"></i>
+                  </div>
+                </div>
+
               </div>
             </div>
+
           </div>
         </div>
 
-        <div class="sec-hd" style="margin-bottom:1.25rem">
-          <div>
-            <h2 style="font-size:1rem">اختر نوع الدراسة المناسبة لمشروعك</h2>
-            <p>ادفع رسومها، ثم أجب على الأسئلة لإعداد دراستك بدقة</p>
-          </div>
-        </div>
+
 
         <div class="study-types-grid">
           <!-- مبسطة -->
@@ -3105,8 +3354,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
               سريعة ومختصرة
             </span>
             <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.9rem">
-              <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#064e3b,#059669);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px rgba(5,150,105,.3)">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#064e3b,#059669);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px rgba(5,150,105,.3);gap:.2rem;cursor:pointer;transition:transform .18s,box-shadow .18s" onclick="selectStudyType('simple')" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 10px 24px rgba(5,150,105,.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 16px rgba(5,150,105,.3)'">
+                <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="3" y="2" width="12" height="16" rx="2" stroke="#fff" stroke-width="1.5"/>
                   <line x1="6" y1="7" x2="12" y2="7" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
                   <line x1="6" y1="10" x2="12" y2="10" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/>
@@ -3114,12 +3363,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
                   <circle cx="17" cy="17" r="4.5" fill="#059669" stroke="#fff" stroke-width="1.2"/>
                   <path d="M15 17l1.5 1.5L19 15.5" stroke="#fff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
+                <span style="font-size:.62rem;font-weight:900;color:#fff;letter-spacing:.02em;line-height:1">ابدأ الإعداد</span>
               </div>
               <h3 style="margin:0;font-size:1.05rem">دراسة الجدوى المبسطة</h3>
             </div>
             <p>مثالية للمشاريع الصغيرة والمبتدئين — تمنحك رؤية واضحة عن الجدوى المالية والربحية في وقت قصير</p>
-            <div class="study-price">99 <span style="font-size:1rem;font-weight:400">ريال</span></div>
-            <div class="study-price-note">دفعة واحدة · تقرير جاهز خلال دقائق</div>
+
             <ul class="study-features">
               <li><i class="fa-solid fa-circle-check"></i> 10 أسئلة مركّزة ودقيقة</li>
               <li><i class="fa-solid fa-circle-check"></i> تحليل مالي شامل (ربحية + نقطة تعادل + ROI)</li>
@@ -3137,8 +3386,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
               شاملة ومتكاملة
             </span>
             <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.9rem">
-              <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#78350f,#d97706);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px rgba(217,119,6,.3)">
-                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div style="width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#78350f,#d97706);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 16px rgba(217,119,6,.3);gap:.2rem;cursor:pointer;transition:transform .18s,box-shadow .18s" onclick="selectStudyType('detailed')" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 10px 24px rgba(217,119,6,.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 6px 16px rgba(217,119,6,.3)'">
+                <svg width="24" height="24" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="2" y="2" width="13" height="17" rx="2" stroke="#fff" stroke-width="1.5"/>
                   <line x1="5" y1="7" x2="12" y2="7" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
                   <line x1="5" y1="10" x2="12" y2="10" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
@@ -3146,12 +3395,12 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
                   <line x1="5" y1="16" x2="9" y2="16" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
                   <polyline points="14,14 16,17 20,11" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
+                <span style="font-size:.62rem;font-weight:900;color:#fff;letter-spacing:.02em;line-height:1">ابدأ الإعداد</span>
               </div>
               <h3 style="margin:0;font-size:1.05rem">دراسة الجدوى المفصلة</h3>
             </div>
             <p>مناسبة للمشاريع الجادة والرائدة — تقرير احترافي بمعايير معتمدة يُقنع المستثمرين والشركاء</p>
-            <div class="study-price">299 <span style="font-size:1rem;font-weight:400">ريال</span></div>
-            <div class="study-price-note">دفعة واحدة · تقرير احترافي شامل</div>
+
             <ul class="study-features">
               <li><i class="fa-solid fa-circle-check"></i> 20 سؤالاً تفصيلياً ومتعمقاً</li>
               <li><i class="fa-solid fa-circle-check"></i> تحليل مالي لـ 3 سنوات (توقعات + نمو)</li>
@@ -3163,15 +3412,10 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
             </ul>
           </div>
         </div>
-        <div style="margin-top:1.75rem;text-align:center">
-          <button class="btn-primary" id="fs-next-0" onclick="proceedToPayment()" disabled style="opacity:.45;cursor:not-allowed">
-            ابدأ الدراسة الآن <i class="fa-solid fa-arrow-left"></i>
-          </button>
-          <p style="font-size:.78rem;color:var(--muted);margin-top:.65rem">
-            <i class="fa-solid fa-shield-halved" style="color:var(--green);margin-left:.3rem"></i>
-            دفع آمن ومشفر · يُعاد المبلغ كاملاً في حال وجود أي مشكلة
-          </p>
-        </div>
+        <p style="font-size:.72rem;color:var(--muted);text-align:center;margin-top:.5rem;flex-shrink:0">
+          <i class="fa-solid fa-shield-halved" style="color:var(--green);margin-left:.3rem"></i>
+          دفع آمن ومشفر · يُعاد المبلغ كاملاً في حال وجود أي مشكلة
+        </p>
       </div>
 
       <!-- ══ STEP 1: الدفع ══ -->
@@ -4753,8 +4997,8 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape') closePlanMo
           </div>
         </div>
 
-        <button onclick="showGovServiceModal(,'استشارة رأس المال — تحليل مالي استرشادي','مجاناً','065f46','10b981','fa-chart-line')" style="background:linear-gradient(135deg,#065f46,#10b981);color:#fff;border:none;border-radius:12px;padding:1rem;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem">
-          <i class="fa-brands fa-whatsapp"></i> احجز جلستك المجانية عبر الواتساب
+        <button onclick="showGovServiceModal('capital','استشارة رأس المال — تحليل مالي استرشادي','','065f46','10b981','fa-chart-line')" style="background:linear-gradient(135deg,#065f46,#10b981);color:#fff;border:none;border-radius:12px;padding:1rem;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:.5rem">
+          <i class="fa-brands fa-whatsapp"></i> احجز جلستك الاستشارية عبر الواتساب
         </button>
         <p style="text-align:center;font-size:.7rem;color:var(--muted);margin:.65rem 0 0">لا حجوزات مسبقة · تواصل فوري · خبراء ماليون معتمدون</p>
       </div>
@@ -5153,6 +5397,22 @@ const uName = u.name || 'المستخدم';
 })();
 document.getElementById('user-name').textContent = uName;
 document.getElementById('user-av').textContent = uName.charAt(0)||'م';
+/* عرض اسم الباقة في الـ sidebar بشكل ديناميكي */
+(function(){
+  var _sidebarPlanLabels = {
+    launch:       'باقة الانطلاق',
+    entrepreneur: 'باقة رائد الأعمال',
+    investor:     'باقة المستثمر',
+    biz:          'باقة الأعمال',
+    pro:          'باقة Pro',
+    platinum:     'باقة البلاتينيوم'
+  };
+  var _uRole = (u.role || u.plan || '').toLowerCase().trim();
+  var _planSpan = document.querySelector('.user-plan');
+  if(_planSpan){
+    _planSpan.textContent = _sidebarPlanLabels[_uRole] || 'حساب مسجّل';
+  }
+})();
 if(document.getElementById('sett-name')) document.getElementById('sett-name').value = uName;
 if(document.getElementById('sett-email')) document.getElementById('sett-email').value = u.email||'';
 
@@ -5429,7 +5689,7 @@ function openSidebar(){ document.getElementById('sidebar').classList.add('open')
 const pageMap = {
   home:    {title:'نظرة عامة',    sub:'مرحباً بك في منصة جنان بيز'},
   hub:     {title:'تحليل المشاريع ودراسات الجدوى', sub:'اختر الخدمة المناسبة لمشروعك'},
-  robot:   {title:'تحليل مشروع مجاني بالذكاء الاصطناعي', sub:'تقرير مبدئي فوري — اكتشف جدوى مشروعك مجاناً قبل أي استثمار'},
+  robot:   {title:'تحليل مشروع — محرك التحليل الاقتصادي', sub:'تقرير مالي فوري — اكتشف جدوى مشروعك وأرقامه قبل أي استثمار'},
   'paid-analysis': {title:'تحليل مشروع احترافي بالذكاء الاصطناعي', sub:'تحليل SWOT شامل · خطة تسويق · فرص السوق · جاهزيتك للمستثمر'},
   projectcopilot: {title:'روبوت المشاريع',sub:'مساعدك الذكي خطوة بخطوة من الفكرة حتى التشغيل'},
   analysis:{title:'إعداد دراسات الجدوى الاقتصادية', sub:'حلّل مشروعك واعرف مدى ربحيته قبل أي استثمار'},
@@ -5606,6 +5866,11 @@ function submitGoldSearch() {
   const type  = document.getElementById('gs-type')?.value;
   if (!name || !phone || !type) { showToast('⚠ يرجى تعبئة الاسم ورقم الجوال ونوع النشاط.'); return; }
   if (!/^05\d{8}$/.test(phone.replace(/[\s-]/g, ''))) { showToast('⚠ رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام'); return; }
+  if (name.length > 80) { showToast('⚠ الاسم طويل جداً.'); return; }
+  // منع تكرار الإرسال
+  if (window._goldSearchSubmitting) return;
+  window._goldSearchSubmitting = true;
+  setTimeout(() => { window._goldSearchSubmitting = false; }, 8000);
   showToast('✅ تم استلام طلب البحث الذهبي! سيتواصل معك فريقنا خلال 24 ساعة لإتمام الدفع والبدء في البحث.');
   document.getElementById('mkt-gold-form').style.display = 'none';
 }
@@ -5657,8 +5922,16 @@ function submitInspectionRequest() {
   if (!name || !phone) { showToast('⚠ يرجى إدخال الاسم ورقم التواصل.'); return; }
   if (!/^05\d{8}$/.test(phone.replace(/[\s-]/g, ''))) { showToast('⚠ رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام'); return; }
   if (!nda) { showToast('⚠ يرجى الموافقة على اتفاقية عدم الإفصاح.'); return; }
+  if (name.length > 80) { showToast('⚠ الاسم طويل جداً.'); return; }
+  // منع تكرار الإرسال
+  if (window._inspectionSubmitting) return;
+  window._inspectionSubmitting = true;
+  setTimeout(() => { window._inspectionSubmitting = false; }, 8000);
   showToast('✅ تم استلام طلب المعاينة! سيتواصل معك فريقنا خلال 24 ساعة لترتيب التفاصيل والعربون.');
   document.getElementById('mkt-inspection-modal').style.display = 'none';
+  document.getElementById('ins-name').value = '';
+  document.getElementById('ins-phone').value = '';
+  document.getElementById('ins-nda-ack').checked = false;
 }
 function openQA(pid) {
   const modal = document.getElementById('mkt-qa-modal');
@@ -5671,6 +5944,15 @@ function openQA(pid) {
 function submitQA() {
   const q = document.getElementById('qa-question')?.value.trim();
   if (!q) { showToast('⚠ يرجى كتابة سؤالك قبل الإرسال.'); return; }
+  if (q.length < 5) { showToast('⚠ السؤال قصير جداً. يرجى كتابة سؤال واضح.'); return; }
+  if (q.length > 500) { showToast('⚠ السؤال طويل جداً (الحد الأقصى 500 حرف).'); return; }
+  // منع تسريب معلومات التواصل في الأسئلة
+  if (/0\d[\s-]?\d{4}[\s-]?\d{4}|https?:\/\//i.test(q)) {
+    showToast('⛔ لا يُسمح بكتابة أرقام تواصل أو روابط في الأسئلة.'); return;
+  }
+  if (window._qaSubmitting) return;
+  window._qaSubmitting = true;
+  setTimeout(() => { window._qaSubmitting = false; }, 5000);
   showToast('✅ تم إرسال سؤالك للمراجعة. سيُنشر بعد موافقة الإدارة خلال 24 ساعة.');
   document.getElementById('qa-question').value = '';
   document.getElementById('mkt-qa-modal').style.display = 'none';
@@ -5688,6 +5970,25 @@ function submitListingForm() {
   if (!debts) { showToast('⚠ يرجى تعبئة حقل المديونيات (اكتب لا توجد إن لم يوجد شيء).'); return; }
   if (!ack) { showToast('⚠ يرجى الموافقة على إقرار الإفصاح عن المديونيات.'); return; }
   if (!/^05\d{8}$/.test(ophone.replace(/[\s-]/g, ''))) { showToast('⚠ رقم الجوال يجب أن يبدأ بـ 05 ويتكون من 10 أرقام'); return; }
+  // التحقق من قيم عددية صحيحة وإيجابية
+  const revNum   = parseFloat(rev);
+  const priceNum = parseFloat(price);
+  if (isNaN(revNum) || revNum < 0) { showToast('⚠ قيمة الإيراد الشهري غير صحيحة.'); return; }
+  if (isNaN(priceNum) || priceNum <= 0) { showToast('⚠ السعر المطلوب يجب أن يكون أكبر من صفر.'); return; }
+  // حد أقصى للمبلغ (مليار ريال) لمنع إدخال أرقام خيالية
+  if (priceNum > 1_000_000_000) { showToast('⚠ السعر المدخل مرتفع جداً. يرجى التحقق من القيمة.'); return; }
+  // تحقق من أسم المالك — لا يتجاوز 80 حرفاً
+  if (oname.length > 80) { showToast('⚠ اسم المالك طويل جداً.'); return; }
+  // منع حقن الاتصال — لا يحتوي الإعلان على روابط أو أرقام واضحة
+  const CONTACT_LEAK = /0\d[\s-]?\d{4}[\s-]?\d{4}|https?:\/\//i;
+  const assetsDesc = document.getElementById('sell-assets-desc')?.value || '';
+  if (CONTACT_LEAK.test(assetsDesc)) {
+    showToast('⛔ لا يُسمح بكتابة أرقام تواصل أو روابط في حقول الإعلان.'); return;
+  }
+  // منع تكرار الإرسال
+  if (window._listingSubmitting) return;
+  window._listingSubmitting = true;
+  setTimeout(() => { window._listingSubmitting = false; }, 5000);
   showToast('✅ تم استلام إعلانك! سيُراجع خلال 24-48 ساعة. ستتلقى إشعاراً عند النشر.');
 }
 /* LEGACY (kept for compatibility) */
@@ -7785,6 +8086,7 @@ function showPaStep(step) {
   document.querySelectorAll('#page-robot .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
 }
 
 function resetProjectAnalysis(goToPremium = false) {
@@ -9249,13 +9551,15 @@ function updatePointsDiscount(rawVal) {
 
 function proceedToPayment() {
   if (!fsState.type) { showToast('يرجى اختيار نوع الدراسة أولاً'); return; }
-  // تحديث ملخص الدفع
+  // السعر الصحيح بحسب النوع
+  const PLAN_PRICES = { simple: 99, detailed: 299 };
+  const planPrice = PLAN_PRICES[fsState.type] || 99;
   const planName  = fsState.type === 'simple' ? 'دراسة الجدوى المبسطة' : 'دراسة الجدوى المفصلة';
   const pn = document.getElementById('pay-plan-name');  if (pn) pn.textContent = planName;
-  const pp = document.getElementById('pay-plan-price'); if (pp) pp.textContent = '2,500 ريال';
+  const pp = document.getElementById('pay-plan-price'); if (pp) pp.textContent = planPrice.toLocaleString('ar-SA') + ' ريال';
   // تهيئة شريط النقاط — يُفعَّل فقط للخدمات الواردة في القائمة البيضاء
   const eligible = _PTS_ELIGIBLE_SERVICES.has(fsState.type);
-  _initCheckoutSlider(2500, eligible);
+  _initCheckoutSlider(planPrice, eligible);
   // الانتقال لخطوة الدفع
   showFsStep(1);
 }
@@ -9344,14 +9648,15 @@ function renderQGroup() {
   const group = FS_QUESTIONS[fsState.type][fsState.currentGroup];
   const container = document.getElementById('fs-questions-container');
   container.innerHTML = group.map(q => {
-    const val = (fsState.answers[q.id] || '').replace(/"/g,'&quot;');
+    const rawVal = fsState.answers[q.id] || '';
+    const val = escHtml(rawVal); // تعقيم كامل لمنع XSS
     if (q.type === 'select') {
-      const opts = q.options.map(o => `<option value="${o}"${val===o?' selected':''}>${o}</option>`).join('');
-      return `<div class="f-field"><label>${q.label}</label><select id="${q.id}"><option value="">اختر...</option>${opts}</select></div>`;
+      const opts = q.options.map(o => `<option value="${escHtml(o)}"${rawVal===o?' selected':''}>${escHtml(o)}</option>`).join('');
+      return `<div class="f-field"><label>${escHtml(q.label)}</label><select id="${q.id}"><option value="">اختر...</option>${opts}</select></div>`;
     } else if (q.type === 'textarea') {
-      return `<div class="f-field" style="grid-column:1/-1"><label>${q.label}</label><textarea id="${q.id}" placeholder="${q.placeholder||''}" rows="3" style="resize:vertical">${val}</textarea></div>`;
+      return `<div class="f-field" style="grid-column:1/-1"><label>${escHtml(q.label)}</label><textarea id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" rows="3" style="resize:vertical">${val}</textarea></div>`;
     } else {
-      return `<div class="f-field"><label>${q.label}</label><input type="${q.type}" id="${q.id}" placeholder="${q.placeholder||''}" value="${val}"/></div>`;
+      return `<div class="f-field"><label>${escHtml(q.label)}</label><input type="${q.type}" id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" value="${val}"/></div>`;
     }
   }).join('');
 
@@ -10459,6 +10764,7 @@ function showFsStep(step) {
   document.querySelectorAll('#page-analysis .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
 }
 
 function resetFeasibility() {
@@ -11795,16 +12101,23 @@ function invChipClick(text) {
 async function sendInvMsg() {
   const input = document.getElementById('inv-adv-input');
   if (!input) return;
-  const text = input.value.trim();
-  if (!text) return;
+  const rawText = input.value.trim();
+  if (!rawText) return;
+  // حد أقصى للرسالة 1500 حرف
+  const text = rawText.substring(0, 1500);
   input.value = '';
   _invAddUserMsg(text);
   _invSetChips([]);
+
+  // منع الإرسال المتكرر
+  if (window._invSending) return;
+  window._invSending = true;
 
   const stage = _getInvStage();
   const formCtx = _getInvFormContext();
   let system = `أنت مستشار جنان الاستثماري — خبير في سوق بيع وشراء المشاريع التجارية السعودية.\nمهمتك مساعدة المستخدم في كل مرحلة من مراحل سوق المشاريع:\n- تقييم المشاريع المعروضة للبيع وتحليل جدوى الشراء\n- اقتراح سعر البيع المناسب بناءً على المضاعف (مضاعف القيمة للأرباح)\n- تحليل المؤشرات المالية (صافي الربح، ROI، نقطة التعادل، مدة الاسترداد)\n- الإجابة على أسئلة المشترين والبائعين بشكل موضوعي\n- مراجعة العقود والوثائق وتحديد البنود الخطيرة\nالمرحلة الحالية: ${stage === 'browse' ? 'تصفح وشراء المشاريع' : stage === 'sell' ? 'بيع مشروع قائم' : 'الصفحة الرئيسية لسوق المشاريع'}\nردودك بالعربية، موجزة ومفيدة، بأسلوب استشاري احترافي. استخدم الأرقام والنسب المئوية عند التحليل.`;
   if (formCtx) system += `\n\n${formCtx}`;
+  // حد أقصى للملف المرفوع عند إرساله للـ AI
   if (_invFileText) system += `\n\nمحتوى الملف المرفوع (${_escHtmlInv(_invFileLabel)}):\n${_invFileText.slice(0, 3500)}`;
 
   // loader
@@ -11816,27 +12129,36 @@ async function sendInvMsg() {
   if (msgs) { msgs.appendChild(loader); msgs.scrollTop = msgs.scrollHeight; }
 
   const history = _invMsgs.slice(-10).map(m => ({role: m.role, content: m.content}));
-  // inject system as first message for context
   const payload = { messages: [{role:'user', content: `[سياق النظام]: ${system}\n\n[سؤال المستخدم]: ${text}`}].concat(history.slice(-6)) };
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
     const resp = await fetch('/api/chat', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+    clearTimeout(timeout);
     document.getElementById('inv-adv-loader')?.remove();
     if (resp.ok) {
       const data = await resp.json();
       const reply = data.reply || data.message || 'لم أتمكن من الحصول على إجابة، حاول مجدداً.';
-      _invAddBotMsg(reply);
+      _invAddBotMsg(reply.substring(0, 3000)); // حد أقصى للرد
       _invAfterReplyChips(stage);
     } else {
       _invAddBotMsg('⚠️ عذراً، حدث خطأ في الاتصال بالخادم. تأكد من تشغيل الخادم وحاول مجدداً.');
     }
   } catch(e) {
     document.getElementById('inv-adv-loader')?.remove();
-    _invAddBotMsg('⚠️ تعذّر الاتصال بالخادم. تأكد من تشغيل الخادم أولاً.');
+    if (e.name === 'AbortError') {
+      _invAddBotMsg('⚠️ انتهت مهلة الاتصال. يرجى المحاولة مجدداً.');
+    } else {
+      _invAddBotMsg('⚠️ تعذّر الاتصال بالخادم. تأكد من تشغيل الخادم أولاً.');
+    }
+  } finally {
+    window._invSending = false;
   }
 }
 
@@ -11867,33 +12189,64 @@ function analyzeInvestorSellForm() {
 async function handleInvFile(input) {
   const file = input.files[0];
   if (!file) return;
-  _invFileLabel = file.name;
-  if (!_invAdvisorOpen) toggleInvAdvisor();
-  _invAddBotMsg(`📎 تم رفع: **${file.name}**\nجاري معالجة الملف...`);
 
-  if (file.name.toLowerCase().endsWith('.txt')) {
+  // ─── التحقق من نوع الملف المسموح به ───
+  const ALLOWED_EXTS = ['pdf','docx','doc','xlsx','xls','txt','csv'];
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!ALLOWED_EXTS.includes(ext)) {
+    showToast('⚠ صيغة الملف غير مدعومة. المسموح: PDF, DOCX, XLSX, TXT, CSV');
+    input.value = '';
+    return;
+  }
+
+  // ─── التحقق من حجم الملف (حد أقصى 8 ميغابايت) ───
+  const MAX_SIZE_MB = 8;
+  if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+    showToast(`⚠ حجم الملف تجاوز ${MAX_SIZE_MB} ميغابايت. يرجى ضغط الملف أو استخدام ملف أصغر.`);
+    input.value = '';
+    return;
+  }
+
+  _invFileLabel = file.name.substring(0, 100); // حد أقصى لاسم الملف
+  if (!_invAdvisorOpen) toggleInvAdvisor();
+  _invAddBotMsg(`📎 تم رفع: **${_invFileLabel}**\nجاري معالجة الملف...`);
+
+  if (ext === 'txt' || ext === 'csv') {
     const reader = new FileReader();
     reader.onload = e => {
-      _invFileText = e.target.result;
-      _invAddBotMsg(`✅ تم قراءة **${file.name}** (${_invFileText.length} حرف). اسألني عنه!`);
+      // حد أقصى للنص المقروء (50000 حرف)
+      _invFileText = (e.target.result || '').substring(0, 50000);
+      _invAddBotMsg(`✅ تم قراءة **${_invFileLabel}** (${_invFileText.length.toLocaleString()} حرف). اسألني عنه!`);
       _invSetChips(['لخّص هذا الملف', 'ابحث عن البنود الخطيرة', 'قيّم الأرقام المالية', 'هل هذا العقد آمن؟']);
     };
+    reader.onerror = () => { _invAddBotMsg('⚠️ تعذّر قراءة الملف. تأكد من أن الملف غير تالف.'); };
     reader.readAsText(file, 'utf-8');
   } else {
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const resp = await fetch('/api/extract-text', {method:'POST', body: formData});
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      const resp = await fetch('/api/extract-text', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
       if (resp.ok) {
         const data = await resp.json();
-        _invFileText = data.text || '';
-        _invAddBotMsg(`✅ تم استخراج النص من **${file.name}** (${_invFileText.length} حرف). يمكنك الآن سؤالي عنه.`);
+        _invFileText = (data.text || '').substring(0, 50000);
+        _invAddBotMsg(`✅ تم استخراج النص من **${_invFileLabel}** (${_invFileText.length.toLocaleString()} حرف). يمكنك الآن سؤالي عنه.`);
         _invSetChips(['لخّص هذا الملف', 'ابحث عن البنود الخطيرة', 'قيّم الأرقام المالية', 'هل هذا العقد آمن؟']);
       } else {
         _invAddBotMsg('⚠️ تعذّر استخراج النص. جرّب رفع ملف نصي (.txt) أو نسخ المحتوى يدوياً.');
       }
-    } catch {
-      _invAddBotMsg('⚠️ خطأ في الاتصال أثناء معالجة الملف.');
+    } catch(e) {
+      if (e.name === 'AbortError') {
+        _invAddBotMsg('⚠️ انتهت مهلة معالجة الملف. جرّب ملفاً أصغر حجماً.');
+      } else {
+        _invAddBotMsg('⚠️ خطأ في الاتصال أثناء معالجة الملف.');
+      }
     }
   }
   input.value = '';
