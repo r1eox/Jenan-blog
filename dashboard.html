@@ -950,8 +950,23 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .form-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:2rem}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem}
 #page-settings .form-grid{grid-template-columns:1fr 1fr}
-.f-field label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem}
+.f-field label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem;color:#e8eaf6}
 .pa-hint{margin-top:.45rem;padding:.42rem .75rem;background:rgba(78,115,194,.1);border:1px solid rgba(78,115,194,.22);border-radius:8px;font-size:.77rem;color:rgba(255,255,255,.72);line-height:1.5}
+/* PA Wizard dark-theme overrides */
+#pa-step-1 .fs-wizard-header{background:#111828;border-color:rgba(78,115,194,.2)}
+#pa-step-1 .fs-wizard-title{color:#e8eaf6;font-size:1rem;font-weight:800}
+#pa-step-1 .form-card{background:#111828;border-color:rgba(78,115,194,.2);margin-top:.75rem}
+#pa-step-1 .form-grid{color:#e8eaf6}
+#pa-step-1 .f-field input,
+#pa-step-1 .f-field select,
+#pa-step-1 .f-field textarea{background:#0B1120;color:#e8eaf6;border:1.5px solid rgba(78,115,194,.3);border-radius:10px;padding:.6rem .9rem;font-family:'Tajawal',sans-serif;font-size:.9rem;width:100%}
+#pa-step-1 .f-field input::placeholder,
+#pa-step-1 .f-field textarea::placeholder{color:rgba(255,255,255,.3)}
+#pa-step-1 .f-field input:focus,
+#pa-step-1 .f-field select:focus,
+#pa-step-1 .f-field textarea:focus{outline:none;border-color:#4E73C2;box-shadow:0 0 0 3px rgba(78,115,194,.15)}
+#pa-step-1 .f-field select option{background:#0B1120;color:#e8eaf6}
+#pa-step-1 .fs-progress-label{color:rgba(255,255,255,.5);font-size:.75rem;display:flex;justify-content:space-between;margin-top:.4rem}
 .f-field input,.f-field select,.f-field textarea{
   width:100%;padding:.78rem 1rem;border:1.5px solid var(--border);
   border-radius:9px;font-size:.92rem;background:var(--bg);color:var(--text);
@@ -1810,6 +1825,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 }
 #page-robot.active,
 #page-analysis.active{
+  position:relative; /* FIX: positioning context for absolute steps */
   height:100%;
   overflow:hidden;
   display:flex !important;
@@ -1826,7 +1842,17 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 }
 /* إخفاء الصفحة الثانية والثالثة من الـ flow لعدم تأثيرهم على الارتفاع */
 #page-robot #pa-step-1,
-#page-robot #pa-step-2{ position:absolute;top:0;left:0;right:0 }
+#page-robot #pa-step-2{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;          /* FIX: fill full height of page-robot */
+  overflow-y:auto;   /* FIX: allow scrolling inside the step */
+  z-index:5;         /* FIX: ensure on top of step-0 content */
+  background:#0B1120; /* FIX: always dark background */
+  padding:.75rem;
+}
 
 /* إخفاء Hero بالكامل لتوفير المساحة */
 #pa-step-0 .pa-hero{
@@ -7304,7 +7330,7 @@ function paNavNext() {
       btn.disabled = false; if(prevBtn) prevBtn.disabled = false;
       paState.currentGroup++;
       renderPaStepsBar(); renderPaGroup();
-      window.scrollTo({ top: 0, behavior:'smooth' });
+      const s1 = document.getElementById('pa-step-1'); if(s1) s1.scrollTop = 0;
     }, 1800);
   } else {
     generateProjectAnalysisReport();
@@ -7319,7 +7345,7 @@ function paNavPrev() {
     paState.currentGroup--;
     renderPaStepsBar();
     renderPaGroup();
-    window.scrollTo({ top: 0, behavior:'smooth' });
+    const s1b = document.getElementById('pa-step-1'); if(s1b) s1b.scrollTop = 0;
   }
 }
 
@@ -7358,7 +7384,7 @@ function generateProjectAnalysisReport() {
     const pdfBtn = document.getElementById('pa-pdf-btn');
     if (pdfBtn) pdfBtn.style.display = 'inline-flex';
     showPaStep(2);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const s2 = document.getElementById('pa-step-2'); if(s2) s2.scrollTop = 0;
     const el = document.getElementById('sc-chats');
     if (el) el.textContent = parseInt(el.textContent||0)+1;
     setTimeout(() => {
@@ -7370,56 +7396,62 @@ function generateProjectAnalysisReport() {
 }
 
 function _showPaPaywall() {
-  // Build blurred report preview + paywall overlay
-  const blurredReport = buildProjectAnalysisReport();
   const a = paState.answers;
   const projectName = escHtml(a.pa_name) || 'مشروعك';
-  const revenue  = parseFloat(a.pa_revenue) || 0;
+  const revenue    = parseFloat(a.pa_revenue) || 0;
   const totalCosts = (parseFloat(a.pa_rent)||0)+(parseFloat(a.pa_salaries)||0)+(parseFloat(a.pa_utilities)||0)+(parseFloat(a.pa_fixed_other)||0)+(parseFloat(a.pa_cogs)||0)+(parseFloat(a.pa_marketing)||0)+(parseFloat(a.pa_var_other)||0);
-  const netProfit = revenue - totalCosts;
-  const netMargin = revenue > 0 ? (netProfit/revenue*100).toFixed(1) : '—';
-  document.getElementById('pa-report-container').innerHTML = `
-    <div style="position:relative;overflow:hidden;border-radius:16px">
-      <!-- Blurred report -->
-      <div style="filter:blur(6px);pointer-events:none;user-select:none;opacity:.6">${blurredReport}</div>
-      <!-- Paywall overlay -->
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(11,17,32,0) 0%,rgba(11,17,32,.92) 30%,rgba(11,17,32,.98) 100%);z-index:10;padding:2rem">
-        <div style="text-align:center;max-width:520px">
-          <!-- Engine complete badge -->
-          <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:#4ade80;border-radius:20px;padding:.35rem 1rem;font-size:.78rem;font-weight:800;margin-bottom:1.2rem">
-            <i class="fa-solid fa-check-circle"></i> اكتمل تحليل محرك البيانات — 7 مراحل
-          </div>
-          <!-- Teaser numbers -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.4rem">
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.25);border-radius:12px;padding:.85rem">
-              <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:.25rem">الهامش الصافي المحسوب</div>
-              <div style="font-size:1.5rem;font-weight:900;color:${netProfit>=0?'#4ade80':'#f87171'}">${netMargin}%</div>
-            </div>
-            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.25);border-radius:12px;padding:.85rem">
-              <div style="font-size:.7rem;color:rgba(255,255,255,.5);margin-bottom:.25rem">صافي الربح الشهري</div>
-              <div style="font-size:1.5rem;font-weight:900;color:${netProfit>=0?'#4ade80':'#f87171'}">${netProfit.toLocaleString('ar-SA')} ر</div>
-            </div>
-          </div>
-          <h3 style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:.5rem">تقريرك المالي الاحترافي جاهز لـ ${projectName}</h3>
-          <p style="font-size:.84rem;color:rgba(255,255,255,.65);margin-bottom:1.5rem;line-height:1.6">يتضمن التقرير الكامل: نقطة التعادل · توقعات 3 سنوات · تحليل المنافسة · الأدوات الحكومية · ${paState.tier==='premium'?'تقييم AI معمّق':'مؤشر الربحية الكامل'}</p>
-          <!-- Main CTA -->
-          <button onclick="_paUnlockReport()" style="width:100%;padding:.9rem 1.5rem;background:linear-gradient(135deg,#4E73C2,#7B9ED4);border:none;border-radius:14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:.98rem;font-weight:900;cursor:pointer;margin-bottom:.75rem;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 8px 28px rgba(78,115,194,.4)">
-            <i class="fa-solid fa-file-invoice"></i> لإصدار التقرير المالي الاحترافي الكامل (PDF) بشعار جنان بيز — ادفع الآن
-          </button>
-          <!-- White-label upsell -->
-          <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:.7rem 1rem;margin-bottom:.9rem;font-size:.78rem;color:rgba(255,255,255,.7);text-align:right">
-            <i class="fa-solid fa-star" style="color:#fcd34d;margin-left:.35rem"></i>
-            هذا التقرير يصدر بشعار جنان بيز. لإزالة العلامة المائية وإضافة شعار منشأتك الخاصة، تتوفر خدمة <strong style="color:#fcd34d">White-Label بـ 2,000 ريال</strong>
-          </div>
-          <!-- Free preview fallback -->
-          <button onclick="_paShowFreePreview()" style="background:none;border:none;color:rgba(255,255,255,.45);font-family:'Tajawal',sans-serif;font-size:.8rem;cursor:pointer;text-decoration:underline">
-            عرض ملخص مجاني مبسّط فقط
-          </button>
+  const netProfit  = revenue - totalCosts;
+  const netMargin  = revenue > 0 ? (netProfit/revenue*100).toFixed(1) : '—';
+  const profitColor = netProfit >= 0 ? '#4ade80' : '#f87171';
+
+  // ── Paywall CTA block (always immediately visible, NO inset overlay) ──
+  const paywallHTML = `
+    <div style="background:linear-gradient(160deg,#091630 0%,#0d1f42 60%,#091630 100%);border:1px solid rgba(78,115,194,.3);border-radius:18px;padding:2rem 1.75rem;text-align:center;margin-bottom:1rem">
+      <!-- Completion badge -->
+      <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:#4ade80;border-radius:20px;padding:.35rem 1rem;font-size:.78rem;font-weight:800;margin-bottom:1.2rem">
+        <i class="fa-solid fa-check-circle"></i> اكتمل تحليل محرك البيانات — 7 مراحل بنجاح
+      </div>
+      <!-- KPI teasers -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.2);border-radius:12px;padding:.85rem">
+          <div style="font-size:.68rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">الهامش الصافي المحسوب</div>
+          <div style="font-size:1.6rem;font-weight:900;color:${profitColor}">${netMargin}%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.2);border-radius:12px;padding:.85rem">
+          <div style="font-size:.68rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">صافي الربح الشهري</div>
+          <div style="font-size:1.6rem;font-weight:900;color:${profitColor}">${netProfit.toLocaleString('ar-SA')} ر</div>
         </div>
       </div>
+      <h3 style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:.5rem">تقريرك المالي الاحترافي جاهز لـ ${projectName}</h3>
+      <p style="font-size:.83rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;line-height:1.65">يتضمن التقرير الكامل: نقطة التعادل · توقعات 3 سنوات · تحليل المنافسة · الأدوات الحكومية · مؤشر الربحية الكامل</p>
+      <!-- ─── Main CTA button ─── -->
+      <button onclick="_paUnlockReport()" style="width:100%;padding:.95rem 1.5rem;background:linear-gradient(135deg,#4E73C2,#7B9ED4);border:none;border-radius:14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:.98rem;font-weight:900;cursor:pointer;margin-bottom:.85rem;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 8px 28px rgba(78,115,194,.4)">
+        <i class="fa-solid fa-file-invoice"></i> لإصدار التقرير المالي الاحترافي الكامل (PDF) بشعار جنان بيز — ادفع الآن
+      </button>
+      <!-- White-label upsell -->
+      <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:.7rem 1rem;margin-bottom:.9rem;font-size:.78rem;color:rgba(255,255,255,.65);text-align:right">
+        <i class="fa-solid fa-star" style="color:#fcd34d;margin-left:.35rem"></i>
+        هذا التقرير يصدر بشعار جنان بيز. لإزالة العلامة المائية وإضافة شعار منشأتك الخاصة، تتوفر خدمة <strong style="color:#fcd34d">White-Label بـ 2,000 ريال</strong>
+      </div>
+      <!-- Free preview link -->
+      <button onclick="_paShowFreePreview()" style="background:none;border:none;color:rgba(255,255,255,.4);font-family:'Tajawal',sans-serif;font-size:.8rem;cursor:pointer;text-decoration:underline;padding:0">
+        عرض ملخص مجاني مبسّط فقط
+      </button>
+    </div>
+    <!-- Blurred report excerpt (decorative, below CTA) -->
+    <div style="position:relative;overflow:hidden;border-radius:12px;max-height:220px;pointer-events:none;user-select:none">
+      <div style="filter:blur(5px);opacity:.4">${buildProjectAnalysisReport()}</div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,32,.1) 0%,rgba(11,17,32,.95) 70%)"></div>
+      <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:.75rem;color:rgba(255,255,255,.4);font-weight:700">
+        <i class="fa-solid fa-lock" style="margin-left:.3rem"></i> ادفع لفتح التقرير الكامل
+      </div>
     </div>`;
+
+  document.getElementById('pa-report-container').innerHTML = paywallHTML;
   showPaStep(2);
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Scroll pa-step-2 to top
+  const step2 = document.getElementById('pa-step-2');
+  if (step2) step2.scrollTop = 0;
 }
 
 function _paUnlockReport() {
@@ -7433,9 +7465,9 @@ function _paUnlockReport() {
 function _paShowFreePreview() {
   // Show the full report without paywall (free basic version)
   document.getElementById('pa-report-container').innerHTML = buildProjectAnalysisReport();
-  const pdfBtn = document.getElementById('pa-pdf-btn');
-  if (pdfBtn) pdfBtn.style.display = 'inline-flex';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const pdfBtn2 = document.getElementById('pa-pdf-btn');
+  if (pdfBtn2) pdfBtn2.style.display = 'inline-flex';
+  const s2b = document.getElementById('pa-step-2'); if(s2b) s2b.scrollTop = 0;
   const el = document.getElementById('sc-chats');
   if (el) el.textContent = parseInt(el.textContent||0)+1;
 }
@@ -8324,6 +8356,9 @@ function showPaStep(step) {
   document.querySelectorAll('#page-robot .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  // Scroll the active step to top (handles overflow:auto inside absolute step)
+  const activeStep = document.querySelector('#page-robot .fs-step.active');
+  if (activeStep) activeStep.scrollTop = 0;
   if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
   if(typeof updatePaProgressBadge === 'function') updatePaProgressBadge();
 }
