@@ -1949,7 +1949,10 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 /* إخفاء الخطوات الأخرى من الـ flow */
 #page-analysis #fs-step-1,
 #page-analysis #fs-step-2,
-#page-analysis #fs-step-3{position:absolute;top:0;left:0;right:0}
+#page-analysis #fs-step-3{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  overflow-y:auto;z-index:5;background:#0B1120;padding:.75rem;
+}
 
 /* إعادة إظهار hero دراسة الجدوى كشريط مضغوط احترافي */
 #fs-step-0 > div:first-child{
