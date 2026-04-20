@@ -3428,6 +3428,13 @@ window.addEventListener('load', _syncGatewayViewportLock);
           <i class="fa-solid fa-shield-halved" style="color:var(--green);margin-left:.3rem"></i>
           دفع آمن ومشفر · يُعاد المبلغ كاملاً في حال وجود أي مشكلة
         </p>
+        <!-- زر التالي — يظهر بعد اختيار الدراسة -->
+        <div style="margin-top:.85rem;text-align:center;flex-shrink:0">
+          <button id="fs-next-0" onclick="proceedToPayment()" disabled
+            style="padding:.7rem 2.5rem;background:linear-gradient(135deg,#4E73C2,#7B9ED4);border:none;border-radius:12px;color:#fff;font-family:'Tajawal',sans-serif;font-size:.95rem;font-weight:900;cursor:not-allowed;opacity:.4;transition:opacity .25s,box-shadow .25s;display:inline-flex;align-items:center;gap:.55rem">
+            المتابعة للدفع <i class="fa-solid fa-arrow-left"></i>
+          </button>
+        </div>
       </div>
 
       <!-- ══ STEP 1: الدفع ══ -->
@@ -9725,9 +9732,15 @@ function selectStudyType(type) {
   fsState.type = type;
   document.getElementById('sc-simple').classList.toggle('selected', type === 'simple');
   document.getElementById('sc-detailed').classList.toggle('selected', type === 'detailed');
-  const btn = document.getElementById('fs-next-btn');
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
-  // تحديث شريط التقدم مباشرة
+  // Enable the step-0 next button
+  const btn0 = document.getElementById('fs-next-0');
+  if (btn0) {
+    btn0.disabled = false;
+    btn0.style.opacity = '1';
+    btn0.style.cursor = 'pointer';
+    btn0.style.boxShadow = '0 6px 20px rgba(78,115,194,.35)';
+  }
+  // Also update progress badge
   var lbl = document.getElementById('fs-prog-label');
   var p   = document.getElementById('fs-prog-pct');
   var b   = document.getElementById('fs-prog-bar');
@@ -11113,7 +11126,7 @@ function resetFeasibility() {
   document.getElementById('sc-simple').classList.remove('selected');
   document.getElementById('sc-detailed').classList.remove('selected');
   const btn = document.getElementById('fs-next-0');
-  btn.disabled = true; btn.style.opacity = '.45'; btn.style.cursor = 'not-allowed';
+  if (btn) { btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.style.boxShadow = 'none'; }
   // مسح حقول بطاقة الدفع
   ['pay-card-num','pay-card-exp','pay-card-cvv','pay-card-name'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
