@@ -10053,7 +10053,7 @@ function generateFeasibilityStudy() {
               <li>التقرير النهائي يُرفع لحسابك فور جاهزيته</li>
             </ul>
           </div>
-          <button onclick="showFsStep(0);fsState={type:null,payMethod:'card',currentGroup:0,answers:{}}" style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 2rem;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer">
+          <button onclick="resetFeasibility()" style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 2rem;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer">
             <i class="fa-solid fa-plus" style="margin-left:.4rem"></i> تحليل مشروع آخر
           </button>
         </div>`;
@@ -11120,6 +11120,8 @@ function showFsStep(step) {
   document.querySelectorAll('#page-analysis .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  const activeStep = document.querySelector('#page-analysis .fs-step.active');
+  if (activeStep) activeStep.scrollTop = 0;
   if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
   if(typeof updateFsProgressBadge === 'function') updateFsProgressBadge();
 }
