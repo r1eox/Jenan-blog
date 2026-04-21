@@ -7054,6 +7054,7 @@ const PA_QUESTIONS = [
       { id:'pa_name',   label:'اسم المشروع',            type:'text',   placeholder:'مثال: مطعم شاورما الأصيل', required:true },
       { id:'pa_type',   label:'نوع النشاط التجاري',     type:'select', options:['تجارة تجزئة','مطعم / مقهى','خدمات مهنية','تقنية / تطبيقات','تصنيع / إنتاج','عقارات','تجارة إلكترونية','تعليم وتدريب','صحة وجمال','أخرى'], required:true },
       { id:'pa_city',   label:'المدينة والمنطقة',       type:'text',   placeholder:'مثال: الرياض — حي النزهة', required:true },
+      { id:'pa_capital', label:'رأس المال الإجمالي المستثمر (ريال)', type:'number', placeholder:'مثال: 200000 — يشمل التجهيزات والإيجار الأول والاحتياطي النقدي', required:false },
       { id:'pa_desc',   label:'وصف موجز للمشروع وفكرته', type:'textarea', placeholder:'مثال: مطعم متخصص في الشاورما السورية في حي النزهة، يستهدف موظفي الشركات والأسر في وقت الغداء والعشاء', required:false },
     ]
   },
@@ -7573,6 +7574,11 @@ function buildProjectAnalysisReport() {
                         ? totalFixed / (1 - (cogs+varOth)/revenue)
                         : totalFixed;
 
+  // ── رأس المال والعائد على الاستثمار ──
+  const capital        = parseFloat(a.pa_capital) || 0;
+  const roi            = capital > 0 ? (netProfit * 12 / capital * 100) : 0;
+  const paybackMonths  = netProfit > 0 && capital > 0 ? Math.ceil(capital / netProfit) : 0;
+
   // تحديد مستوى الربحية
   // الحكم مقارنةً بهدف القطاع (بيانات السوق السعودي 2026)
   const goodM  = bench.netTarget * 100;       // الهامش المستهدف للقطاع
@@ -7670,7 +7676,29 @@ function buildProjectAnalysisReport() {
   const paY3Net    = paY3Rev - paY3Total;
   const paY2Margin = paY2Rev > 0 ? (paY2Net/paY2Rev*100).toFixed(1) : '0';
   const paY3Margin = paY3Rev > 0 ? (paY3Net/paY3Rev*100).toFixed(1) : '0';
-  const paY3GrowthPct = ((Math.pow(1 + paGrowthRate, 2) - 1) * 100).toFixed(0); // للعرض
+  const paY3GrowthPct = ((Math.pow(1 + paGrowthRate, 2) - 1) * 100).toFixed(0);
+
+  // ── NPV (معدل خصم 10% — المرجع السعودي للمستثمرين) ──
+  const discRate   = 0.10;
+  const npv        = capital > 0 ? Math.round(
+    -capital
+    + (netProfit * 12) / (1 + discRate)
+    + (paY2Net   * 12) / Math.pow(1 + discRate, 2)
+    + (paY3Net   * 12) / Math.pow(1 + discRate, 3)
+  ) : 0;
+
+  // ── تحليل السيناريوهات الثلاثة ──
+  const scenPessPA = {
+    label:'متشائم −20%', color:'#ef4444',
+    rev: Math.round(revenue * 0.80),
+    net: Math.round(revenue * 0.80 - cogs * 0.80 - marketing * 0.80 - varOth * 0.80 - totalFixed),
+  };
+  const scenBasePA = { label:'أساسي',       color:'#fbbf24', rev: revenue,                net: netProfit };
+  const scenOptPA  = {
+    label:'متفائل +20%', color:'#4ade80',
+    rev: Math.round(revenue * 1.20),
+    net: Math.round(revenue * 1.20 - cogs * 1.20 - marketing * 1.20 - varOth * 1.20 - totalFixed),
+  };
 
 
   const neededRevForGoodMargin = totalFixed / bench.netTarget; // إيراد مطلوب لهامش القطاع المستهدف 2026
@@ -7869,6 +7897,22 @@ function buildProjectAnalysisReport() {
             <div class="val" style="color:#c4b5fd">${Math.round(breakEven).toLocaleString('ar-SA')}</div>
             <div class="lbl" style="color:rgba(255,255,255,.6)">نقطة التعادل الشهرية</div>
           </div>
+          ${capital > 0 ? `
+          <div style="width:1px;height:40px;background:rgba(255,255,255,.1);flex-shrink:0;align-self:center"></div>
+          <div class="sr-meta-item">
+            <div class="val" style="color:${roi>=25?'#4ade80':roi>=12?'#fbbf24':'#f87171'}">${roi.toFixed(1)}%</div>
+            <div class="lbl" style="color:rgba(255,255,255,.6)">عائد الاستثمار ROI</div>
+          </div>
+          <div style="width:1px;height:40px;background:rgba(255,255,255,.1);flex-shrink:0;align-self:center"></div>
+          <div class="sr-meta-item">
+            <div class="val" style="color:#fde68a">${paybackMonths > 0 ? paybackMonths + ' شهر' : '∞'}</div>
+            <div class="lbl" style="color:rgba(255,255,255,.6)">استرداد رأس المال</div>
+          </div>
+          <div style="width:1px;height:40px;background:rgba(255,255,255,.1);flex-shrink:0;align-self:center"></div>
+          <div class="sr-meta-item">
+            <div class="val" style="color:${npv>=0?'#4ade80':'#f87171'}">${npv>=0?'+':''}${Math.round(npv).toLocaleString('ar-SA')}</div>
+            <div class="lbl" style="color:rgba(255,255,255,.6)">صافي القيمة الحالية NPV</div>
+          </div>` : ''}
         </div>
       </div>
     </div>
@@ -7955,6 +7999,30 @@ function buildProjectAnalysisReport() {
         </tr>
       </table>
       <p style="font-size:.75rem;color:var(--muted);margin-top:.6rem"><i class="fa-solid fa-circle-info" style="margin-left:.3rem"></i>معدل النمو محسوب بناءً على مستوى المنافسة وطبيعة القطاع — الأرقام تقديرية محافظة</p>
+    </div>
+
+    <!-- تحليل السيناريوهات الثلاثة -->
+    <div class="sr-section">
+      <h3><i class="fa-solid fa-sliders"></i>تحليل السيناريوهات <span style="font-size:.72rem;color:var(--muted);font-weight:400">(متشائم / أساسي / متفائل)</span></h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem">
+        ${[scenPessPA, scenBasePA, scenOptPA].map(sc => {
+          const scMargin = sc.rev > 0 ? (sc.net/sc.rev*100).toFixed(1) : '0';
+          const scROI    = capital > 0 && sc.net > 0 ? (sc.net*12/capital*100).toFixed(1) : '—';
+          const scPB     = sc.net > 0 && capital > 0 ? Math.ceil(capital/sc.net) + ' شهر' : '∞';
+          return `<div style="background:var(--bg2);border:1.5px solid ${sc.color}33;border-radius:14px;padding:1.1rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;right:0;left:0;height:3px;background:${sc.color};border-radius:14px 14px 0 0"></div>
+            <div style="font-size:.78rem;font-weight:800;color:${sc.color};margin-bottom:.75rem">${sc.label}</div>
+            <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">الإيرادات/شهر</span><strong>${sc.rev.toLocaleString('ar-SA')} ر</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">صافي الربح/شهر</span><strong style="color:${sc.net>=0?sc.color:'#ef4444'}">${sc.net>=0?'+':''}${sc.net.toLocaleString('ar-SA')} ر</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">هامش الربح</span><strong>${scMargin}%</strong></div>
+              ${capital > 0 ? `<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">ROI سنوي</span><strong>${scROI}${scROI!=='—'?'%':''}</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">استرداد رأس المال</span><strong>${scPB}</strong></div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${capital > 0 ? `<div style="margin-top:1rem;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:.85rem 1rem;font-size:.82rem;color:var(--muted)"><i class="fa-solid fa-info-circle" style="color:#818cf8;margin-left:.4rem"></i><strong style="color:var(--text)">صافي القيمة الحالية (NPV) بمعدل خصم 10%:</strong> <span style="font-size:.95rem;font-weight:800;color:${npv>=0?'#4ade80':'#f87171'}">${npv>=0?'+':''}${Math.round(npv).toLocaleString('ar-SA')} ريال</span> — ${npv>0?'المشروع يحقق قيمة موجبة للمستثمر على 3 سنوات':'تكاليف الفرصة تفوق العوائد المتوقعة — راجع الهيكل المالي'}</div>` : ''}
     </div>
 
     <!-- توزيع التكاليف -->
@@ -10007,61 +10075,15 @@ function generateFeasibilityStudy() {
     btn.disabled = false;
 
     if (fsState.type === 'detailed') {
-      // ═══ بوابة قيد المراجعة البشرية — Pro ═══
-      const a = fsState.answers;
-      const projName = a.fd_name || 'مشروعك';
-      document.getElementById('fs-report-container').innerHTML = `
-        <div style="text-align:center;padding:3rem 1.5rem">
-          <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#78350f,#d97706);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;box-shadow:0 8px 24px rgba(217,119,6,.35)">
-            <i class="fa-solid fa-user-clock" style="font-size:2rem;color:#fff"></i>
-          </div>
-          <h2 style="font-size:1.5rem;font-weight:900;margin:0 0 .75rem">تم استلام بياناتك بنجاح ✓</h2>
-          <p style="font-size:.92rem;color:var(--muted);line-height:1.9;max-width:480px;margin:0 auto 2rem">
-            ملف <strong style="color:var(--text)">${projName}</strong> الآن قيد المراجعة والتدقيق المهني
-            بواسطة فريق المراجعة المتخصص.<br>
-            سنخطرك فور جاهزية التقرير النهائي للتحميل.
-          </p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;max-width:560px;margin:0 auto 2rem;text-align:right">
-            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.25rem">
-              <div style="font-size:1.5rem;font-weight:900;color:#f59e0b;margin-bottom:.3rem">24-48</div>
-              <div style="font-size:.78rem;color:var(--muted)">ساعة للتسليم المتوقع</div>
-            </div>
-            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.25rem">
-              <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.35rem">
-                <i class="fa-solid fa-user-tie" style="color:#f59e0b;font-size:1.1rem"></i>
-                <div style="font-size:.82rem;font-weight:800">مراجعة دقيقة</div>
-              </div>
-              <div style="font-size:.72rem;color:var(--muted)">يراجع تقريرك ويضيف لمسته الواقعية</div>
-            </div>
-            <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.25rem">
-              <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.35rem">
-                <i class="fa-solid fa-certificate" style="color:#f59e0b;font-size:1.1rem"></i>
-                <div style="font-size:.82rem;font-weight:800">تقرير بمراجعة دقيقة</div>
-              </div>
-              <div style="font-size:.72rem;color:var(--muted)">معايير مهنية عالية وتدقيق متخصص</div>
-            </div>
-          </div>
-          <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:1.25rem;max-width:480px;margin:0 auto;text-align:right">
-            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem">
-              <i class="fa-solid fa-envelope" style="color:#f59e0b"></i>
-              <strong style="font-size:.88rem">ما يحدث الآن:</strong>
-            </div>
-            <ul style="padding-right:1.2rem;margin:0;font-size:.82rem;color:var(--muted);line-height:2">
-              <li>تم حفظ بياناتك بشكل آمن في النظام</li>
-              <li>تم إشعار الفريق المتخصص لمراجعة ملفك</li>
-              <li>ستصلك رسالة تأكيد على بريدك أو جوالك</li>
-              <li>التقرير النهائي يُرفع لحسابك فور جاهزيته</li>
-            </ul>
-          </div>
-          <button onclick="resetFeasibility()" style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 2rem;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer">
-            <i class="fa-solid fa-plus" style="margin-left:.4rem"></i> تحليل مشروع آخر
-          </button>
-        </div>`;
+      // ═══ دراسة مفصلة — التقرير الفوري بالذكاء الاصطناعي ═══
+      const html = buildDetailedReport();
+      document.getElementById('fs-report-container').innerHTML = html;
       showFsStep(3);
       window.scrollTo({ top:0, behavior:'smooth' });
-      // حفظ في السجل
       const a2 = fsState.answers;
-      saveReport(a2.fd_name || 'مشروع جديد', a2.fd_sector || '', 'pending', 0);
+      saveReport(a2.fd_name || 'مشروع جديد', a2.fd_sector || '', 'yes', 85);
+      const el = document.getElementById('sc-reports');
+      if (el) el.textContent = parseInt(el.textContent||0)+1;
       return;
     }
 
@@ -10317,12 +10339,33 @@ function buildSimpleReport() {
   const y2Rev  = Math.round(revenue * (1 + growthRate));
   const y2Cogs = revenue > 0 ? Math.round(cogs * y2Rev / revenue) : 0;
   const y2Net  = y2Rev - y2Cogs - fixed;
-  const y3Rev  = Math.round(revenue * (1 + growthRate * 2.6));
+  const y3Rev  = Math.round(revenue * Math.pow(1 + growthRate, 2));
   const y3Cogs = revenue > 0 ? Math.round(cogs * y3Rev / revenue) : 0;
   const y3Net  = y3Rev - y3Cogs - fixed;
   const y1Mg   = revenue > 0 ? (net/revenue*100).toFixed(1) : '0';
   const y2Mg   = y2Rev > 0 ? (y2Net/y2Rev*100).toFixed(1) : '0';
   const y3Mg   = y3Rev > 0 ? (y3Net/y3Rev*100).toFixed(1) : '0';
+  const y3GrowthPct = ((Math.pow(1 + growthRate, 2) - 1) * 100).toFixed(0);
+
+  // ── NPV (معدل خصم 10% — المرجع السعودي للمستثمرين) ──
+  const discRate = 0.10;
+  const npv = capital > 0 ? Math.round(
+    -capital
+    + (net   * 12) / (1 + discRate)
+    + (y2Net * 12) / Math.pow(1 + discRate, 2)
+    + (y3Net * 12) / Math.pow(1 + discRate, 3)
+  ) : 0;
+
+  // ── تحليل السيناريوهات الثلاثة (−20% / أساسي / +20%) ──
+  const scenFS = [
+    { label:'متشائم −20%', color:'#ef4444',
+      rev: Math.round(revenue * 0.80),
+      net: Math.round(revenue * 0.80 - cogs * 0.80 - fixed) },
+    { label:'أساسي',        color:'#fbbf24', rev: revenue,                net: net },
+    { label:'متفائل +20%', color:'#4ade80',
+      rev: Math.round(revenue * 1.20),
+      net: Math.round(revenue * 1.20 - cogs * 1.20 - fixed) },
+  ];
 
   // ── التوصيات الذكية بناءً على مقارنة معايير السوق 2026 ──
   const recs = [];
@@ -10442,10 +10485,34 @@ function buildSimpleReport() {
         <tr style="background:var(--bg2)"><td style="font-weight:800">السنة</td><td style="font-weight:800">الإيرادات / شهر</td><td style="font-weight:800">صافي الربح / شهر</td><td style="font-weight:800">هامش الربح</td><td style="font-weight:800">صافي الربح السنوي</td></tr>
         <tr><td><strong>السنة الأولى</strong></td><td style="color:var(--green)">${fmt(revenue)} ر</td><td style="color:${net>=0?'var(--green)':'#ef4444'};font-weight:700">${net>=0?'+':''}${fmt(net)} ر</td><td style="color:${parseFloat(y1Mg)>=goodM?'var(--green)':'var(--amber)'}">${y1Mg}%</td><td style="font-weight:700">${fmt(net*12)} ر</td></tr>
         <tr><td><strong>السنة الثانية</strong><br><span style="font-size:.7rem;color:var(--muted)">نمو ${(growthRate*100).toFixed(0)}% بحسب معيار ${sector}</span></td><td style="color:var(--green)">${fmt(y2Rev)} ر</td><td style="color:${y2Net>=0?'var(--green)':'#ef4444'};font-weight:700">${y2Net>=0?'+':''}${fmt(y2Net)} ر</td><td style="color:${parseFloat(y2Mg)>=goodM?'var(--green)':'var(--amber)'}">${y2Mg}%</td><td style="font-weight:700">${fmt(y2Net*12)} ر</td></tr>
-        <tr><td><strong>السنة الثالثة</strong><br><span style="font-size:.7rem;color:var(--muted)">نمو ${(growthRate*260).toFixed(0)}% تراكمي</span></td><td style="color:var(--green)">${fmt(y3Rev)} ر</td><td style="color:${y3Net>=0?'var(--green)':'#ef4444'};font-weight:700">${y3Net>=0?'+':''}${fmt(y3Net)} ر</td><td style="color:${parseFloat(y3Mg)>=goodM?'var(--green)':'var(--amber)'}">${y3Mg}%</td><td style="color:var(--green);font-weight:800">${fmt(y3Net*12)} ر</td></tr>
+        <tr><td><strong>السنة الثالثة</strong><br><span style="font-size:.7rem;color:var(--muted)">نمو ${y3GrowthPct}% تراكمي (مُركَّب)</span></td><td style="color:var(--green)">${fmt(y3Rev)} ر</td><td style="color:${y3Net>=0?'var(--green)':'#ef4444'};font-weight:700">${y3Net>=0?'+':''}${fmt(y3Net)} ر</td><td style="color:${parseFloat(y3Mg)>=goodM?'var(--green)':'var(--amber)'}">${y3Mg}%</td><td style="color:var(--green);font-weight:800">${fmt(y3Net*12)} ر</td></tr>
         <tr style="background:rgba(78,115,194,.07)"><td><strong>إجمالي 3 سنوات</strong></td><td colspan="2"></td><td></td><td style="font-size:.95rem;font-weight:900;color:var(--green)">${fmt((net+y2Net+y3Net)*12)} ر</td></tr>
       </table>
       <p style="font-size:.73rem;color:var(--muted);margin-top:.5rem"><i class="fa-solid fa-circle-info" style="margin-left:.3rem"></i>معدل النمو مبني على بيانات قطاع <strong>${sector}</strong> في السوق السعودي 2026 مع تعديل وفق مستوى المنافسة</p>
+    </div>
+
+    <!-- تحليل السيناريوهات الثلاثة -->
+    <div class="sr-section">
+      <h3><i class="fa-solid fa-sliders"></i>تحليل السيناريوهات <span style="font-size:.72rem;color:var(--muted);font-weight:400">(متشائم / أساسي / متفائل)</span></h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem">
+        ${scenFS.map(sc => {
+          const scMargin = sc.rev > 0 ? (sc.net/sc.rev*100).toFixed(1) : '0';
+          const scROI    = capital > 0 && sc.net > 0 ? (sc.net*12/capital*100).toFixed(1) : '—';
+          const scPB     = sc.net > 0 && capital > 0 ? Math.ceil(capital/sc.net) + ' شهر' : '∞';
+          return `<div style="background:var(--bg2);border:1.5px solid ${sc.color}33;border-radius:14px;padding:1.1rem;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;right:0;left:0;height:3px;background:${sc.color};border-radius:14px 14px 0 0"></div>
+            <div style="font-size:.78rem;font-weight:800;color:${sc.color};margin-bottom:.75rem">${sc.label}</div>
+            <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.82rem">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">الإيرادات/شهر</span><strong>${sc.rev.toLocaleString('ar-SA')} ر</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">صافي الربح/شهر</span><strong style="color:${sc.net>=0?sc.color:'#ef4444'}">${sc.net>=0?'+':''}${sc.net.toLocaleString('ar-SA')} ر</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">هامش الربح</span><strong>${scMargin}%</strong></div>
+              ${capital > 0 ? `<div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">ROI سنوي</span><strong>${scROI}${scROI!=='—'?'%':''}</strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--muted)">استرداد رأس المال</span><strong>${scPB}</strong></div>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${capital > 0 ? `<div style="margin-top:1rem;background:rgba(99,102,241,.07);border:1px solid rgba(99,102,241,.2);border-radius:10px;padding:.85rem 1rem;font-size:.82rem;color:var(--muted)"><i class="fa-solid fa-info-circle" style="color:#818cf8;margin-left:.4rem"></i><strong style="color:var(--text)">صافي القيمة الحالية (NPV) بمعدل خصم 10%:</strong> <span style="font-size:.95rem;font-weight:800;color:${npv>=0?'#4ade80':'#f87171'}">${npv>=0?'+':''}${Math.round(npv).toLocaleString('ar-SA')} ريال</span> — ${npv>0?'المشروع يحقق قيمة موجبة للمستثمر على 3 سنوات':'تكاليف الفرصة تفوق العوائد المتوقعة — راجع الهيكل المالي'}</div>` : ''}
     </div>
 
     <!-- مقارنة بمعايير القطاع -->
