@@ -1732,9 +1732,9 @@ function _trackCalcUse() {
    PROJECT ANALYSIS ENGINE — تحليل المشاريع وجدواها
 ====================================================== */
 const PA_QUESTIONS = [
-  /* المجموعة 0: معلومات المشروع */
+  /* المجموعة 0 */
   {
-    title: 'معلومات المشروع الأساسية',
+    title: 'إعدادات محرك التحليل المالي',
     fields: [
       { id:'pa_name',   label:'اسم المشروع',            type:'text',   placeholder:'مثال: مطعم شاورما الأصيل', required:true },
       { id:'pa_type',   label:'نوع النشاط التجاري',     type:'select', options:['تجارة تجزئة','مطعم / مقهى','خدمات مهنية','تقنية / تطبيقات','تصنيع / إنتاج','عقارات','تجارة إلكترونية','تعليم وتدريب','صحة وجمال','أخرى'], required:true },
@@ -1742,9 +1742,9 @@ const PA_QUESTIONS = [
       { id:'pa_desc',   label:'وصف موجز للمشروع وفكرته', type:'textarea', placeholder:'مثال: مطعم متخصص في الشاورما السورية في حي النزهة، يستهدف موظفي الشركات والأسر في وقت الغداء والعشاء', required:false },
     ]
   },
-  /* المجموعة 1: دراسة السوق والطلب — قبل أي أرقام مالية */
+  /* المجموعة 1 */
   {
-    title: '📊 دراسة السوق والطلب',
+    title: 'مسح السوق والطلب — استخبارات السوق',
     fields: [
       { id:'pa_market_size', label:'تقدير حجم السوق المستهدف في منطقتك', type:'select', options:['صغير — أقل من 500 عميل محتمل','متوسط — 500 إلى 2,000 عميل','كبير — 2,000 إلى 10,000 عميل','ضخم — أكثر من 10,000 عميل'], required:true },
       { id:'pa_comp_count', label:'عدد المنافسين المباشرين في منطقتك', type:'select', options:['لا يوجد منافسون مباشرون','1-3 منافسين','4-10 منافسين','أكثر من 10 منافسين'], required:true },
@@ -1757,7 +1757,7 @@ const PA_QUESTIONS = [
   /* تم حذفها — خارج نطاق التحليل */
   /* المجموعة 3: الإيرادات */
   {
-    title: 'توقعات الإيرادات',
+    title: 'محرك الإيرادات — التدفقات المالية المتوقعة',
     fields: [
       { id:'pa_revenue',   label:'الإيرادات الشهرية المتوقعة (ريال)',              type:'number', placeholder:'مثال: 80000', required:true },
       { id:'pa_avg_sale',  label:'متوسط قيمة عملية البيع / الفاتورة (ريال)',       type:'number', placeholder:'مثال: 150', required:false },
@@ -1766,7 +1766,7 @@ const PA_QUESTIONS = [
   },
   /* المجموعة 4: التكاليف الثابتة */
   {
-    title: 'التكاليف الثابتة الشهرية',
+    title: 'التكاليف الثابتة — هيكل التكلفة الأساسية',
     fields: [
       { id:'pa_rent',       label:'الإيجار الشهري (ريال)',                    type:'number', placeholder:'مثال: 15000', required:true },
       { id:'pa_salaries',   label:'رواتب الموظفين الشهرية الإجمالية (ريال)', type:'number', placeholder:'مثال: 20000', required:true },
@@ -1776,7 +1776,7 @@ const PA_QUESTIONS = [
   },
   /* المجموعة 5: التكاليف المتغيرة */
   {
-    title: 'التكاليف المتغيرة الشهرية',
+    title: 'التكاليف المتغيرة — معاملات الكفاءة التشغيلية',
     fields: [
       { id:'pa_cogs',      label:'تكلفة البضاعة أو تقديم الخدمة (ريال)',      type:'number', placeholder:'مثال: 25000', required:true },
       { id:'pa_marketing', label:'الميزانية التسويقية الشهرية (ريال)',         type:'number', placeholder:'مثال: 3000',  required:false },
@@ -1785,7 +1785,7 @@ const PA_QUESTIONS = [
   },
   /* المجموعة 6: الجدوى التشغيلية */
   {
-    title: '⚙ الجدوى التشغيلية — قدرتك على التنفيذ',
+    title: 'معامل الجدوى التشغيلية — قدرة التنفيذ',
     fields: [
       { id:'pa_team_size',  label:'عدد الموظفين المطلوبين لتشغيل المشروع', type:'select', options:['لا يوجد — أعمل منفرداً','1-3 موظفين','4-10 موظفين','أكثر من 10 موظفين'], required:true },
       { id:'pa_tech_req',   label:'الكفاءة التقنية المطلوبة للتشغيل', type:'select', options:['بسيطة — لا تقنية متخصصة','متوسطة — Excel أو برامج محاسبة','متخصصة — نظام ERP أو تطبيق مخصص','عالية جداً — تقنية متقدمة / AI'], required:true },
@@ -1796,7 +1796,7 @@ const PA_QUESTIONS = [
   },
   /* المجموعة 7: المنافسة والخبرة الشخصية */
   {
-    title: 'خبرتك الشخصية ومستوى المنافسة',
+    title: 'تقييم المخاطر والميزة التنافسية',
     fields: [
       { id:'pa_comp',    label:'تقييمك الشامل لمستوى المنافسة',              type:'select', options:['لا يوجد منافسون واضحون','منافسة منخفضة','منافسة متوسطة','منافسة عالية جداً'], required:true },
       { id:'pa_exp',     label:'خبرتك الشخصية في هذا المجال',                type:'select', options:['أكثر من 5 سنوات','3-5 سنوات','1-3 سنوات','أقل من سنة / مبتدئ'], required:true },
@@ -1904,11 +1904,11 @@ function renderPaStepsBar() {
   const total = PA_QUESTIONS.length;
   const cur   = paState.currentGroup;
   let html = '';
-  for (let i = 0; i < total; i++) {
+  for (let i = total - 1; i >= 0; i--) {
     const cls   = i < cur ? 'done' : i === cur ? 'current' : '';
     const inner = i < cur ? '<i class="fa-solid fa-check" style="font-size:.68rem"></i>' : (i+1);
     html += `<div class="fs-step-dot ${cls}">${inner}</div>`;
-    if (i < total-1) html += `<div class="fs-step-line${i < cur ? ' done' : ''}"></div>`;
+    if (i > 0) html += `<div class="fs-step-line${i <= cur ? ' done' : ''}"></div>`;
   }
   document.getElementById('pa-steps-bar').innerHTML = html;
   document.getElementById('pa-step-label').textContent = `الخطوة ${cur+1} من ${total}`;
@@ -1917,20 +1917,51 @@ function renderPaStepsBar() {
   updatePaProgressBadge();
 }
 
+/* ── Smart hints per field ── */
+const PA_SMART_HINTS = {
+  pa_city: v => v && v.includes('رياض') ? '📍 تلميح: الرياض — الإيجار 8-15% من الإيرادات · تكاليف العمالة أعلى 10-15% من متوسط المملكة · نمو السوق +12% 2026' :
+             v && v.includes('جدة')   ? '📍 تلميح: جدة — الأسواق التجارية تشهد طلباً متصاعداً في 2026 · قطاعا F&B والتجزئة ينمو 12%+ سنوياً' :
+             v ? '📍 تلميح: سيُقارَن تحليلك بمعايير السوق السعودي 2026 للمدينة المحددة' : null,
+  pa_type: v => v === 'مطعم / مقهى'   ? '📊 تلميح: F&B — الهامش الصافي المستهدف 15-22% · الإيجار لا يتجاوز 10% من الإيرادات' :
+             v === 'تجارة إلكترونية' ? '📊 تلميح: E-Commerce — تكلفة التوصيل والعمولة 8-15% إضافية · هامش مستهدف 18%+' :
+             v === 'خدمات مهنية'      ? '📊 تلميح: خدمات مهنية — هامش صافٍ مستهدف 25%+ · الرواتب المفتاح الأساسي للربحية' :
+             v === 'تقنية / تطبيقات' ? '📊 تلميح: Tech — هامش مستهدف 30%+ · تكلفة الاكتساب (CAC) هي المقياس الأهم' :
+             v ? '📊 تلميح: سيُقارَن تحليلك بمعايير قطاعك في السوق السعودي 2026' : null,
+  pa_revenue: v => v && parseFloat(v) > 0 ? `💡 تلميح: إيراداتك الشهرية ${parseFloat(v).toLocaleString('ar-SA')} ر = ${(parseFloat(v)*12).toLocaleString('ar-SA')} ر سنوياً` : null,
+  pa_rent:    v => v && parseFloat(v) > 0 ? '🏢 تلميح: المعيار الأمثل: الإيجار لا يتجاوز 10% من الإيرادات الشهرية لضمان الربحية' : null,
+  pa_salaries:v => v && parseFloat(v) > 0 ? '👥 تلميح: الرواتب المثلى 25-35% من الإيرادات — فوق ذلك يضغط الهامش الصافي بشكل كبير' : null,
+  pa_cogs:    v => v && parseFloat(v) > 0 ? '📦 تلميح: تكلفة البضاعة المثلى: أقل من 40-50% من الإيرادات حسب القطاع' : null,
+  pa_comp:    v => v === 'منافسة عالية جداً' ? '⚠️ تلميح: في بيئات المنافسة العالية، الميزة التنافسية الواضحة (USP) هي مفتاح البقاء' : null,
+};
+
+/* ── رسائل معالجة الخطوات ── */
+const PA_STEP_PROCESS_MSGS = [
+  'جاري رسم خريطة مدخلات المشروع...',
+  'جاري تحليل مدخلات السوق وتقييم المنافسة...',
+  'جاري بناء التوقعات المالية للإيرادات...',
+  'جاري احتساب هيكل التكاليف الثابتة...',
+  'جاري معايرة معاملات الكفاءة التشغيلية...',
+  'جاري تقييم قدرة التنفيذ وجاهزية التراخيص...',
+  'جاري احتساب مؤشر المخاطر والميزة التنافسية...',
+];
+
 function renderPaGroup() {
   const group = PA_QUESTIONS[paState.currentGroup];
   const container = document.getElementById('pa-questions-container');
   container.innerHTML = group.fields.map(q => {
     const rawVal = paState.answers[q.id] || '';
-    const val = escHtml(rawVal); // تعقيم كامل لمنع XSS
+    const val = escHtml(rawVal);
     const optLabel = q.required ? '' : ' <span style="color:var(--muted);font-weight:400;font-size:.77rem">(اختياري)</span>';
+    const hintFn  = PA_SMART_HINTS[q.id];
+    const hintTxt = hintFn ? hintFn(rawVal) : null;
+    const hintHtml = hintTxt ? `<div class="pa-hint">${hintTxt}</div>` : '';
     if (q.type === 'select') {
       const opts = q.options.map(o => `<option value="${escHtml(o)}"${rawVal===o?' selected':''}>${escHtml(o)}</option>`).join('');
-      return `<div class="f-field"><label>${q.label}${optLabel}</label><select id="${q.id}"><option value="">اختر...</option>${opts}</select></div>`;
+      return `<div class="f-field"><label>${q.label}${optLabel}</label><select id="${q.id}" onchange="_paUpdateHint(this,'${q.id}')"><option value="">اختر...</option>${opts}</select>${hintHtml}</div>`;
     } else if (q.type === 'textarea') {
-      return `<div class="f-field" style="grid-column:1/-1"><label>${q.label}${optLabel}</label><textarea id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" rows="3" style="resize:vertical">${val}</textarea></div>`;
+      return `<div class="f-field" style="grid-column:1/-1"><label>${q.label}${optLabel}</label><textarea id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" rows="3" style="resize:vertical">${val}</textarea>${hintHtml}</div>`;
     } else {
-      return `<div class="f-field"><label>${q.label}${optLabel}</label><input type="${q.type}" id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" value="${val}"/></div>`;
+      return `<div class="f-field"><label>${q.label}${optLabel}</label><input type="${q.type}" id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" value="${val}" oninput="_paUpdateHint(this,'${q.id}')"/>${hintHtml}</div>`;
     }
   }).join('');
 
@@ -1938,8 +1969,19 @@ function renderPaGroup() {
   const isLast  = paState.currentGroup === PA_QUESTIONS.length - 1;
   document.getElementById('pa-prev-btn').style.display = isFirst ? 'none' : 'inline-flex';
   document.getElementById('pa-next-btn').innerHTML = isLast
-    ? '<i class="fa-solid fa-chart-bar"></i> أصدر تقرير التحليل'
+    ? '<i class="fa-solid fa-lock-open"></i> إصدار التقرير المالي'
     : 'التالي <i class="fa-solid fa-arrow-left"></i>';
+}
+
+function _paUpdateHint(el, fieldId) {
+  const hintFn = PA_SMART_HINTS[fieldId];
+  if (!hintFn) return;
+  const hint = hintFn(el.value);
+  const container = el.closest('.f-field');
+  if (!container) return;
+  let hintEl = container.querySelector('.pa-hint');
+  if (!hintEl && hint) { hintEl = document.createElement('div'); hintEl.className = 'pa-hint'; container.appendChild(hintEl); }
+  if (hintEl) { hintEl.textContent = hint || ''; hintEl.style.display = hint ? 'block' : 'none'; }
 }
 
 function paNavNext() {
@@ -1955,7 +1997,6 @@ function paNavNext() {
       setTimeout(() => { el.style.borderColor = ''; }, 2200);
       return;
     }
-    // تحقق من أن الحقول المالية لا تحتوي على أرقام سالبة
     if (q.type === 'number' && val !== '') {
       const num = parseFloat(val);
       if (isNaN(num) || num < 0) {
@@ -1970,10 +2011,22 @@ function paNavNext() {
   }
   savePaSession();
   if (paState.currentGroup < PA_QUESTIONS.length - 1) {
-    paState.currentGroup++;
-    renderPaStepsBar();
-    renderPaGroup();
-    window.scrollTo({ top: 0, behavior:'smooth' });
+    // ── Loading Spinner between steps ──
+    const btn = document.getElementById('pa-next-btn');
+    const prevBtn = document.getElementById('pa-prev-btn');
+    const msg = PA_STEP_PROCESS_MSGS[paState.currentGroup] || 'جاري معالجة البيانات...';
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${msg}`;
+    btn.disabled = true; if(prevBtn) prevBtn.disabled = true;
+    const container = document.getElementById('pa-questions-container');
+    container.style.opacity = '0.35';
+    container.style.pointerEvents = 'none';
+    setTimeout(() => {
+      container.style.opacity = ''; container.style.pointerEvents = '';
+      btn.disabled = false; if(prevBtn) prevBtn.disabled = false;
+      paState.currentGroup++;
+      renderPaStepsBar(); renderPaGroup();
+      const s1 = document.getElementById('pa-step-1'); if(s1) s1.scrollTop = 0;
+    }, 1800);
   } else {
     generateProjectAnalysisReport();
   }
@@ -1987,35 +2040,173 @@ function paNavPrev() {
     paState.currentGroup--;
     renderPaStepsBar();
     renderPaGroup();
-    window.scrollTo({ top: 0, behavior:'smooth' });
+    const s1b = document.getElementById('pa-step-1'); if(s1b) s1b.scrollTop = 0;
   }
 }
 
 function generateProjectAnalysisReport() {
   const btn = document.getElementById('pa-next-btn');
   const isPremium = paState.tier === 'premium';
-  btn.innerHTML = isPremium
-    ? '<i class="fa-solid fa-spinner fa-spin"></i> المستشار الذكي يُعِدّ تحليلك...'
-    : '<i class="fa-solid fa-spinner fa-spin"></i> جارٍ إعداد التقرير...';
+  const processMsgs = [
+    'جاري تجميع المدخلات المالية...',
+    'جاري مقارنة بيانات السوق 2026...',
+    'جاري احتساب نقطة التعادل والهامش الصافي...',
+    'جاري بناء توقعات النمو لـ 3 سنوات...',
+    'جاري تقييم مؤشر المخاطر...',
+  ];
+  let msgIdx = 0;
+  btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${processMsgs[0]}`;
   btn.disabled = true;
-  const delay = isPremium ? 2800 : 2200;
+  const container = document.getElementById('pa-questions-container');
+  container.style.opacity = '0.3'; container.style.pointerEvents = 'none';
+  const interval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % processMsgs.length;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${processMsgs[msgIdx]}`;
+  }, 600);
+  const delay = isPremium ? 3200 : 2800;
   setTimeout(() => {
-    btn.innerHTML = '<i class="fa-solid fa-chart-bar"></i> أصدر تقرير التحليل';
+    clearInterval(interval);
+    container.style.opacity = ''; container.style.pointerEvents = '';
+    btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> إصدار التقرير المالي';
     btn.disabled = false;
+    // ── Investment-First: free tier → paywall before report ──
+    if (!isPremium) {
+      _showPaPaywall();
+      return;
+    }
+    // premium: show full report immediately
     document.getElementById('pa-report-container').innerHTML = buildProjectAnalysisReport();
+    const pdfBtn = document.getElementById('pa-pdf-btn');
+    if (pdfBtn) pdfBtn.style.display = 'inline-flex';
     showPaStep(2);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const s2 = document.getElementById('pa-step-2'); if(s2) s2.scrollTop = 0;
     const el = document.getElementById('sc-chats');
     if (el) el.textContent = parseInt(el.textContent||0)+1;
-    // للخطة المدفوعة: تشغيل AI تلقائياً بعد ظهور التقرير
-    if (isPremium) {
-      setTimeout(() => {
-        const aiSection = document.getElementById('pa-ai-section');
-        if (aiSection) aiSection.scrollIntoView({ behavior:'smooth', block:'start' });
-        setTimeout(() => runProjectAI(), 600);
-      }, 900);
-    }
+    setTimeout(() => {
+      const aiSection = document.getElementById('pa-ai-section');
+      if (aiSection) aiSection.scrollIntoView({ behavior:'smooth', block:'start' });
+      setTimeout(() => runProjectAI(), 600);
+    }, 900);
   }, delay);
+}
+
+function _showPaPaywall() {
+  const a = paState.answers;
+  const projectName = escHtml(a.pa_name) || 'مشروعك';
+  const revenue    = parseFloat(a.pa_revenue) || 0;
+  const totalCosts = (parseFloat(a.pa_rent)||0)+(parseFloat(a.pa_salaries)||0)+(parseFloat(a.pa_utilities)||0)+(parseFloat(a.pa_fixed_other)||0)+(parseFloat(a.pa_cogs)||0)+(parseFloat(a.pa_marketing)||0)+(parseFloat(a.pa_var_other)||0);
+  const netProfit  = revenue - totalCosts;
+  const netMargin  = revenue > 0 ? (netProfit/revenue*100).toFixed(1) : '—';
+  const profitColor = netProfit >= 0 ? '#4ade80' : '#f87171';
+
+  // ── Paywall CTA block (always immediately visible, NO inset overlay) ──
+  const paywallHTML = `
+    <div style="background:linear-gradient(160deg,#091630 0%,#0d1f42 60%,#091630 100%);border:1px solid rgba(78,115,194,.3);border-radius:18px;padding:2rem 1.75rem;text-align:center;margin-bottom:1rem">
+      <!-- Completion badge -->
+      <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.35);color:#4ade80;border-radius:20px;padding:.35rem 1rem;font-size:.78rem;font-weight:800;margin-bottom:1.2rem">
+        <i class="fa-solid fa-check-circle"></i> اكتمل تحليل محرك البيانات — 7 مراحل بنجاح
+      </div>
+      <!-- KPI teasers -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem">
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.2);border-radius:12px;padding:.85rem">
+          <div style="font-size:.68rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">الهامش الصافي المحسوب</div>
+          <div style="font-size:1.6rem;font-weight:900;color:${profitColor}">${netMargin}%</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(78,115,194,.2);border-radius:12px;padding:.85rem">
+          <div style="font-size:.68rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">صافي الربح الشهري</div>
+          <div style="font-size:1.6rem;font-weight:900;color:${profitColor}">${netProfit.toLocaleString('ar-SA')} ر</div>
+        </div>
+      </div>
+      <h3 style="font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:.5rem">تقريرك المالي الاحترافي جاهز لـ ${projectName}</h3>
+      <p style="font-size:.83rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;line-height:1.65">يتضمن التقرير الكامل: نقطة التعادل · توقعات 3 سنوات · تحليل المنافسة · الأدوات الحكومية · مؤشر الربحية الكامل</p>
+      <!-- ─── Main CTA button ─── -->
+      <button onclick="_paUnlockReport()" style="width:100%;padding:.95rem 1.5rem;background:linear-gradient(135deg,#4E73C2,#7B9ED4);border:none;border-radius:14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:.98rem;font-weight:900;cursor:pointer;margin-bottom:.85rem;display:flex;align-items:center;justify-content:center;gap:.6rem;box-shadow:0 8px 28px rgba(78,115,194,.4)">
+        <i class="fa-solid fa-file-invoice"></i> لإصدار التقرير المالي الاحترافي الكامل (PDF) بشعار جنان بيز — ادفع الآن
+      </button>
+      <!-- White-label upsell -->
+      <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);border-radius:10px;padding:.7rem 1rem;margin-bottom:.9rem;font-size:.78rem;color:rgba(255,255,255,.65);text-align:right">
+        <i class="fa-solid fa-star" style="color:#fcd34d;margin-left:.35rem"></i>
+        هذا التقرير يصدر بشعار جنان بيز. لإزالة العلامة المائية وإضافة شعار منشأتك الخاصة، تتوفر خدمة <strong style="color:#fcd34d">White-Label بـ 2,000 ريال</strong>
+      </div>
+      <!-- Free preview link -->
+      <button onclick="_paShowFreePreview()" style="background:none;border:none;color:rgba(255,255,255,.4);font-family:'Tajawal',sans-serif;font-size:.8rem;cursor:pointer;text-decoration:underline;padding:0">
+        عرض ملخص مجاني مبسّط فقط
+      </button>
+    </div>
+    <!-- Blurred report excerpt (decorative, below CTA) -->
+    <div style="position:relative;overflow:hidden;border-radius:12px;max-height:220px;pointer-events:none;user-select:none">
+      <div style="filter:blur(5px);opacity:.4">${buildProjectAnalysisReport()}</div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,17,32,.1) 0%,rgba(11,17,32,.95) 70%)"></div>
+      <div style="position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:.75rem;color:rgba(255,255,255,.4);font-weight:700">
+        <i class="fa-solid fa-lock" style="margin-left:.3rem"></i> ادفع لفتح التقرير الكامل
+      </div>
+    </div>`;
+
+  document.getElementById('pa-report-container').innerHTML = paywallHTML;
+  showPaStep(2);
+  // Scroll pa-step-2 to top
+  const step2 = document.getElementById('pa-step-2');
+  if (step2) step2.scrollTop = 0;
+}
+
+function _paUnlockReport() {
+  // Redirect to payment / premium tier
+  startProjectAnalysisWizard('premium');
+  showToast('جاري الانتقال لبوابة الدفع...');
+  // In production: redirect to checkout page
+  setTimeout(() => { gotoSub('paid-analysis','navgrp-gateway','nav-analysis'); }, 800);
+}
+
+function _paShowFreePreview() {
+  // Show the full report without paywall (free basic version)
+  document.getElementById('pa-report-container').innerHTML = buildProjectAnalysisReport();
+  const pdfBtn2 = document.getElementById('pa-pdf-btn');
+  if (pdfBtn2) pdfBtn2.style.display = 'inline-flex';
+  const s2b = document.getElementById('pa-step-2'); if(s2b) s2b.scrollTop = 0;
+  const el = document.getElementById('sc-chats');
+  if (el) el.textContent = parseInt(el.textContent||0)+1;
+}
+
+function printPaReport() {
+  const content = document.getElementById('pa-report-container');
+  if (!content) return;
+  const win = window.open('', '_blank', 'width=900,height=700');
+  win.document.write(`<!DOCTYPE html><html dir="rtl" lang="ar">
+<head><meta charset="UTF-8">
+<title>تقرير التحليل المالي — جنان بيز</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Tajawal',sans-serif;background:#fff;color:#0f172a;padding:32px;direction:rtl}
+  .print-header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #4E73C2;padding-bottom:14px;margin-bottom:24px}
+  .brand-logo{font-size:1.4rem;font-weight:900;color:#4E73C2}
+  .brand-sub{font-size:.75rem;color:#64748b;margin-top:2px}
+  .watermark{position:fixed;bottom:28px;right:28px;font-size:.72rem;color:#cbd5e1;font-weight:700}
+  .pa-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+  .pa-kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center}
+  .pa-kpi-val{font-size:1.4rem;font-weight:900;color:#4E73C2}
+  .pa-kpi-lbl{font-size:.7rem;color:#64748b;margin-top:4px}
+  table{width:100%;border-collapse:collapse;margin:10px 0}
+  th{background:#4E73C2;color:#fff;padding:8px 10px;font-size:.8rem}
+  td{padding:7px 10px;font-size:.8rem;border-bottom:1px solid #f1f5f9}
+  h2,h3{color:#1e293b;margin:18px 0 10px}
+  .section{margin-bottom:20px}
+  @media print{.watermark{display:block} @page{margin:1.5cm}}
+</style>
+</head><body>
+<div class="print-header">
+  <div class="brand-logo">جنان بيز <span style="font-size:.8rem;background:#4E73C2;color:#fff;padding:2px 8px;border-radius:6px;margin-right:6px">PRO</span></div>
+  <div style="text-align:left">
+    <div class="brand-sub">تقرير التحليل المالي الاحترافي</div>
+    <div class="brand-sub">jenan-biz.com | ${new Date().toLocaleDateString('ar-SA')}</div>
+  </div>
+</div>
+${content.innerHTML}
+<div class="watermark">© جنان بيز — هذا التقرير صادر بشعار جنان بيز · للإصدار بشعار منشأتك: White-Label بـ 2,000 ريال</div>
+</body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 500);
 }
 
 function buildProjectAnalysisReport() {
@@ -2860,6 +3051,9 @@ function showPaStep(step) {
   document.querySelectorAll('#page-robot .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  // Scroll the active step to top (handles overflow:auto inside absolute step)
+  const activeStep = document.querySelector('#page-robot .fs-step.active');
+  if (activeStep) activeStep.scrollTop = 0;
   if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
   if(typeof updatePaProgressBadge === 'function') updatePaProgressBadge();
 }
@@ -4226,9 +4420,15 @@ function selectStudyType(type) {
   fsState.type = type;
   document.getElementById('sc-simple').classList.toggle('selected', type === 'simple');
   document.getElementById('sc-detailed').classList.toggle('selected', type === 'detailed');
-  const btn = document.getElementById('fs-next-btn');
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
-  // تحديث شريط التقدم مباشرة
+  // Enable the step-0 next button
+  const btn0 = document.getElementById('fs-next-0');
+  if (btn0) {
+    btn0.disabled = false;
+    btn0.style.opacity = '1';
+    btn0.style.cursor = 'pointer';
+    btn0.style.boxShadow = '0 6px 20px rgba(78,115,194,.35)';
+  }
+  // Also update progress badge
   var lbl = document.getElementById('fs-prog-label');
   var p   = document.getElementById('fs-prog-pct');
   var b   = document.getElementById('fs-prog-bar');
@@ -4413,11 +4613,11 @@ function renderStepsBar() {
   const total = FS_QUESTIONS[fsState.type].length;
   const cur   = fsState.currentGroup;
   let html = '';
-  for (let i = 0; i < total; i++) {
+  for (let i = total - 1; i >= 0; i--) {
     const cls = i < cur ? 'done' : i === cur ? 'current' : '';
     const inner = i < cur ? '<i class="fa-solid fa-check" style="font-size:.68rem"></i>' : (i+1);
     html += `<div class="fs-step-dot ${cls}">${inner}</div>`;
-    if (i < total-1) html += `<div class="fs-step-line${i < cur ? ' done' : ''}"></div>`;
+    if (i > 0) html += `<div class="fs-step-line${i <= cur ? ' done' : ''}"></div>`;
   }
   document.getElementById('fs-steps-bar').innerHTML = html;
   document.getElementById('fs-step-label').textContent = `الخطوة ${cur+1} من ${total}`;
@@ -4538,7 +4738,7 @@ function generateFeasibilityStudy() {
               <li>التقرير النهائي يُرفع لحسابك فور جاهزيته</li>
             </ul>
           </div>
-          <button onclick="showFsStep(0);fsState={type:null,payMethod:'card',currentGroup:0,answers:{}}" style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 2rem;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer">
+          <button onclick="resetFeasibility()" style="margin-top:2rem;background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:.8rem 2rem;border-radius:12px;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:700;cursor:pointer">
             <i class="fa-solid fa-plus" style="margin-left:.4rem"></i> تحليل مشروع آخر
           </button>
         </div>`;
@@ -5605,8 +5805,19 @@ function showFsStep(step) {
   document.querySelectorAll('#page-analysis .fs-step').forEach((el, i) => {
     el.classList.toggle('active', i === step);
   });
+  const activeStep = document.querySelector('#page-analysis .fs-step.active');
+  if (activeStep) activeStep.scrollTop = 0;
   if(typeof _syncGatewayViewportLock === 'function') _syncGatewayViewportLock();
   if(typeof updateFsProgressBadge === 'function') updateFsProgressBadge();
+}
+
+function backToTypes() {
+  fsState.type = null;
+  document.getElementById('sc-simple').classList.remove('selected');
+  document.getElementById('sc-detailed').classList.remove('selected');
+  const btn = document.getElementById('fs-next-0');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.style.boxShadow = 'none'; }
+  showFsStep(0);
 }
 
 function resetFeasibility() {
@@ -5614,7 +5825,7 @@ function resetFeasibility() {
   document.getElementById('sc-simple').classList.remove('selected');
   document.getElementById('sc-detailed').classList.remove('selected');
   const btn = document.getElementById('fs-next-0');
-  btn.disabled = true; btn.style.opacity = '.45'; btn.style.cursor = 'not-allowed';
+  if (btn) { btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.style.boxShadow = 'none'; }
   // مسح حقول بطاقة الدفع
   ['pay-card-num','pay-card-exp','pay-card-cvv','pay-card-name'].forEach(id => {
     const el = document.getElementById(id); if (el) el.value = '';
@@ -5626,7 +5837,7 @@ function resetFeasibility() {
 
 function saveReport(name, type, status, score) {
   const list = document.getElementById('reports-list');
-  const empty = list.querySelector('div[style*="text-align:center"]');
+  const empty = document.getElementById('reports-empty-state') || list.querySelector('div[style*="text-align:center"]');
   if (empty) empty.remove();
 
   const cls = {yes:'rb-green',maybe:'rb-amber',no:'rb-red'}[status]||'rb-amber';
