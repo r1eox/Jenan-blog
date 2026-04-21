@@ -11124,6 +11124,15 @@ function showFsStep(step) {
   if(typeof updateFsProgressBadge === 'function') updateFsProgressBadge();
 }
 
+function backToTypes() {
+  fsState.type = null;
+  document.getElementById('sc-simple').classList.remove('selected');
+  document.getElementById('sc-detailed').classList.remove('selected');
+  const btn = document.getElementById('fs-next-0');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.4'; btn.style.cursor = 'not-allowed'; btn.style.boxShadow = 'none'; }
+  showFsStep(0);
+}
+
 function resetFeasibility() {
   fsState = { type:null, payMethod:'card', currentGroup:0, answers:{} };
   document.getElementById('sc-simple').classList.remove('selected');
