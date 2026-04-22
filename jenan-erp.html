@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>جنان برو — نظام إدارة الأعمال الذكي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ═══════════════════════════════════════════════════════
+   JENAN PRO ERP — Design System
+   نظام إدارة أعمال ذكي مخصص للمشاريع السعودية الصغيرة
+   يدعم: سوبرماركت | مطاعم | صالونات نسائية
+   ═══════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0B1120;
+  --bg2:      #111828;
+  --bg3:      #1a2235;
+  --bg4:      #222d42;
+  --text:     #f1f5f9;
+  --muted:    #94a3b8;
+  --border:   rgba(255,255,255,.09);
+  --accent:   #6366f1;
+  --accent2:  #4f46e5;
+  --accent-bg: rgba(99,102,241,.12);
+  --radius:   12px;
+  --sidebar:  245px;
+}
+
+/* ── نظام الألوان حسب النشاط ── */
+body[data-activity="supermarket"] { --accent:#10b981; --accent2:#059669; --accent-bg:rgba(16,185,129,.12); }
+body[data-activity="restaurant"]  { --accent:#f97316; --accent2:#ea580c; --accent-bg:rgba(249,115,22,.12); }
+body[data-activity="salon"]       { --accent:#f43f5e; --accent2:#e11d48; --accent-bg:rgba(244,63,94,.12); }
+
+body {
+  font-family: 'Tajawal', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ════════════════════════════════
+   نظام الشاشات
+════════════════════════════════ */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; }
+
+/* ════════════════════════════════
+   شاشة البداية (Splash)
+════════════════════════════════ */
+#screen-splash {
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: .9rem;
+  background: radial-gradient(ellipse at 50% 40%, #1a1b3a 0%, #0B1120 65%);
+}
+.splash-logo {
+  width: 88px; height: 88px; border-radius: 26px;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; color: #fff;
+  box-shadow: 0 0 60px rgba(99,102,241,.5);
+  animation: pulse-logo 2.2s ease-in-out infinite;
+}
+@keyframes pulse-logo {
+  0%, 100% { box-shadow: 0 0 30px rgba(99,102,241,.35); transform: scale(1); }
+  50%       { box-shadow: 0 0 70px rgba(99,102,241,.65); transform: scale(1.04); }
+}
+.splash-title {
+  font-size: 2rem; font-weight: 900;
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.splash-sub { color: var(--muted); font-size: .88rem; }
+.splash-loader { width: 200px; height: 3px; background: var(--bg3); border-radius: 3px; overflow: hidden; margin-top: 1.25rem; }
+.splash-loader-bar { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); border-radius: 3px; animation: load-bar 2.6s ease-in-out forwards; }
+@keyframes load-bar { from { width: 0% } to { width: 100% } }
+#splash-msg { font-size: .74rem; color: var(--muted); margin-top: .5rem; }
+
+/* ════════════════════════════════
+   شاشة الإعداد (Onboarding)
+════════════════════════════════ */
+#screen-onboard {
+  align-items: center; justify-content: center;
+  flex-direction: column; padding: 2rem 1rem;
+  background: var(--bg);
+}
+.onboard-card {
+  width: 100%; max-width: 500px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 24px; padding: 2.25rem 1.85rem;
+}
+.steps-bar { display: flex; gap: .45rem; margin-bottom: 2rem; }
+.step-dot { height: 5px; flex: 1; border-radius: 5px; background: var(--bg4); transition: background .35s; }
+.step-dot.done { background: var(--accent); }
+.onboard-step { display: none; }
+.onboard-step.active { display: block; animation: fade-in .3s ease; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* حقول الإدخال */
+.field-group { margin-bottom: 1.1rem; }
+.field-label { font-size: .8rem; color: var(--muted); font-weight: 700; margin-bottom: .4rem; display: block; }
+.field-input {
+  width: 100%; padding: .68rem 1rem;
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-family: 'Tajawal', sans-serif; font-size: .92rem; outline: none;
+  transition: border-color .2s;
+}
+.field-input:focus { border-color: var(--accent); }
+.field-input::placeholder { color: var(--muted); }
+
+/* بطاقات النشاط */
+.activity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: 1rem; }
+.ac-full { grid-column: 1 / -1; }
+.activity-card {
+  border: 2px solid var(--border); border-radius: 16px;
+  padding: 1.2rem .9rem; cursor: pointer; text-align: center;
+  background: var(--bg3); transition: all .22s;
+}
+.activity-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.activity-card.selected { border-color: var(--accent); background: var(--accent-bg); }
+.ac-icon {
+  width: 52px; height: 52px; border-radius: 15px;
+  margin: 0 auto .65rem; display: flex;
+  align-items: center; justify-content: center; font-size: 1.55rem;
+}
+.ac-name { font-weight: 800; font-size: .88rem; margin-bottom: .2rem; }
+.ac-desc { font-size: .7rem; color: var(--muted); line-height: 1.65; }
+
+/* Progress / Setup */
+.pbar-wrap { height: 6px; background: var(--bg4); border-radius: 6px; margin: 1rem 0; overflow: hidden; }
+.pbar-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width .45s ease; }
+.setup-progress { margin-top: 1.25rem; }
+.progress-item { display: flex; align-items: center; gap: .7rem; padding: .55rem 0; font-size: .84rem; }
+.pi-icon {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg4); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; color: var(--muted);
+  font-size: .82rem; transition: all .4s;
+}
+.progress-item.done .pi-icon { background: var(--accent); color: #fff; }
+
+/* أزرار */
+.btn { width: 100%; padding: .78rem; border: none; border-radius: var(--radius); font-family: 'Tajawal', sans-serif; font-size: .93rem; font-weight: 700; cursor: pointer; transition: opacity .2s, transform .15s; }
+.btn:active { transform: scale(.98); }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+.btn-primary:hover { opacity: .9; }
+.btn-secondary { background: transparent; border: 1.5px solid var(--border); color: var(--muted); margin-top: .45rem; }
+
+/* ════════════════════════════════
+   التطبيق الرئيسي
+════════════════════════════════ */
+#screen-app { flex-direction: row; align-items: stretch; }
+
+/* الشريط الجانبي */
+.sidebar {
+  width: var(--sidebar); background: var(--bg2);
+  border-left: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  height: 100vh; position: sticky; top: 0;
+  overflow-y: auto; flex-shrink: 0;
+}
+.sb-logo { padding: 1.15rem 1rem; border-bottom: 1px solid var(--border); }
+.sb-biz-name { font-size: .84rem; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sb-activity-badge { font-size: .67rem; color: var(--accent); font-weight: 700; margin-top: .2rem; }
+.sb-nav { flex: 1; padding: .65rem .45rem; }
+.nav-item {
+  display: flex; align-items: center; gap: .6rem;
+  padding: .62rem .85rem; border-radius: 10px;
+  cursor: pointer; color: var(--muted); font-size: .84rem; font-weight: 600;
+  transition: all .18s; margin-bottom: .2rem;
+}
+.nav-item i { width: 18px; text-align: center; font-size: .88rem; }
+.nav-item:hover { background: var(--bg3); color: var(--text); }
+.nav-item.active { background: var(--accent-bg); color: var(--accent); }
+.sb-footer { padding: .7rem 1rem; border-top: 1px solid var(--border); font-size: .7rem; color: var(--muted); }
+
+/* المنطقة الرئيسية */
+.main-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+/* الشريط العلوي */
+.topbar {
+  height: 54px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 1.25rem; gap: 1rem; flex-shrink: 0;
+}
+.topbar-title { font-weight: 800; font-size: .98rem; flex: 1; }
+.topbar-btn {
+  background: var(--bg3); border: 1px solid var(--border);
+  color: var(--text); padding: .38rem .85rem; border-radius: 8px;
+  font-family: 'Tajawal', sans-serif; font-size: .79rem; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: .4rem;
+  transition: background .15s;
+}
+.topbar-btn:hover { background: var(--bg4); }
+.topbar-btn.accent { background: var(--accent); border-color: transparent; color: #fff; }
+
+/* العروض */
+.view { display: none; flex: 1; overflow: hidden; }
+.view.active { display: flex; animation: fade-in .2s ease; }
+
+/* ════════════════════════════════
+   عرض نقطة البيع (POS)
+════════════════════════════════ */
+#view-pos { flex-direction: row; overflow: hidden; }
+
+/* لوحة المنتجات */
+.pos-products { flex: 1; padding: .85rem; overflow-y: auto; display: flex; flex-direction: column; gap: .65rem; }
+.pos-search-bar { display: flex; gap: .5rem; }
+.pos-search {
+  flex: 1; padding: .58rem .9rem;
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: 10px; color: var(--text);
+  font-family: 'Tajawal', sans-serif; font-size: .84rem; outline: none;
+  transition: border-color .2s;
+}
+.pos-search:focus { border-color: var(--accent); }
+.pos-search::placeholder { color: var(--muted); }
+.cats-bar { display: flex; gap: .38rem; overflow-x: auto; padding-bottom: .2rem; }
+.cats-bar::-webkit-scrollbar { height: 0; }
+.cat-chip {
+  flex-shrink: 0; padding: .32rem .85rem; border-radius: 20px;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: .74rem; font-weight: 700; cursor: pointer;
+  color: var(--muted); transition: all .18s; white-space: nowrap;
+}
+.cat-chip.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+.products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: .6rem; }
+.prod-card {
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: 14px; padding: .8rem .7rem;
+  cursor: pointer; text-align: center; transition: all .2s;
+  user-select: none;
+}
+.prod-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.3); }
+.prod-card:active { transform: scale(.96); }
+.prod-icon-wrap {
+  width: 42px; height: 42px; border-radius: 12px;
+  background: var(--accent-bg); display: flex;
+  align-items: center; justify-content: center;
+  margin: 0 auto .45rem; font-size: 1.25rem;
+}
+.prod-name { font-size: .76rem; font-weight: 700; margin-bottom: .3rem; line-height: 1.35; }
+.prod-price { font-size: .83rem; font-weight: 900; color: var(--accent); }
+.prod-barcode { font-size: .6rem; color: var(--muted); margin-top: .12rem; font-family: monospace; }
+
+/* لوحة الكاشير (عربة التسوق) */
+.pos-cart {
+  width: 305px; background: var(--bg2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0;
+}
+.cart-header {
+  padding: .8rem 1rem; border-bottom: 1px solid var(--border);
+  font-weight: 800; font-size: .88rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cart-items { flex: 1; overflow-y: auto; padding: .45rem; }
+.cart-empty {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; height: 100%;
+  color: var(--muted); font-size: .82rem; gap: .45rem; text-align: center;
+}
+.cart-item {
+  display: flex; align-items: center; gap: .45rem;
+  padding: .55rem .45rem; border-radius: 9px;
+  border-bottom: 1px solid var(--border);
+}
+.cart-item:last-child { border-bottom: none; }
+.ci-name { flex: 1; font-size: .78rem; font-weight: 700; line-height: 1.3; }
+.ci-price { font-size: .78rem; color: var(--accent); font-weight: 900; flex-shrink: 0; }
+.qty-ctrl { display: flex; align-items: center; gap: .25rem; flex-shrink: 0; }
+.qty-btn {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--bg4); border: none; color: var(--text);
+  font-size: .85rem; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: background .15s;
+}
+.qty-btn:hover { background: var(--accent-bg); color: var(--accent); }
+.qty-val { font-size: .78rem; font-weight: 700; min-width: 18px; text-align: center; }
+.cart-footer { padding: .8rem 1rem; border-top: 1px solid var(--border); }
+.cart-totals { margin-bottom: .65rem; }
+.ct-row { display: flex; justify-content: space-between; font-size: .78rem; padding: .18rem 0; color: var(--muted); }
+.ct-row.total { font-weight: 900; font-size: .98rem; color: var(--text); border-top: 1px solid var(--border); padding-top: .45rem; margin-top: .3rem; }
+.discount-field { display: flex; gap: .45rem; margin-bottom: .65rem; }
+.disc-input {
+  flex: 1; padding: .48rem .75rem;
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-family: 'Tajawal', sans-serif; font-size: .8rem; outline: none;
+}
+.disc-input:focus { border-color: var(--accent); }
+.pay-btns { display: flex; gap: .45rem; }
+.pay-btn {
+  flex: 1; padding: .68rem; border: none; border-radius: 10px;
+  font-family: 'Tajawal', sans-serif; font-size: .83rem; font-weight: 800;
+  cursor: pointer; transition: opacity .18s; display: flex;
+  align-items: center; justify-content: center; gap: .4rem;
+}
+.pay-btn-cash { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; }
+.pay-btn-cash:hover { opacity: .9; }
+.pay-btn-card { background: var(--bg3); border: 1.5px solid var(--border); color: var(--text); }
+.pay-btn-card:hover { background: var(--bg4); }
+
+/* ════════════════════════════════
+   عرض إدارة المنتجات
+════════════════════════════════ */
+#view-products { flex-direction: column; padding: 1.15rem; overflow-y: auto; gap: .75rem; }
+.view-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .25rem; flex-wrap: wrap; gap: .5rem; }
+.view-title { font-size: 1.05rem; font-weight: 900; }
+.products-table { width: 100%; border-collapse: collapse; }
+.products-table th, .products-table td { padding: .65rem .8rem; text-align: right; font-size: .8rem; border-bottom: 1px solid var(--border); }
+.products-table th { color: var(--muted); font-weight: 700; background: var(--bg2); position: sticky; top: 0; }
+.products-table tr:hover td { background: rgba(255,255,255,.03); }
+.tbl-actions { display: flex; gap: .35rem; }
+.tbl-btn { padding: .28rem .55rem; border-radius: 6px; background: var(--bg4); border: 1px solid var(--border); color: var(--muted); font-size: .73rem; cursor: pointer; font-family: 'Tajawal', sans-serif; transition: all .15s; }
+.tbl-btn:hover { color: var(--text); border-color: var(--accent); }
+.tbl-btn.danger:hover { color: #ef4444; border-color: #ef4444; }
+
+/* ════════════════════════════════
+   عرض التقارير
+════════════════════════════════ */
+#view-reports { flex-direction: column; padding: 1.15rem; overflow-y: auto; gap: 1rem; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: .7rem; }
+.kpi-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 1.05rem; }
+.kpi-label { font-size: .7rem; color: var(--muted); font-weight: 700; margin-bottom: .4rem; }
+.kpi-value { font-size: 1.45rem; font-weight: 900; }
+.kpi-sub { font-size: .7rem; color: var(--muted); margin-top: .2rem; }
+.section-title { font-size: .88rem; font-weight: 800; margin-bottom: .65rem; }
+.sales-list { display: flex; flex-direction: column; gap: .45rem; }
+.sale-row { display: flex; align-items: center; gap: .85rem; padding: .6rem .8rem; background: var(--bg2); border-radius: 10px; border: 1px solid var(--border); font-size: .79rem; }
+.sale-id { font-family: monospace; color: var(--muted); font-size: .7rem; }
+.sale-amount { font-weight: 900; color: var(--accent); margin-right: auto; }
+.sale-method { font-size: .7rem; background: var(--bg4); padding: .18rem .5rem; border-radius: 6px; color: var(--muted); }
+
+/* ════════════════════════════════
+   عرض الإعدادات
+════════════════════════════════ */
+#view-settings { flex-direction: column; padding: 1.15rem; overflow-y: auto; gap: .65rem; }
+.settings-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.ss-header { padding: .85rem 1.2rem; border-bottom: 1px solid var(--border); font-weight: 800; font-size: .86rem; }
+.ss-row { display: flex; align-items: center; justify-content: space-between; padding: .72rem 1.2rem; border-bottom: 1px solid var(--border); font-size: .83rem; }
+.ss-row:last-child { border-bottom: none; }
+.ss-label { color: var(--muted); font-size: .79rem; }
+.ss-val { font-weight: 700; }
+.reset-btn { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); color: #ef4444; padding: .45rem 1.1rem; border-radius: 8px; font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer; font-size: .79rem; transition: background .15s; }
+.reset-btn:hover { background: rgba(239,68,68,.2); }
+
+/* ════════════════════════════════
+   الإيصال (Modal)
+════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.6);
+  display: none; align-items: center; justify-content: center;
+  z-index: 9000; backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.receipt-box {
+  background: #fff; color: #111; border-radius: 16px;
+  padding: 1.75rem; width: 320px; max-width: 95vw;
+  font-family: 'Tajawal', sans-serif; direction: rtl;
+}
+.r-header { text-align: center; border-bottom: 1.5px dashed #ddd; padding-bottom: .9rem; margin-bottom: .9rem; }
+.r-biz { font-size: 1.05rem; font-weight: 900; }
+.r-date { font-size: .72rem; color: #777; margin-top: .2rem; }
+.r-items { font-size: .8rem; }
+.r-item { display: flex; justify-content: space-between; padding: .28rem 0; border-bottom: 1px solid #f2f2f2; }
+.r-total { display: flex; justify-content: space-between; font-weight: 900; font-size: .98rem; margin-top: .7rem; border-top: 2px solid #111; padding-top: .5rem; }
+.r-footer { text-align: center; margin-top: .9rem; font-size: .7rem; color: #999; }
+.r-actions { display: flex; gap: .45rem; margin-top: .9rem; }
+.r-btn { flex: 1; padding: .58rem; border-radius: 8px; border: none; font-family: 'Tajawal', sans-serif; font-weight: 700; cursor: pointer; font-size: .83rem; }
+.r-btn-print { background: #111; color: #fff; }
+.r-btn-close { background: #f0f0f0; color: #444; }
+
+/* ════════════════════════════════
+   Modal إضافة/تعديل منتج
+════════════════════════════════ */
+.modal-box {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 20px; padding: 1.85rem; width: 420px; max-width: 95vw;
+}
+.modal-title { font-size: .98rem; font-weight: 900; margin-bottom: 1.1rem; }
+
+/* ════════════════════════════════
+   Toast
+════════════════════════════════ */
+#toast-container {
+  position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%);
+  z-index: 99999; display: flex; flex-direction: column; gap: .45rem; align-items: center; pointer-events: none;
+}
+.toast {
+  background: rgba(26,34,53,.96); border: 1px solid var(--border);
+  color: var(--text); padding: .62rem 1.4rem; border-radius: 30px;
+  font-size: .83rem; font-weight: 600; white-space: nowrap;
+  backdrop-filter: blur(8px); animation: toast-in .28s ease;
+}
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ════════════════════════════════
+   Scrollbar
+════════════════════════════════ */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 10px; }
+
+/* ════════════════════════════════
+   طباعة الإيصال
+════════════════════════════════ */
+@media print {
+  body > *:not(#modal-receipt) { display: none !important; }
+  #modal-receipt { display: block !important; background: none !important; position: static !important; padding: 0 !important; }
+  .receipt-box { box-shadow: none !important; border-radius: 0 !important; width: 100% !important; }
+  .r-actions { display: none !important; }
+}
+
+/* ════════════════════════════════
+   Responsive
+════════════════════════════════ */
+@media (max-width: 820px) {
+  :root { --sidebar: 210px; }
+  .products-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  .pos-cart { width: 265px; }
+}
+@media (max-width: 600px) {
+  #screen-app { flex-direction: column; }
+  .sidebar { width: 100%; height: 56px; flex-direction: row; position: fixed; bottom: 0; z-index: 100; border-left: none; border-top: 1px solid var(--border); }
+  .sb-logo, .sb-footer { display: none; }
+  .sb-nav { display: flex; flex-direction: row; padding: 0 .5rem; align-items: center; overflow-x: auto; }
+  .nav-item { padding: .5rem .7rem; font-size: .72rem; flex-direction: column; gap: .2rem; border-radius: 8px; }
+  .nav-item span { display: none; }
+  .main-area { padding-bottom: 56px; }
+  #view-pos { flex-direction: column; }
+  .pos-cart { width: 100%; height: 260px; border-right: none; border-top: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     شاشة البداية
+═══════════════════════════════════════════ -->
+<div class="screen active" id="screen-splash">
+  <div class="splash-logo"><i class="fa-solid fa-rocket"></i></div>
+  <div class="splash-title">جنان برو</div>
+  <div class="splash-sub">نظام إدارة الأعمال الذكي</div>
+  <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  <div id="splash-msg">جاري التحضير...</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     شاشة الإعداد (Onboarding)
+═══════════════════════════════════════════ -->
+<div class="screen" id="screen-onboard">
+  <div class="onboard-card">
+
+    <!-- شعار -->
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div style="display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:15px;background:linear-gradient(135deg,#4f46e5,#7c3aed)">
+        <i class="fa-solid fa-rocket" style="color:#fff;font-size:1.25rem"></i>
+      </div>
+      <div style="font-size:1.05rem;font-weight:900;margin-top:.5rem">جنان برو <span style="color:var(--muted);font-weight:500">ERP</span></div>
+    </div>
+
+    <!-- شريط الخطوات -->
+    <div class="steps-bar">
+      <div class="step-dot done" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <!-- الخطوة 1: معلومات المنشأة -->
+    <div class="onboard-step active" id="ob-step-1">
+      <h2 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">معلومات منشأتك</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:1.15rem">أدخل بيانات المنشأة لبدء إعداد نظامك المخصص</p>
+      <div class="field-group">
+        <label class="field-label">اسم المنشأة *</label>
+        <input class="field-input" type="text" id="f-biz-name" placeholder="مثال: سوبرماركت الوفاء" maxlength="60">
+      </div>
+      <div class="field-group">
+        <label class="field-label">اسم المسؤول *</label>
+        <input class="field-input" type="text" id="f-owner" placeholder="الاسم الكامل" maxlength="50">
+      </div>
+      <div class="field-group">
+        <label class="field-label">رقم الجوال</label>
+        <input class="field-input" type="tel" id="f-phone" placeholder="05XXXXXXXX" maxlength="15">
+      </div>
+      <button class="btn btn-primary" onclick="obNext(1)">التالي <i class="fa-solid fa-arrow-left" style="margin-right:.35rem"></i></button>
+    </div>
+
+    <!-- الخطوة 2: اختيار النشاط -->
+    <div class="onboard-step" id="ob-step-2">
+      <h2 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">اختر نشاطك التجاري</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.85rem">يتكيف النظام بالكامل مع نشاطك — المنتجات والأدوات والتصميم</p>
+
+      <div class="activity-grid">
+        <div class="activity-card" id="ac-supermarket" onclick="selectActivity('supermarket')">
+          <div class="ac-icon" style="background:linear-gradient(135deg,#059669,#10b981)">🛒</div>
+          <div class="ac-name">سوبرماركت وتموين</div>
+          <div class="ac-desc">مواد غذائية · باركود<br>أكثر من 5,000 منتج جاهز</div>
+        </div>
+        <div class="activity-card" id="ac-restaurant" onclick="selectActivity('restaurant')">
+          <div class="ac-icon" style="background:linear-gradient(135deg,#ea580c,#f97316)">🍽️</div>
+          <div class="ac-name">مطعم وكافيه</div>
+          <div class="ac-desc">قائمة طعام · طاولات<br>طلبات وفواتير فورية</div>
+        </div>
+        <div class="activity-card ac-full" id="ac-salon" onclick="selectActivity('salon')">
+          <div style="display:flex;align-items:center;gap:1rem">
+            <div class="ac-icon" style="background:linear-gradient(135deg,#e11d48,#f43f5e);flex-shrink:0;margin:0">💄</div>
+            <div style="text-align:right">
+              <div class="ac-name">صالون نسائي وتجميل</div>
+              <div class="ac-desc">خدمات تجميل · مواعيد · عملاء · فواتير احترافية</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.45rem;margin-top:1.15rem">
+        <button class="btn btn-secondary" onclick="obBack()" style="width:auto;padding:.72rem 1.1rem;margin:0"><i class="fa-solid fa-arrow-right"></i></button>
+        <button class="btn btn-primary" onclick="obNext(2)">التالي <i class="fa-solid fa-arrow-left" style="margin-right:.35rem"></i></button>
+      </div>
+    </div>
+
+    <!-- الخطوة 3: الإعداد -->
+    <div class="onboard-step" id="ob-step-3">
+      <h2 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">جاري إعداد نظامك</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:.85rem">يتم تحميل المنتجات والإعدادات المخصصة لنشاطك</p>
+      <div class="pbar-wrap"><div class="pbar-fill" id="setup-bar" style="width:0%"></div></div>
+      <div class="setup-progress">
+        <div class="progress-item" id="si-1"><div class="pi-icon"><i class="fa-solid fa-gear"></i></div><span>إعداد البيئة الأساسية للنظام</span></div>
+        <div class="progress-item" id="si-2"><div class="pi-icon"><i class="fa-solid fa-box"></i></div><span id="si-2-label">تحميل قاعدة المنتجات</span></div>
+        <div class="progress-item" id="si-3"><div class="pi-icon"><i class="fa-solid fa-tags"></i></div><span>ضبط الفئات والأسعار والباركود</span></div>
+        <div class="progress-item" id="si-4"><div class="pi-icon"><i class="fa-solid fa-check-circle"></i></div><span>النظام جاهز للاستخدام ✓</span></div>
+      </div>
+    </div>
+
+  </div><!-- /onboard-card -->
+</div><!-- /screen-onboard -->
+
+<!-- ═══════════════════════════════════════════
+     التطبيق الرئيسي
+═══════════════════════════════════════════ -->
+<div class="screen" id="screen-app">
+
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div style="display:flex;align-items:center;gap:.6rem">
+        <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i class="fa-solid fa-rocket" style="color:#fff;font-size:.82rem"></i>
+        </div>
+        <div>
+          <div class="sb-biz-name" id="sb-biz-name">المنشأة</div>
+          <div class="sb-activity-badge" id="sb-activity-label">النشاط</div>
+        </div>
+      </div>
+    </div>
+    <nav class="sb-nav" id="sb-nav"><!-- ينشأ ديناميكياً --></nav>
+    <div class="sb-footer">
+      <div style="font-weight:700;color:var(--text);margin-bottom:.2rem">جنان برو · v1.0</div>
+      <div>نظام إدارة ذكي للأعمال السعودية</div>
+    </div>
+  </aside>
+
+  <!-- المنطقة الرئيسية -->
+  <div class="main-area">
+
+    <!-- الشريط العلوي -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">نقطة البيع</div>
+      <div id="topbar-time" style="font-size:.76rem;color:var(--muted)"></div>
+      <button class="topbar-btn" onclick="erpClearCart()"><i class="fa-solid fa-trash"></i> مسح الطلب</button>
+    </div>
+
+    <!-- ─── عرض نقطة البيع ─── -->
+    <div class="view active" id="view-pos">
+      <!-- الكاشير — يسار -->
+      <div class="pos-cart">
+        <div class="cart-header">
+          <span><i class="fa-solid fa-cart-shopping" style="color:var(--accent);margin-left:.4rem"></i>الطلب الحالي</span>
+          <span id="cart-count" style="font-size:.73rem;color:var(--muted)">0 صنف</span>
+        </div>
+        <div class="cart-items" id="cart-items">
+          <div class="cart-empty" id="cart-empty-msg">
+            <i class="fa-solid fa-cart-shopping" style="font-size:2rem;color:var(--bg4)"></i>
+            <span>لا يوجد أصناف في الطلب</span>
+            <span style="font-size:.71rem">اضغط على أي منتج لإضافته</span>
+          </div>
+        </div>
+        <div class="cart-footer">
+          <div class="discount-field">
+            <input type="number" class="disc-input" id="discount-input" placeholder="خصم (ريال)" min="0" step="0.01">
+          </div>
+          <div class="cart-totals">
+            <div class="ct-row"><span>المجموع قبل الخصم</span><span id="ct-subtotal">0.00 ر</span></div>
+            <div class="ct-row"><span>الخصم</span><span id="ct-discount" style="color:#ef4444">0.00 ر−</span></div>
+            <div class="ct-row"><span>ضريبة القيمة المضافة 15%</span><span id="ct-vat">0.00 ر</span></div>
+            <div class="ct-row total"><span>الإجمالي النهائي</span><span id="ct-total">0.00 ر</span></div>
+          </div>
+          <div class="pay-btns">
+            <button class="pay-btn pay-btn-cash" onclick="erpCheckout('نقد')"><i class="fa-solid fa-money-bill-wave"></i> نقد</button>
+            <button class="pay-btn pay-btn-card" onclick="erpCheckout('بطاقة')"><i class="fa-solid fa-credit-card"></i> بطاقة</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- المنتجات — يمين -->
+      <div class="pos-products">
+        <div class="pos-search-bar">
+          <input class="pos-search" type="text" id="pos-search" placeholder="ابحث عن منتج أو خدمة..." oninput="erpFilterProducts()">
+          <button class="topbar-btn" onclick="erpFilterProducts()"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="cats-bar" id="cats-bar"><!-- الفئات ديناميكية --></div>
+        <div class="products-grid" id="products-grid"><!-- المنتجات ديناميكية --></div>
+      </div>
+    </div>
+
+    <!-- ─── عرض إدارة المنتجات ─── -->
+    <div class="view" id="view-products">
+      <div class="view-header">
+        <div class="view-title" id="vp-title">إدارة المنتجات</div>
+        <div style="display:flex;gap:.45rem;flex-wrap:wrap">
+          <input class="pos-search" type="text" id="prod-mgmt-search" placeholder="بحث في المنتجات..." oninput="erpRenderProductsTable()" style="width:190px">
+          <button class="topbar-btn accent" onclick="openAddProductModal()"><i class="fa-solid fa-plus"></i> إضافة جديد</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;flex:1">
+        <table class="products-table" id="products-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>الفئة</th>
+              <th>السعر</th>
+              <th>الباركود</th>
+              <th>الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="products-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ─── عرض التقارير ─── -->
+    <div class="view" id="view-reports">
+      <div style="font-size:1.03rem;font-weight:900;margin-bottom:.75rem">لوحة التقارير</div>
+      <div class="kpi-grid" id="report-kpis"></div>
+      <div style="margin-top:.85rem">
+        <div class="section-title">آخر المبيعات</div>
+        <div class="sales-list" id="report-sales-list"></div>
+      </div>
+    </div>
+
+    <!-- ─── عرض الإعدادات ─── -->
+    <div class="view" id="view-settings">
+      <div class="settings-section">
+        <div class="ss-header">معلومات المنشأة</div>
+        <div class="ss-row"><span>اسم المنشأة</span><span class="ss-val" id="ss-biz-name">—</span></div>
+        <div class="ss-row"><span>المسؤول</span><span class="ss-val" id="ss-owner">—</span></div>
+        <div class="ss-row"><span>الجوال</span><span class="ss-val" id="ss-phone">—</span></div>
+        <div class="ss-row"><span>النشاط</span><span class="ss-val" id="ss-activity">—</span></div>
+        <div class="ss-row"><span>تاريخ التسجيل</span><span class="ss-val" id="ss-date">—</span></div>
+      </div>
+      <div class="settings-section">
+        <div class="ss-header">إعدادات النظام</div>
+        <div class="ss-row"><span>ضريبة القيمة المضافة</span><span class="ss-val" style="color:var(--accent)">15%</span></div>
+        <div class="ss-row"><span>العملة</span><span class="ss-val">ريال سعودي (ر)</span></div>
+        <div class="ss-row"><span>الحفظ التلقائي</span><span class="ss-val" style="color:#10b981">مفعّل</span></div>
+      </div>
+      <div class="settings-section">
+        <div class="ss-header" style="color:#ef4444">منطقة الخطر</div>
+        <div class="ss-row">
+          <span class="ss-label">مسح سجلات المبيعات فقط</span>
+          <button class="reset-btn" onclick="erpResetSales()">مسح المبيعات</button>
+        </div>
+        <div class="ss-row">
+          <span class="ss-label">إعادة ضبط النظام بالكامل</span>
+          <button class="reset-btn" onclick="erpFactoryReset()">إعادة الضبط الكامل</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-area -->
+</div><!-- /screen-app -->
+
+<!-- ════════ Modal: الإيصال ════════ -->
+<div class="modal-overlay" id="modal-receipt">
+  <div class="receipt-box" id="receipt-content"></div>
+</div>
+
+<!-- ════════ Modal: إضافة/تعديل منتج ════════ -->
+<div class="modal-overlay" id="modal-product">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-product-title">إضافة منتج جديد</div>
+    <input type="hidden" id="edit-product-id">
+    <div class="field-group">
+      <label class="field-label">الاسم *</label>
+      <input class="field-input" type="text" id="mp-name" placeholder="اسم المنتج أو الخدمة">
+    </div>
+    <div class="field-group">
+      <label class="field-label">الفئة *</label>
+      <input class="field-input" type="text" id="mp-cat" placeholder="مثال: خضروات · مشروبات · مشويات">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+      <div class="field-group">
+        <label class="field-label">السعر (ريال) *</label>
+        <input class="field-input" type="number" id="mp-price" placeholder="0.00" min="0" step="0.01">
+      </div>
+      <div class="field-group">
+        <label class="field-label">الأيقونة</label>
+        <input class="field-input" type="text" id="mp-icon" placeholder="📦" maxlength="4">
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">الباركود (اختياري)</label>
+      <input class="field-input" type="text" id="mp-barcode" placeholder="اتركه فارغاً للتوليد التلقائي">
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:.35rem">
+      <button class="btn btn-primary" onclick="saveProduct()" style="width:auto;flex:1">حفظ</button>
+      <button class="btn btn-secondary" onclick="closeModal('modal-product')" style="width:auto;padding:.75rem 1.2rem;margin:0">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ Toast ════════ -->
+<div id="toast-container"></div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════════════════════════
+   JENAN PRO ERP — Business Logic Engine
+   ──────────────────────────────────────────────────────────────────
+   بنية التطبيق: SPA بملف واحد، بيانات محفوظة في localStorage
+   الأنشطة المدعومة: supermarket | restaurant | salon
+   نسخة البروتوكول: 1.0 (أبريل 2026)
+
+   مفاتيح localStorage:
+     jnerp_session    — بيانات تسجيل المنشأة
+     jnerp_products   — مصفوفة المنتجات/الخدمات
+     jnerp_sales      — سجل المبيعات (أحدث 500)
+
+   هيكل المنتج:
+   { id:string, name:string, category:string, price:number, barcode:string, icon:string }
+
+   هيكل عملية البيع:
+   { id:string, items:[{name,price,qty}], subtotal:number, discount:number,
+     vat:number, total:number, method:string, createdAt:ISO }
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════════════════════════
+   إعدادات الأنشطة — البيانات الجوهرية لكل نشاط تجاري
+   ══════════════════════════════════════════════════════════════════ */
+const ACTIVITY_CONFIG = {
+
+  /* ─── سوبرماركت وتموين ─── */
+  supermarket: {
+    label: 'سوبرماركت وتموين',
+    icon: '🛒',
+    color: '#10b981',
+    color2: '#059669',
+    viewTitle: {
+      pos: 'كاشير نقطة البيع',
+      products: 'إدارة المنتجات',
+      reports: 'تقارير المبيعات',
+      settings: 'الإعدادات',
+    },
+    nav: [
+      { id: 'pos',      icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
+      { id: 'products', icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
+      { id: 'reports',  icon: 'fa-chart-line',     label: 'التقارير'           },
+      { id: 'settings', icon: 'fa-gear',           label: 'الإعدادات'          },
+    ],
+    seedProducts: [
+      /* خضروات وفواكه */
+      { id:'sm001', name:'طماطم طازجة',       category:'خضروات وفواكه',  price:5.50,  barcode:'6281234000001', icon:'🍅' },
+      { id:'sm002', name:'خيار محلي',          category:'خضروات وفواكه',  price:3.00,  barcode:'6281234000002', icon:'🥒' },
+      { id:'sm003', name:'بصل أبيض (كيلو)',   category:'خضروات وفواكه',  price:2.50,  barcode:'6281234000003', icon:'🧅' },
+      { id:'sm004', name:'بطاطس (كيلو)',       category:'خضروات وفواكه',  price:4.00,  barcode:'6281234000004', icon:'🥔' },
+      { id:'sm005', name:'موز (كيلو)',         category:'خضروات وفواكه',  price:7.00,  barcode:'6281234000005', icon:'🍌' },
+      { id:'sm006', name:'تفاح أحمر (كيلو)',  category:'خضروات وفواكه',  price:9.50,  barcode:'6281234000006', icon:'🍎' },
+      { id:'sm007', name:'برتقال (كيلو)',      category:'خضروات وفواكه',  price:6.00,  barcode:'6281234000007', icon:'🍊' },
+      { id:'sm008', name:'عنب أخضر (كيلو)',   category:'خضروات وفواكه',  price:14.00, barcode:'6281234000008', icon:'🍇' },
+      { id:'sm009', name:'رمان (كيلو)',        category:'خضروات وفواكه',  price:11.00, barcode:'6281234000009', icon:'🍎' },
+      /* ألبان ومشتقات */
+      { id:'sm010', name:'حليب نادك (1 لتر)', category:'ألبان ومشتقات',  price:5.75,  barcode:'6281234000010', icon:'🥛' },
+      { id:'sm011', name:'زبادي طبيعي',       category:'ألبان ومشتقات',  price:3.25,  barcode:'6281234000011', icon:'🍦' },
+      { id:'sm012', name:'جبن شيدر شرائح',    category:'ألبان ومشتقات',  price:18.50, barcode:'6281234000012', icon:'🧀' },
+      { id:'sm013', name:'زبدة نادك 200 جم',  category:'ألبان ومشتقات',  price:8.00,  barcode:'6281234000013', icon:'🧈' },
+      { id:'sm014', name:'كريمة طبخ',         category:'ألبان ومشتقات',  price:6.50,  barcode:'6281234000014', icon:'🥛' },
+      { id:'sm015', name:'لبن رائب (لتر)',    category:'ألبان ومشتقات',  price:4.50,  barcode:'6281234000015', icon:'🥛' },
+      /* مشروبات */
+      { id:'sm020', name:'ماء صافي (1.5 لتر)',category:'مشروبات',         price:1.50,  barcode:'6281234000020', icon:'💧' },
+      { id:'sm021', name:'عصير أليف برتقال',  category:'مشروبات',         price:4.50,  barcode:'6281234000021', icon:'🧃' },
+      { id:'sm022', name:'كوكاكولا 330 مل',   category:'مشروبات',         price:2.50,  barcode:'6281234000022', icon:'🥤' },
+      { id:'sm023', name:'بيبسي 330 مل',      category:'مشروبات',         price:2.50,  barcode:'6281234000023', icon:'🥤' },
+      { id:'sm024', name:'شاي ليبتون 100 كيس',category:'مشروبات',         price:14.50, barcode:'6281234000024', icon:'🍵' },
+      { id:'sm025', name:'نسكافيه (200 جم)',   category:'مشروبات',         price:28.00, barcode:'6281234000025', icon:'☕' },
+      { id:'sm026', name:'ريد بول 250 مل',    category:'مشروبات',         price:8.00,  barcode:'6281234000026', icon:'🥤' },
+      /* وجبات خفيفة */
+      { id:'sm030', name:'شيبس ليز كلاسيك',  category:'وجبات خفيفة',    price:5.00,  barcode:'6281234000030', icon:'🍟' },
+      { id:'sm031', name:'بسكويت لوتس',       category:'وجبات خفيفة',    price:12.00, barcode:'6281234000031', icon:'🍪' },
+      { id:'sm032', name:'كيت كات',           category:'وجبات خفيفة',    price:4.50,  barcode:'6281234000032', icon:'🍫' },
+      { id:'sm033', name:'مكسرات مشكلة 200جم',category:'وجبات خفيفة',    price:15.00, barcode:'6281234000033', icon:'🥜' },
+      { id:'sm034', name:'تمر مدينة 400 جم',  category:'وجبات خفيفة',    price:18.00, barcode:'6281234000034', icon:'🌴' },
+      { id:'sm035', name:'بسكويت أوريو',      category:'وجبات خفيفة',    price:6.00,  barcode:'6281234000035', icon:'🍪' },
+      /* بقالة أساسية */
+      { id:'sm040', name:'أرز بسمتي (2 كيلو)',category:'بقالة أساسية',   price:19.00, barcode:'6281234000040', icon:'🍚' },
+      { id:'sm041', name:'سكر أبيض (2 كيلو)', category:'بقالة أساسية',   price:8.50,  barcode:'6281234000041', icon:'🍬' },
+      { id:'sm042', name:'زيت زيتون',         category:'بقالة أساسية',   price:35.00, barcode:'6281234000042', icon:'🫒' },
+      { id:'sm043', name:'معجون طماطم',       category:'بقالة أساسية',   price:4.00,  barcode:'6281234000043', icon:'🍅' },
+      { id:'sm044', name:'دقيق قمح (2 كيلو)', category:'بقالة أساسية',   price:7.50,  barcode:'6281234000044', icon:'🌾' },
+      { id:'sm045', name:'ملح طعام',          category:'بقالة أساسية',   price:2.00,  barcode:'6281234000045', icon:'🧂' },
+      { id:'sm046', name:'سمن نباتي',         category:'بقالة أساسية',   price:14.00, barcode:'6281234000046', icon:'🧈' },
+      { id:'sm047', name:'عدس أحمر (1 كيلو)', category:'بقالة أساسية',   price:8.00,  barcode:'6281234000047', icon:'🫘' },
+      /* منظفات */
+      { id:'sm050', name:'صابون ديتول (يد)',  category:'منظفات ومعقمات', price:9.50,  barcode:'6281234000050', icon:'🧴' },
+      { id:'sm051', name:'معجون كولجيت',      category:'منظفات ومعقمات', price:12.00, barcode:'6281234000051', icon:'🪥' },
+      { id:'sm052', name:'شامبو هيد آند شولدر',category:'منظفات ومعقمات',price:24.00, barcode:'6281234000052', icon:'🚿' },
+      { id:'sm053', name:'منظف أرضيات',      category:'منظفات ومعقمات', price:14.00, barcode:'6281234000053', icon:'🧹' },
+      { id:'sm054', name:'مسحوق غسيل 3 كيلو',category:'منظفات ومعقمات', price:28.00, barcode:'6281234000054', icon:'👕' },
+    ],
+  },
+
+  /* ─── مطاعم وكافيهات ─── */
+  restaurant: {
+    label: 'مطعم وكافيه',
+    icon: '🍽️',
+    color: '#f97316',
+    color2: '#ea580c',
+    viewTitle: {
+      pos: 'الكاشير والطلبات',
+      products: 'إدارة قائمة الطعام',
+      reports: 'تقارير الإيرادات',
+      settings: 'الإعدادات',
+    },
+    nav: [
+      { id: 'pos',      icon: 'fa-utensils',   label: 'الكاشير والطلبات'  },
+      { id: 'products', icon: 'fa-book-open',  label: 'قائمة الطعام'      },
+      { id: 'reports',  icon: 'fa-chart-line', label: 'التقارير'           },
+      { id: 'settings', icon: 'fa-gear',       label: 'الإعدادات'          },
+    ],
+    seedProducts: [
+      /* مشويات */
+      { id:'rs001', name:'دجاج مشوي كامل',    category:'مشويات',           price:35.00, barcode:'', icon:'🍗' },
+      { id:'rs002', name:'كباب مشكل',          category:'مشويات',           price:48.00, barcode:'', icon:'🍖' },
+      { id:'rs003', name:'ستيك لحم',           category:'مشويات',           price:65.00, barcode:'', icon:'🥩' },
+      { id:'rs004', name:'دجاج تكا',           category:'مشويات',           price:42.00, barcode:'', icon:'🍗' },
+      { id:'rs005', name:'لحم مشوي (400 جم)', category:'مشويات',           price:58.00, barcode:'', icon:'🥩' },
+      /* مقبلات وسلطات */
+      { id:'rs010', name:'حمص بالطحينة',       category:'مقبلات وسلطات',   price:12.00, barcode:'', icon:'🫘' },
+      { id:'rs011', name:'تبولة',              category:'مقبلات وسلطات',   price:14.00, barcode:'', icon:'🥗' },
+      { id:'rs012', name:'فتوش',               category:'مقبلات وسلطات',   price:14.00, barcode:'', icon:'🥗' },
+      { id:'rs013', name:'شوربة عدس',          category:'مقبلات وسلطات',   price:10.00, barcode:'', icon:'🍲' },
+      { id:'rs014', name:'فتة دجاج',           category:'مقبلات وسلطات',   price:28.00, barcode:'', icon:'🍛' },
+      { id:'rs015', name:'متبل',               category:'مقبلات وسلطات',   price:12.00, barcode:'', icon:'🍆' },
+      /* وجبات رئيسية */
+      { id:'rs020', name:'مجبوس دجاج',        category:'وجبات رئيسية',    price:38.00, barcode:'', icon:'🍛' },
+      { id:'rs021', name:'برياني لحم',         category:'وجبات رئيسية',    price:52.00, barcode:'', icon:'🍛' },
+      { id:'rs022', name:'كبسة دجاج',          category:'وجبات رئيسية',    price:40.00, barcode:'', icon:'🍲' },
+      { id:'rs023', name:'مقلوبة',             category:'وجبات رئيسية',    price:35.00, barcode:'', icon:'🍲' },
+      { id:'rs024', name:'هريس دجاج',          category:'وجبات رئيسية',    price:30.00, barcode:'', icon:'🍚' },
+      /* مشروبات */
+      { id:'rs030', name:'شاي أحمر',           category:'مشروبات',         price:5.00,  barcode:'', icon:'🍵' },
+      { id:'rs031', name:'قهوة عربية',         category:'مشروبات',         price:8.00,  barcode:'', icon:'☕' },
+      { id:'rs032', name:'عصير ليمون',         category:'مشروبات',         price:12.00, barcode:'', icon:'🍋' },
+      { id:'rs033', name:'كوكاكولا',           category:'مشروبات',         price:5.00,  barcode:'', icon:'🥤' },
+      { id:'rs034', name:'ماء معدني',          category:'مشروبات',         price:2.00,  barcode:'', icon:'💧' },
+      { id:'rs035', name:'لاتيه كريمي',        category:'مشروبات',         price:18.00, barcode:'', icon:'☕' },
+      /* حلويات */
+      { id:'rs040', name:'كنافة',              category:'حلويات',          price:18.00, barcode:'', icon:'🍮' },
+      { id:'rs041', name:'أم علي',             category:'حلويات',          price:20.00, barcode:'', icon:'🥮' },
+      { id:'rs042', name:'مهلبية',             category:'حلويات',          price:12.00, barcode:'', icon:'🍮' },
+      { id:'rs043', name:'تشيز كيك',           category:'حلويات',          price:25.00, barcode:'', icon:'🍰' },
+    ],
+  },
+
+  /* ─── صالون نسائي وتجميل ─── */
+  salon: {
+    label: 'صالون نسائي وتجميل',
+    icon: '💄',
+    color: '#f43f5e',
+    color2: '#e11d48',
+    viewTitle: {
+      pos: 'كاشير الخدمات',
+      products: 'إدارة الخدمات',
+      reports: 'تقارير الإيرادات',
+      settings: 'الإعدادات',
+    },
+    nav: [
+      { id: 'pos',      icon: 'fa-scissors',   label: 'كاشير الخدمات'    },
+      { id: 'products', icon: 'fa-list-check',  label: 'إدارة الخدمات'    },
+      { id: 'reports',  icon: 'fa-chart-line',  label: 'التقارير'          },
+      { id: 'settings', icon: 'fa-gear',        label: 'الإعدادات'         },
+    ],
+    seedProducts: [
+      /* تصفيف الشعر */
+      { id:'sl001', name:'قص شعر + تمشيط',          category:'تصفيف الشعر',       price:60.00,  barcode:'', icon:'✂️' },
+      { id:'sl002', name:'سشوار وتمليس',             category:'تصفيف الشعر',       price:80.00,  barcode:'', icon:'💇' },
+      { id:'sl003', name:'صبغة شعر كاملة',           category:'تصفيف الشعر',       price:180.00, barcode:'', icon:'🎨' },
+      { id:'sl004', name:'هايلايت (بليتش جزئي)',     category:'تصفيف الشعر',       price:220.00, barcode:'', icon:'✨' },
+      { id:'sl005', name:'كيراتين — علاج البروتين',  category:'تصفيف الشعر',       price:350.00, barcode:'', icon:'💆' },
+      { id:'sl006', name:'تجعيد دائم (بيرم)',        category:'تصفيف الشعر',       price:280.00, barcode:'', icon:'〰️' },
+      { id:'sl007', name:'تسريحة سهرة',              category:'تصفيف الشعر',       price:150.00, barcode:'', icon:'👑' },
+      /* العناية بالبشرة */
+      { id:'sl010', name:'تنظيف بشرة عميق',         category:'العناية بالبشرة',   price:120.00, barcode:'', icon:'🌿' },
+      { id:'sl011', name:'ماسك كولاجين',             category:'العناية بالبشرة',   price:90.00,  barcode:'', icon:'💆' },
+      { id:'sl012', name:'مقشر وترطيب كامل',        category:'العناية بالبشرة',   price:80.00,  barcode:'', icon:'✨' },
+      { id:'sl013', name:'جلسة بخار وعلاج',         category:'العناية بالبشرة',   price:70.00,  barcode:'', icon:'🌬️' },
+      /* مانيكير وبديكير */
+      { id:'sl020', name:'مانيكير كلاسيك',           category:'مانيكير وبديكير',   price:60.00,  barcode:'', icon:'💅' },
+      { id:'sl021', name:'بديكير كلاسيك',            category:'مانيكير وبديكير',   price:70.00,  barcode:'', icon:'👣' },
+      { id:'sl022', name:'جل مانيكير',               category:'مانيكير وبديكير',   price:100.00, barcode:'', icon:'💅' },
+      { id:'sl023', name:'إزالة جل',                 category:'مانيكير وبديكير',   price:40.00,  barcode:'', icon:'✂️' },
+      { id:'sl024', name:'مانيكير + بديكير معاً',   category:'مانيكير وبديكير',   price:120.00, barcode:'', icon:'💅' },
+      /* مكياج */
+      { id:'sl030', name:'مكياج سهرة',               category:'مكياج',             price:250.00, barcode:'', icon:'💄' },
+      { id:'sl031', name:'مكياج يومي',               category:'مكياج',             price:120.00, barcode:'', icon:'💄' },
+      { id:'sl032', name:'مكياج عروس',               category:'مكياج',             price:600.00, barcode:'', icon:'👰' },
+      /* الحواجب والرموش */
+      { id:'sl040', name:'تشكيل حواجب (خيط)',       category:'الحواجب والرموش',   price:30.00,  barcode:'', icon:'🪡' },
+      { id:'sl041', name:'هيناء حواجب',              category:'الحواجب والرموش',   price:80.00,  barcode:'', icon:'🌿' },
+      { id:'sl042', name:'تركيب رموش',               category:'الحواجب والرموش',   price:120.00, barcode:'', icon:'👁️' },
+      { id:'sl043', name:'رفع رموش (لفت)',           category:'الحواجب والرموش',   price:150.00, barcode:'', icon:'✨' },
+    ],
+  },
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   حالة التطبيق
+   ══════════════════════════════════════════════════════════════════ */
+const erpState = {
+  session:          null,   // بيانات تسجيل المنشأة
+  products:         [],     // قائمة المنتجات/الخدمات
+  sales:            [],     // سجل عمليات البيع
+  cart:             [],     // الطلب الحالي [{product, qty}]
+  selectedActivity: null,   // النشاط المختار في الإعداد
+  selectedCat:      'الكل',// الفئة المحددة في POS
+};
+
+/* ══════════════════════════════════════════════════════════════════
+   حفظ وتحميل البيانات
+   ══════════════════════════════════════════════════════════════════ */
+
+/** تحميل البيانات من localStorage */
+function erpLoad() {
+  try {
+    erpState.session  = JSON.parse(localStorage.getItem('jnerp_session')  || 'null');
+    erpState.products = JSON.parse(localStorage.getItem('jnerp_products') || '[]');
+    erpState.sales    = JSON.parse(localStorage.getItem('jnerp_sales')    || '[]');
+  } catch(e) { /* بيانات تالفة — ابدأ من جديد */ }
+}
+
+/** حفظ البيانات في localStorage */
+function erpSave() {
+  try {
+    if (erpState.session)  localStorage.setItem('jnerp_session',  JSON.stringify(erpState.session));
+    if (erpState.products) localStorage.setItem('jnerp_products', JSON.stringify(erpState.products));
+    if (erpState.sales)    localStorage.setItem('jnerp_sales',    JSON.stringify(erpState.sales.slice(0, 500)));
+  } catch(e) { /* مساحة ممتلئة */ }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   إدارة الشاشات والعروض
+   ══════════════════════════════════════════════════════════════════ */
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  // تحديث التنقل الجانبي
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const navItem = document.getElementById('nav-' + id);
+  if (navItem) navItem.classList.add('active');
+  // تحديث عنوان الشريط العلوي
+  const cfg = ACTIVITY_CONFIG[erpState.session.activity];
+  document.getElementById('topbar-title').textContent = cfg.viewTitle[id] || id;
+  // تحميل بيانات العرض
+  if (id === 'reports')  erpRenderReports();
+  if (id === 'products') erpRenderProductsTable();
+  if (id === 'settings') erpRenderSettings();
+  // إخفاء زر "مسح الطلب" في غير POS
+  document.querySelector('.topbar-btn').style.display = (id === 'pos') ? '' : 'none';
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Toast
+   ══════════════════════════════════════════════════════════════════ */
+function showToast(msg, dur = 2800) {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), dur);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ساعة الوقت
+   ══════════════════════════════════════════════════════════════════ */
+function updateClock() {
+  const el = document.getElementById('topbar-time');
+  if (el) el.textContent = new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   تدفق الإعداد (Onboarding)
+   ══════════════════════════════════════════════════════════════════ */
+
+function obNext(step) {
+  if (step === 1) {
+    const name  = document.getElementById('f-biz-name').value.trim();
+    const owner = document.getElementById('f-owner').value.trim();
+    if (!name)  { showToast('⚠️ أدخل اسم المنشأة'); return; }
+    if (!owner) { showToast('⚠️ أدخل اسم المسؤول'); return; }
+    goToOBStep(2);
+  } else if (step === 2) {
+    if (!erpState.selectedActivity) { showToast('⚠️ اختر نشاطك التجاري أولاً'); return; }
+    goToOBStep(3);
+    runSetup();
+  }
+}
+
+function obBack() {
+  goToOBStep(1);
+  erpState.selectedActivity = null;
+  document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('selected'));
+}
+
+function goToOBStep(n) {
+  document.querySelectorAll('.onboard-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('ob-step-' + n).classList.add('active');
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('dot-' + i).classList.toggle('done', i <= n);
+  }
+}
+
+function selectActivity(act) {
+  erpState.selectedActivity = act;
+  document.querySelectorAll('.activity-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('ac-' + act).classList.add('selected');
+  // معاينة لون النشاط فوراً
+  const cfg = ACTIVITY_CONFIG[act];
+  document.documentElement.style.setProperty('--accent',    cfg.color);
+  document.documentElement.style.setProperty('--accent2',   cfg.color2);
+  document.documentElement.style.setProperty('--accent-bg', `rgba(${hexToRgbStr(cfg.color)},.12)`);
+}
+
+/** تحويل HEX إلى نص "r,g,b" للاستخدام في rgba() */
+function hexToRgbStr(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r},${g},${b}`;
+}
+
+/** تشغيل انيميشن الإعداد وحفظ البيانات الأولية */
+function runSetup() {
+  const act = erpState.selectedActivity;
+  const cfg = ACTIVITY_CONFIG[act];
+  const bar = document.getElementById('setup-bar');
+  // تخصيص نص خطوة التحميل حسب النشاط
+  const loadLabel = act === 'restaurant' ? 'تحميل قائمة الطعام' : act === 'salon' ? 'تحميل قائمة الخدمات' : 'تحميل قاعدة المنتجات';
+  document.getElementById('si-2-label').textContent = loadLabel;
+
+  const steps = [
+    { id: 'si-1', pct: 25 },
+    { id: 'si-2', pct: 60 },
+    { id: 'si-3', pct: 88 },
+    { id: 'si-4', pct: 100 },
+  ];
+  let i = 0;
+  function nextStep() {
+    if (i >= steps.length) {
+      // حفظ البيانات وتشغيل التطبيق
+      erpState.session = {
+        bizName:      document.getElementById('f-biz-name').value.trim(),
+        owner:        document.getElementById('f-owner').value.trim(),
+        phone:        document.getElementById('f-phone').value.trim(),
+        activity:     act,
+        registeredAt: new Date().toISOString(),
+      };
+      erpState.products = cfg.seedProducts.map(p => ({ ...p }));
+      erpSave();
+      setTimeout(launchApp, 600);
+      return;
+    }
+    const s = steps[i];
+    bar.style.width = s.pct + '%';
+    document.getElementById(s.id).classList.add('done');
+    i++;
+    setTimeout(nextStep, 750);
+  }
+  nextStep();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   تشغيل التطبيق
+   ══════════════════════════════════════════════════════════════════ */
+function launchApp() {
+  const act = erpState.session.activity;
+  const cfg = ACTIVITY_CONFIG[act];
+
+  // تطبيق ألوان النشاط على الجسم
+  document.body.setAttribute('data-activity', act);
+
+  // الشريط الجانبي
+  document.getElementById('sb-biz-name').textContent      = erpState.session.bizName;
+  document.getElementById('sb-activity-label').textContent = cfg.label;
+
+  // بناء قائمة التنقل
+  document.getElementById('sb-nav').innerHTML = cfg.nav.map(item => `
+    <div class="nav-item" id="nav-${item.id}" onclick="showView('${item.id}')">
+      <i class="fa-solid ${item.icon}"></i> ${item.label}
+    </div>
+  `).join('');
+
+  // تهيئة نقطة البيع والانتقال
+  erpInitPOS();
+  showView('pos');
+  showScreen('screen-app');
+
+  // ساعة
+  updateClock();
+  setInterval(updateClock, 30000);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   نقطة البيع — POS
+   ══════════════════════════════════════════════════════════════════ */
+function erpInitPOS() {
+  erpState.selectedCat = 'الكل';
+  erpRenderCategories();
+  erpRenderProducts();
+}
+
+function erpGetCategories() {
+  const cats = [...new Set(erpState.products.map(p => p.category))];
+  return ['الكل', ...cats];
+}
+
+function erpRenderCategories() {
+  const bar  = document.getElementById('cats-bar');
+  const cats = erpGetCategories();
+  bar.innerHTML = cats.map(c =>
+    `<div class="cat-chip ${c === erpState.selectedCat ? 'active' : ''}"
+         onclick="erpSelectCat(this,'${c.replace(/'/g, "\\'")}')">
+       ${c}
+     </div>`
+  ).join('');
+}
+
+function erpSelectCat(el, cat) {
+  erpState.selectedCat = cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  erpRenderProducts();
+}
+
+function erpFilterProducts() {
+  erpRenderProducts();
+}
+
+function erpRenderProducts() {
+  const q    = (document.getElementById('pos-search').value || '').toLowerCase();
+  const cat  = erpState.selectedCat;
+  const grid = document.getElementById('products-grid');
+
+  const filtered = erpState.products.filter(p => {
+    const matchCat = cat === 'الكل' || p.category === cat;
+    const matchQ   = !q || p.name.toLowerCase().includes(q) || (p.barcode || '').includes(q);
+    return matchCat && matchQ;
+  });
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="color:var(--muted);font-size:.82rem;grid-column:1/-1;text-align:center;padding:2.5rem">لا توجد نتائج</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p =>
+    `<div class="prod-card" onclick="erpAddToCart('${p.id}')">
+       <div class="prod-icon-wrap">${p.icon || '📦'}</div>
+       <div class="prod-name">${p.name}</div>
+       <div class="prod-price">${p.price.toFixed(2)} ر</div>
+       ${p.barcode ? `<div class="prod-barcode">${p.barcode}</div>` : ''}
+     </div>`
+  ).join('');
+}
+
+function erpAddToCart(productId) {
+  const prod = erpState.products.find(p => p.id === productId);
+  if (!prod) return;
+  const existing = erpState.cart.find(c => c.product.id === productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    erpState.cart.push({ product: prod, qty: 1 });
+  }
+  erpRenderCart();
+  showToast('+ ' + prod.name);
+}
+
+function erpChangeQty(productId, delta) {
+  const item = erpState.cart.find(c => c.product.id === productId);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) {
+    erpState.cart = erpState.cart.filter(c => c.product.id !== productId);
+  }
+  erpRenderCart();
+}
+
+function erpRenderCart() {
+  const container = document.getElementById('cart-items');
+  const count     = erpState.cart.reduce((s, i) => s + i.qty, 0);
+  document.getElementById('cart-count').textContent = count + ' صنف';
+
+  if (erpState.cart.length === 0) {
+    container.innerHTML = `
+      <div class="cart-empty">
+        <i class="fa-solid fa-cart-shopping" style="font-size:2rem;color:var(--bg4)"></i>
+        <span>لا يوجد أصناف في الطلب</span>
+        <span style="font-size:.71rem">اضغط على أي منتج لإضافته</span>
+      </div>`;
+    erpUpdateTotals();
+    return;
+  }
+
+  container.innerHTML = erpState.cart.map(item =>
+    `<div class="cart-item">
+       <div class="ci-name">${item.product.icon || ''} ${item.product.name}</div>
+       <div class="qty-ctrl">
+         <button class="qty-btn" onclick="erpChangeQty('${item.product.id}',-1)">−</button>
+         <div class="qty-val">${item.qty}</div>
+         <button class="qty-btn" onclick="erpChangeQty('${item.product.id}',1)">+</button>
+       </div>
+       <div class="ci-price">${(item.product.price * item.qty).toFixed(2)} ر</div>
+     </div>`
+  ).join('');
+
+  erpUpdateTotals();
+}
+
+function erpUpdateTotals() {
+  const subtotal  = erpState.cart.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const rawDisc   = parseFloat(document.getElementById('discount-input').value) || 0;
+  const discount  = Math.min(rawDisc, subtotal);
+  const afterDisc = subtotal - discount;
+  const vat       = afterDisc * 0.15;
+  const total     = afterDisc + vat;
+
+  document.getElementById('ct-subtotal').textContent = subtotal.toFixed(2) + ' ر';
+  document.getElementById('ct-discount').textContent = discount.toFixed(2)  + ' ر−';
+  document.getElementById('ct-vat').textContent      = vat.toFixed(2)       + ' ر';
+  document.getElementById('ct-total').textContent    = total.toFixed(2)     + ' ر';
+}
+
+document.getElementById('discount-input').addEventListener('input', erpUpdateTotals);
+
+function erpClearCart() {
+  if (erpState.cart.length === 0) return;
+  erpState.cart = [];
+  document.getElementById('discount-input').value = '';
+  erpRenderCart();
+  showToast('تم مسح الطلب');
+}
+
+function erpCheckout(method) {
+  if (erpState.cart.length === 0) { showToast('⚠️ الطلب فارغ — أضف صنفاً أولاً'); return; }
+
+  const subtotal  = erpState.cart.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const rawDisc   = parseFloat(document.getElementById('discount-input').value) || 0;
+  const discount  = Math.min(rawDisc, subtotal);
+  const afterDisc = subtotal - discount;
+  const vat       = afterDisc * 0.15;
+  const total     = afterDisc + vat;
+
+  const sale = {
+    id:        'INV-' + Date.now(),
+    items:     erpState.cart.map(c => ({ name: c.product.name, price: c.product.price, qty: c.qty })),
+    subtotal, discount, vat, total, method,
+    createdAt: new Date().toISOString(),
+  };
+
+  erpState.sales.unshift(sale);
+  erpSave();
+  erpShowReceipt(sale);
+
+  erpState.cart = [];
+  document.getElementById('discount-input').value = '';
+  erpRenderCart();
+}
+
+function erpShowReceipt(sale) {
+  const biz   = erpState.session.bizName;
+  const date  = new Date(sale.createdAt).toLocaleString('ar-SA');
+  const items = sale.items.map(i =>
+    `<div class="r-item"><span>${i.name} ×${i.qty}</span><span>${(i.price * i.qty).toFixed(2)} ر</span></div>`
+  ).join('');
+
+  document.getElementById('receipt-content').innerHTML = `
+    <div class="r-header">
+      <div class="r-biz">${biz}</div>
+      <div class="r-date">${date}</div>
+      <div style="font-size:.68rem;color:#999;margin-top:.2rem">${sale.id}</div>
+    </div>
+    <div class="r-items">${items}</div>
+    ${sale.discount > 0 ? `<div class="r-item" style="color:#e11d48"><span>خصم</span><span>−${sale.discount.toFixed(2)} ر</span></div>` : ''}
+    <div class="r-item" style="color:#888"><span>ضريبة القيمة المضافة 15%</span><span>${sale.vat.toFixed(2)} ر</span></div>
+    <div class="r-total"><span>الإجمالي</span><span>${sale.total.toFixed(2)} ر</span></div>
+    <div class="r-item" style="font-size:.76rem;color:#888;margin-top:.45rem"><span>طريقة الدفع</span><span>${sale.method}</span></div>
+    <div class="r-footer">شكراً لزيارتكم · جنان برو ERP</div>
+    <div class="r-actions">
+      <button class="r-btn r-btn-print" onclick="window.print()"><i class="fa-solid fa-print" style="margin-left:.3rem"></i>طباعة</button>
+      <button class="r-btn r-btn-close" onclick="closeModal('modal-receipt')">إغلاق</button>
+    </div>
+  `;
+  openModal('modal-receipt');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   إدارة المنتجات / الخدمات
+   ══════════════════════════════════════════════════════════════════ */
+function erpRenderProductsTable() {
+  const q = (document.getElementById('prod-mgmt-search').value || '').toLowerCase();
+  const filtered = erpState.products.filter(p =>
+    !q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)
+  );
+  const cfg = ACTIVITY_CONFIG[erpState.session.activity];
+  document.getElementById('vp-title').textContent = cfg.viewTitle.products + ` (${erpState.products.length})`;
+
+  document.getElementById('products-table-body').innerHTML = filtered.map((p, i) =>
+    `<tr>
+       <td style="color:var(--muted);font-family:monospace">${i + 1}</td>
+       <td><span style="margin-left:.4rem">${p.icon || '📦'}</span>${p.name}</td>
+       <td><span style="background:var(--bg4);padding:.18rem .5rem;border-radius:6px;font-size:.74rem">${p.category}</span></td>
+       <td style="font-weight:700;color:var(--accent)">${p.price.toFixed(2)} ر</td>
+       <td style="font-family:monospace;font-size:.7rem;color:var(--muted)">${p.barcode || '—'}</td>
+       <td>
+         <div class="tbl-actions">
+           <button class="tbl-btn" onclick="openEditProductModal('${p.id}')"><i class="fa-solid fa-pen"></i> تعديل</button>
+           <button class="tbl-btn danger" onclick="deleteProduct('${p.id}')"><i class="fa-solid fa-trash"></i></button>
+         </div>
+       </td>
+     </tr>`
+  ).join('');
+}
+
+function openAddProductModal() {
+  document.getElementById('modal-product-title').textContent = 'إضافة منتج / خدمة جديدة';
+  document.getElementById('edit-product-id').value = '';
+  ['mp-name','mp-cat','mp-price','mp-barcode'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('mp-icon').value = '📦';
+  openModal('modal-product');
+}
+
+function openEditProductModal(productId) {
+  const p = erpState.products.find(x => x.id === productId);
+  if (!p) return;
+  document.getElementById('modal-product-title').textContent = 'تعديل: ' + p.name;
+  document.getElementById('edit-product-id').value = productId;
+  document.getElementById('mp-name').value    = p.name;
+  document.getElementById('mp-cat').value     = p.category;
+  document.getElementById('mp-price').value   = p.price;
+  document.getElementById('mp-barcode').value = p.barcode || '';
+  document.getElementById('mp-icon').value    = p.icon || '📦';
+  openModal('modal-product');
+}
+
+function saveProduct() {
+  const name  = document.getElementById('mp-name').value.trim();
+  const cat   = document.getElementById('mp-cat').value.trim();
+  const price = parseFloat(document.getElementById('mp-price').value);
+  if (!name)              { showToast('⚠️ أدخل اسم المنتج أو الخدمة'); return; }
+  if (!cat)               { showToast('⚠️ أدخل الفئة'); return; }
+  if (isNaN(price) || price < 0) { showToast('⚠️ أدخل سعراً صحيحاً'); return; }
+
+  const editId  = document.getElementById('edit-product-id').value;
+  const barcode = document.getElementById('mp-barcode').value.trim();
+  const icon    = document.getElementById('mp-icon').value.trim() || '📦';
+
+  if (editId) {
+    const idx = erpState.products.findIndex(p => p.id === editId);
+    if (idx !== -1) erpState.products[idx] = { ...erpState.products[idx], name, category: cat, price, barcode, icon };
+  } else {
+    erpState.products.push({ id: 'usr-' + Date.now(), name, category: cat, price, barcode, icon });
+  }
+
+  erpSave();
+  erpRenderProductsTable();
+  erpRenderCategories();
+  erpRenderProducts();
+  closeModal('modal-product');
+  showToast('✅ تم الحفظ بنجاح');
+}
+
+function deleteProduct(productId) {
+  const p = erpState.products.find(x => x.id === productId);
+  if (!p) return;
+  if (!confirm(`هل أنت متأكد من حذف "${p.name}"؟`)) return;
+  erpState.products = erpState.products.filter(x => x.id !== productId);
+  erpSave();
+  erpRenderProductsTable();
+  erpRenderCategories();
+  erpRenderProducts();
+  showToast('تم الحذف');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   التقارير
+   ══════════════════════════════════════════════════════════════════ */
+function erpRenderReports() {
+  const sales      = erpState.sales;
+  const today      = new Date().toDateString();
+  const todaySales = sales.filter(s => new Date(s.createdAt).toDateString() === today);
+  const todayRev   = todaySales.reduce((s, x) => s + x.total, 0);
+  const totalRev   = sales.reduce((s, x) => s + x.total, 0);
+  const avgSale    = sales.length > 0 ? totalRev / sales.length : 0;
+
+  document.getElementById('report-kpis').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">إيرادات اليوم</div>
+      <div class="kpi-value" style="color:var(--accent)">${todayRev.toFixed(2)} <span style="font-size:.88rem">ر</span></div>
+      <div class="kpi-sub">${todaySales.length} فاتورة اليوم</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">إجمالي الإيرادات</div>
+      <div class="kpi-value">${totalRev.toFixed(2)} <span style="font-size:.88rem">ر</span></div>
+      <div class="kpi-sub">${sales.length} فاتورة إجمالاً</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">متوسط الفاتورة</div>
+      <div class="kpi-value">${avgSale.toFixed(2)} <span style="font-size:.88rem">ر</span></div>
+      <div class="kpi-sub">لكل عملية بيع</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">عدد المنتجات / الخدمات</div>
+      <div class="kpi-value">${erpState.products.length}</div>
+      <div class="kpi-sub">في قاعدة البيانات</div>
+    </div>
+  `;
+
+  const list = document.getElementById('report-sales-list');
+  if (sales.length === 0) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:.83rem;text-align:center;padding:2rem">لا توجد مبيعات بعد — ابدأ بتسجيل أول عملية بيع</div>';
+    return;
+  }
+  list.innerHTML = sales.slice(0, 30).map(s => {
+    const d = new Date(s.createdAt).toLocaleDateString('ar-SA');
+    const t = new Date(s.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    const preview = s.items.slice(0, 2).map(i => i.name).join('، ') + (s.items.length > 2 ? ' ...' : '');
+    return `<div class="sale-row">
+      <div>
+        <div style="font-weight:700;font-size:.8rem">${preview}</div>
+        <div class="sale-id">${s.id} · ${d} ${t}</div>
+      </div>
+      <div class="sale-amount">${s.total.toFixed(2)} ر</div>
+      <div class="sale-method">${s.method}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   الإعدادات
+   ══════════════════════════════════════════════════════════════════ */
+function erpRenderSettings() {
+  const sess = erpState.session;
+  const cfg  = ACTIVITY_CONFIG[sess.activity];
+  document.getElementById('ss-biz-name').textContent = sess.bizName;
+  document.getElementById('ss-owner').textContent    = sess.owner;
+  document.getElementById('ss-phone').textContent    = sess.phone || '—';
+  document.getElementById('ss-activity').textContent = cfg.label;
+  document.getElementById('ss-date').textContent     = new Date(sess.registeredAt).toLocaleDateString('ar-SA');
+}
+
+function erpResetSales() {
+  if (!confirm('هل أنت متأكد من حذف جميع سجلات المبيعات؟ لا يمكن التراجع.')) return;
+  erpState.sales = [];
+  erpSave();
+  showToast('✅ تم مسح سجلات المبيعات');
+}
+
+function erpFactoryReset() {
+  if (!confirm('تحذير: سيتم حذف جميع البيانات والعودة لشاشة التسجيل. هل أنت متأكد؟')) return;
+  localStorage.removeItem('jnerp_session');
+  localStorage.removeItem('jnerp_products');
+  localStorage.removeItem('jnerp_sales');
+  window.location.reload();
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   المودال (النوافذ المنبثقة)
+   ══════════════════════════════════════════════════════════════════ */
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// إغلاق بالنقر خارج المودال
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal(this.id);
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════
+   التهيئة — نقطة الدخول الرئيسية
+   ══════════════════════════════════════════════════════════════════ */
+(function init() {
+  erpLoad();
+
+  // رسائل شاشة البداية الدوارة
+  const msgs = ['جاري التحضير...', 'تحميل واجهة المستخدم...', 'جنان برو جاهز ✓'];
+  let mi = 0;
+  const msgEl = document.getElementById('splash-msg');
+  const interval = setInterval(() => {
+    mi = (mi + 1) % msgs.length;
+    if (msgEl) msgEl.textContent = msgs[mi];
+  }, 850);
+
+  // بعد 2.6 ثانية — قرر الوجهة
+  setTimeout(() => {
+    clearInterval(interval);
+    if (erpState.session && erpState.session.activity) {
+      // مستخدم عائد — انتقل مباشرة للتطبيق
+      launchApp();
+    } else {
+      // مستخدم جديد — شاشة الإعداد
+      showScreen('screen-onboard');
+    }
+  }, 2600);
+})();
+</script>
+</body>
+</html>
