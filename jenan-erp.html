@@ -666,11 +666,60 @@ body {
         <div class="ss-row"><span>النشاط</span><span class="ss-val" id="ss-activity">—</span></div>
         <div class="ss-row"><span>تاريخ التسجيل</span><span class="ss-val" id="ss-date">—</span></div>
       </div>
+
+      <!-- ─── إعدادات الضريبة ─── -->
+      <div class="settings-section">
+        <div class="ss-header">ضريبة القيمة المضافة</div>
+        <div class="ss-row" style="flex-wrap:wrap;gap:.5rem">
+          <span>نسبة الضريبة %</span>
+          <input id="ss-vat-rate" type="number" min="0" max="100" step="0.5" value="15"
+            style="width:80px;padding:.35rem .6rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.9rem;text-align:center">
+        </div>
+        <div class="ss-row" style="flex-wrap:wrap;gap:.5rem">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input id="ss-vat-sales" type="checkbox" checked style="width:16px;height:16px;accent-color:var(--accent)">
+            تطبيق الضريبة على المبيعات
+          </label>
+        </div>
+        <div class="ss-row" style="flex-wrap:wrap;gap:.5rem">
+          <label style="display:flex;align-items:center;gap:.5rem;cursor:pointer">
+            <input id="ss-vat-purch" type="checkbox" checked style="width:16px;height:16px;accent-color:var(--accent)">
+            تطبيق الضريبة على المشتريات
+          </label>
+        </div>
+        <div class="ss-row">
+          <button class="btn btn-primary" onclick="saveVatSettings()" style="width:auto;padding:.6rem 1.4rem;margin:0;font-size:.85rem">
+            <i class="fa-solid fa-floppy-disk" style="margin-left:.35rem"></i>حفظ إعدادات الضريبة
+          </button>
+        </div>
+      </div>
+
+      <!-- ─── هامش الربح الجماعي ─── -->
+      <div class="settings-section">
+        <div class="ss-header">تسعير جماعي — هامش الربح</div>
+        <div class="ss-row" style="flex-wrap:wrap;gap:.5rem">
+          <span style="line-height:1.6;color:var(--muted);font-size:.83rem">أدخل نسبة الربح المطلوبة وسيتم تحديث<br>جميع أسعار البيع تلقائياً (مثال: 30 = ربح 30%)</span>
+        </div>
+        <div class="ss-row" style="flex-wrap:wrap;gap:.7rem;align-items:center">
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <input id="ss-margin" type="number" min="0" max="10000" step="0.5" placeholder="30"
+              style="width:100px;padding:.45rem .7rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.95rem;text-align:center">
+            <span style="color:var(--muted);font-size:.85rem">%</span>
+          </div>
+          <button class="btn btn-primary" onclick="applyBulkMargin()" style="width:auto;padding:.6rem 1.4rem;margin:0;font-size:.85rem;background:linear-gradient(135deg,#10b981,#059669)">
+            <i class="fa-solid fa-bolt" style="margin-left:.35rem"></i>طبّق على الكل
+          </button>
+        </div>
+        <div class="ss-row" style="font-size:.76rem;color:var(--muted)">
+          <span>ملاحظة: سيتم حفظ تكلفة كل صنف عند أول تطبيق لهامش الربح لاستخدامها مرجعاً في المستقبل.</span>
+        </div>
+      </div>
+
       <div class="settings-section">
         <div class="ss-header">إعدادات النظام</div>
-        <div class="ss-row"><span>ضريبة القيمة المضافة</span><span class="ss-val" style="color:var(--accent)">15%</span></div>
         <div class="ss-row"><span>العملة</span><span class="ss-val">ريال سعودي (ر)</span></div>
         <div class="ss-row"><span>الحفظ التلقائي</span><span class="ss-val" style="color:#10b981">مفعّل</span></div>
+        <div class="ss-row"><span>وضع العمل</span><span class="ss-val" style="color:#10b981">أوف لاين ✓</span></div>
       </div>
       <div class="settings-section">
         <div class="ss-header" style="color:#ef4444">منطقة الخطر</div>
@@ -682,6 +731,117 @@ body {
           <span class="ss-label">إعادة ضبط النظام بالكامل</span>
           <button class="reset-btn" onclick="erpFactoryReset()">إعادة الضبط الكامل</button>
         </div>
+      </div>
+    </div>
+
+    <!-- ─── عرض المشتريات ─── -->
+    <div class="view" id="view-purchases" style="flex-direction:column;padding:1.15rem;overflow-y:auto;gap:1rem">
+
+      <!-- رفع فاتورة -->
+      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.25rem;display:flex;flex-direction:column;gap:.85rem">
+        <div style="font-weight:900;font-size:.95rem;display:flex;align-items:center;gap:.5rem">
+          <i class="fa-solid fa-file-arrow-up" style="color:var(--accent)"></i> رفع فاتورة مشتريات
+        </div>
+        <div style="display:flex;gap:.65rem;flex-wrap:wrap">
+          <label style="flex:1;min-width:140px;cursor:pointer">
+            <input type="file" id="pur-file-input" accept="image/*,.pdf" style="display:none" onchange="erpHandlePurchaseFile(this)">
+            <div style="border:2px dashed var(--border);border-radius:12px;padding:1.1rem;text-align:center;color:var(--muted);font-size:.83rem;transition:border-color .2s" onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor=''">
+              <i class="fa-solid fa-camera" style="font-size:1.4rem;display:block;margin-bottom:.35rem;color:var(--accent)"></i>
+              تصوير أو اختيار صورة
+            </div>
+          </label>
+          <label style="flex:1;min-width:140px;cursor:pointer">
+            <input type="file" id="pur-pdf-input" accept=".pdf,application/pdf" style="display:none" onchange="erpHandlePurchaseFile(this)">
+            <div style="border:2px dashed var(--border);border-radius:12px;padding:1.1rem;text-align:center;color:var(--muted);font-size:.83rem;transition:border-color .2s" onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor=''">
+              <i class="fa-solid fa-file-pdf" style="font-size:1.4rem;display:block;margin-bottom:.35rem;color:#ef4444"></i>
+              رفع ملف PDF
+            </div>
+          </label>
+        </div>
+        <!-- معاينة الملف -->
+        <div id="pur-preview" style="display:none;border-radius:12px;overflow:hidden;border:1px solid var(--border)"></div>
+      </div>
+
+      <!-- إدخال بيانات الفاتورة -->
+      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem">
+        <div style="font-weight:900;font-size:.95rem;display:flex;align-items:center;gap:.5rem">
+          <i class="fa-solid fa-pen-to-square" style="color:var(--accent)"></i> بيانات الفاتورة
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+          <div>
+            <div style="font-size:.77rem;color:var(--muted);margin-bottom:.3rem">المورّد</div>
+            <input id="pur-supplier" type="text" placeholder="اسم المورد أو الشركة"
+              style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.87rem;box-sizing:border-box">
+          </div>
+          <div>
+            <div style="font-size:.77rem;color:var(--muted);margin-bottom:.3rem">رقم الفاتورة</div>
+            <input id="pur-inv-num" type="text" placeholder="اختياري"
+              style="width:100%;padding:.5rem .75rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.87rem;box-sizing:border-box">
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.84rem">
+            <input id="pur-vat-on" type="checkbox" style="width:15px;height:15px;accent-color:var(--accent)" onchange="erpPurVatToggle()">
+            تشمل ضريبة القيمة المضافة
+          </label>
+          <div id="pur-vat-rate-wrap" style="display:none;align-items:center;gap:.35rem">
+            <span style="font-size:.8rem;color:var(--muted)">نسبة:</span>
+            <input id="pur-vat-pct" type="number" value="15" min="0" max="100" step="0.5"
+              style="width:65px;padding:.3rem .5rem;border-radius:6px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.85rem;text-align:center">
+            <span style="font-size:.8rem;color:var(--muted)">%</span>
+          </div>
+        </div>
+
+        <!-- أصناف الفاتورة -->
+        <div style="font-size:.82rem;font-weight:700;margin-top:.2rem">أصناف الفاتورة</div>
+        <div id="pur-items-list" style="display:flex;flex-direction:column;gap:.45rem"></div>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:.5rem;align-items:end">
+          <div>
+            <div style="font-size:.73rem;color:var(--muted);margin-bottom:.25rem">اسم الصنف</div>
+            <input id="pur-item-name" type="text" placeholder="اسم المنتج أو الخدمة"
+              style="width:100%;padding:.45rem .65rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.84rem;box-sizing:border-box">
+          </div>
+          <div>
+            <div style="font-size:.73rem;color:var(--muted);margin-bottom:.25rem">الكمية</div>
+            <input id="pur-item-qty" type="number" value="1" min="1"
+              style="width:100%;padding:.45rem .5rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.84rem;text-align:center;box-sizing:border-box">
+          </div>
+          <div>
+            <div style="font-size:.73rem;color:var(--muted);margin-bottom:.25rem">سعر الوحدة</div>
+            <input id="pur-item-cost" type="number" min="0" step="0.01" placeholder="0.00"
+              style="width:100%;padding:.45rem .5rem;border-radius:8px;border:1px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.84rem;text-align:center;box-sizing:border-box">
+          </div>
+          <button onclick="erpAddPurchaseItem()"
+            style="padding:.48rem .9rem;border:none;border-radius:8px;background:var(--accent);color:#fff;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap">
+            + إضافة
+          </button>
+        </div>
+
+        <!-- إجمالي -->
+        <div id="pur-totals-box" style="display:none;background:var(--bg4);border-radius:10px;padding:.75rem 1rem;margin-top:.2rem">
+          <div style="display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted);margin-bottom:.3rem">
+            <span>المجموع قبل الضريبة</span><span id="pur-subtotal">0.00 ر</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.84rem;color:var(--muted);margin-bottom:.3rem">
+            <span>ضريبة القيمة المضافة</span><span id="pur-vat-val">0.00 ر</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.98rem;font-weight:900">
+            <span>الإجمالي</span><span id="pur-total-val" style="color:var(--accent)">0.00 ر</span>
+          </div>
+        </div>
+
+        <button onclick="erpSavePurchase()"
+          style="padding:.72rem;border:none;border-radius:10px;background:linear-gradient(135deg,var(--accent),#7c3aed);color:#fff;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.25rem">
+          <i class="fa-solid fa-cloud-arrow-up"></i> حفظ الفاتورة وتحديث المخزون
+        </button>
+      </div>
+
+      <!-- سجل المشتريات -->
+      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.25rem;display:flex;flex-direction:column;gap:.75rem">
+        <div style="font-weight:900;font-size:.95rem;display:flex;align-items:center;gap:.5rem">
+          <i class="fa-solid fa-clock-rotate-left" style="color:var(--accent)"></i> سجل المشتريات
+        </div>
+        <div id="pur-history-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
       </div>
     </div>
 
@@ -739,15 +899,17 @@ body {
     <div class="field-group">
       <label class="field-label">الباركود (اختياري)</label>
       <input class="field-input" type="text" id="mp-barcode" placeholder="اتركه فارغاً للتوليد التلقائي">
-    </div>
-    <div style="display:flex;gap:.5rem;margin-top:.35rem">
-      <button class="btn btn-primary" onclick="saveProduct()" style="width:auto;flex:1">حفظ</button>
-      <button class="btn btn-secondary" onclick="closeModal('modal-product')" style="width:auto;padding:.75rem 1.2rem;margin:0">إلغاء</button>
-    </div>
-  </div>
-</div>
-
-<!-- ════════ Toast ════════ -->
+    </purchases: 'فواتير المشتريات',
+      store: 'متجر البرمجيات',
+      settings: 'الإعدادات',
+    },
+    nav: [
+      { id: 'pos',       icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
+      { id: 'products',  icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
+      { id: 'reports',   icon: 'fa-chart-line',     label: 'التقارير'           },
+      { id: 'purchases', icon: 'fa-file-invoice',   label: 'المشتريات'          },
+      { id: 'store',     icon: 'fa-store',          label: 'متجر البرمجيات'     },
+      { id: 'settings', ═════ -->
 <div id="toast-container"></div>
 
 <script>
@@ -756,9 +918,7 @@ body {
 /* ══════════════════════════════════════════════════════════════════
    JENAN PRO ERP — Business Logic Engine
    ──────────────────────────────────────────────────────────────────
-   بنية التطبيق: SPA بملف واحد، بيانات محفوظة في localStorage
-   الأنشطة المدعومة: supermarket | restaurant | salon
-   نسخة البروتوكول: 1.0 (أبريل 2026)
+   بنية التطبيق: SPA بملف واحد، بيانات محفو
 
    مفاتيح localStorage:
      jnerp_session    — بيانات تسجيل المنشأة
@@ -857,17 +1017,17 @@ const ACTIVITY_CONFIG = {
     color2: '#ea580c',
     viewTitle: {
       pos: 'الكاشير والطلبات',
-      products: 'إدارة قائمة الطعام',
-      reports: 'تقارير الإيرادات',
+      purchases: 'فواتير المشتريات',
       store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
-      { id: 'pos',      icon: 'fa-utensils',   label: 'الكاشير والطلبات'  },
-      { id: 'products', icon: 'fa-book-open',  label: 'قائمة الطعام'      },
-      { id: 'reports',  icon: 'fa-chart-line', label: 'التقارير'           },
-      { id: 'store',    icon: 'fa-store',      label: 'متجر البرمجيات'     },
-      { id: 'settings', icon: 'fa-gear',       label: 'الإعدادات'          },
+      { id: 'pos',       icon: 'fa-utensils',     label: 'الكاشير والطلبات'  },
+      { id: 'products',  icon: 'fa-book-open',    label: 'قائمة الطعام'      },
+      { id: 'reports',   icon: 'fa-chart-line',   label: 'التقارير'           },
+      { id: 'purchases', icon: 'fa-file-invoice', label: 'المشتريات'          },
+      { id: 'store',     icon: 'fa-store',        label: 'متجر البرمجيات'     },
+      { id: 'settings',  icon: 'fa-gear',         label: 'الإعدادات'          },
     ],
     seedProducts: [
       /* مشويات */
@@ -914,15 +1074,17 @@ const ACTIVITY_CONFIG = {
       pos: 'كاشير الخدمات',
       products: 'إدارة الخدمات',
       reports: 'تقارير الإيرادات',
+      purchases: 'فواتير المشتريات',
       store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
-      { id: 'pos',      icon: 'fa-scissors',   label: 'كاشير الخدمات'    },
-      { id: 'products', icon: 'fa-list-check',  label: 'إدارة الخدمات'    },
-      { id: 'reports',  icon: 'fa-chart-line',  label: 'التقارير'          },
-      { id: 'store',    icon: 'fa-store',       label: 'متجر البرمجيات'    },
-      { id: 'settings', icon: 'fa-gear',        label: 'الإعدادات'         },
+      { id: 'pos',       icon: 'fa-scissors',    label: 'كاشير الخدمات'    },
+      { id: 'products',  icon: 'fa-list-check',  label: 'إدارة الخدمات'    },
+      { id: 'reports',   icon: 'fa-chart-line',  label: 'التقارير'          },
+      { id: 'purchases', icon: 'fa-file-invoice',label: 'المشتريات'         },
+      { id: 'store',     icon: 'fa-store',       label: 'متجر البرمجيات'    },
+      { id: 'settings',  icon: 'fa-gear',        label: 'الإعدادات'         },
     ],
     seedProducts: [
       /* تصفيف الشعر */
@@ -964,9 +1126,16 @@ const erpState = {
   session:          null,   // بيانات تسجيل المنشأة
   products:         [],     // قائمة المنتجات/الخدمات
   sales:            [],     // سجل عمليات البيع
+  purchases:        [],     // سجل فواتير المشتريات
   cart:             [],     // الطلب الحالي [{product, qty}]
   selectedActivity: null,   // النشاط المختار في الإعداد
   selectedCat:      'الكل',// الفئة المحددة في POS
+  settings: {               // إعدادات النظام
+    vatSales:     true,     // تفعيل ضريبة المبيعات
+    vatPurchases: true,     // تفعيل ضريبة المشتريات
+    vatRate:      15,       // نسبة الضريبة %
+    profitMargin: 0,        // هامش الربح الافتراضي %
+  },
 };
 
 /* ══════════════════════════════════════════════════════════════════
@@ -976,18 +1145,23 @@ const erpState = {
 /** تحميل البيانات من localStorage */
 function erpLoad() {
   try {
-    erpState.session  = JSON.parse(localStorage.getItem('jnerp_session')  || 'null');
-    erpState.products = JSON.parse(localStorage.getItem('jnerp_products') || '[]');
-    erpState.sales    = JSON.parse(localStorage.getItem('jnerp_sales')    || '[]');
+    erpState.session   = JSON.parse(localStorage.getItem('jnerp_session')   || 'null');
+    erpState.products  = JSON.parse(localStorage.getItem('jnerp_products')  || '[]');
+    erpState.sales     = JSON.parse(localStorage.getItem('jnerp_sales')     || '[]');
+    erpState.purchases = JSON.parse(localStorage.getItem('jnerp_purchases') || '[]');
+    const saved = JSON.parse(localStorage.getItem('jnerp_settings') || 'null');
+    if (saved) Object.assign(erpState.settings, saved);
   } catch(e) { /* بيانات تالفة — ابدأ من جديد */ }
 }
 
 /** حفظ البيانات في localStorage */
 function erpSave() {
   try {
-    if (erpState.session)  localStorage.setItem('jnerp_session',  JSON.stringify(erpState.session));
-    if (erpState.products) localStorage.setItem('jnerp_products', JSON.stringify(erpState.products));
-    if (erpState.sales)    localStorage.setItem('jnerp_sales',    JSON.stringify(erpState.sales.slice(0, 500)));
+    if (erpState.session)   localStorage.setItem('jnerp_session',   JSON.stringify(erpState.session));
+    if (erpState.products)  localStorage.setItem('jnerp_products',  JSON.stringify(erpState.products));
+    if (erpState.sales)     localStorage.setItem('jnerp_sales',     JSON.stringify(erpState.sales.slice(0, 500)));
+    if (erpState.purchases) localStorage.setItem('jnerp_purchases', JSON.stringify(erpState.purchases.slice(0, 500)));
+    localStorage.setItem('jnerp_settings', JSON.stringify(erpState.settings));
   } catch(e) { /* مساحة ممتلئة */ }
 }
 
@@ -1011,10 +1185,11 @@ function showView(id) {
   const cfg = ACTIVITY_CONFIG[erpState.session.activity];
   document.getElementById('topbar-title').textContent = cfg.viewTitle[id] || id;
   // تحميل بيانات العرض
-  if (id === 'reports')  erpRenderReports();
-  if (id === 'products') erpRenderProductsTable();
-  if (id === 'settings') erpRenderSettings();
-  if (id === 'store')    erpRenderStore();
+  if (id === 'reports')   erpRenderReports();
+  if (id === 'products')  erpRenderProductsTable();
+  if (id === 'settings')  erpRenderSettings();
+  if (id === 'store')     erpRenderStore();
+  if (id === 'purchases') erpRenderPurchases();
   // إخفاء زر "مسح الطلب" في غير POS
   document.querySelector('.topbar-btn').style.display = (id === 'pos') ? '' : 'none';
 }
@@ -1278,16 +1453,18 @@ function erpRenderCart() {
 }
 
 function erpUpdateTotals() {
-  const subtotal  = erpState.cart.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const s        = erpState.settings;
+  const subtotal  = erpState.cart.reduce((sum, i) => sum + i.product.price * i.qty, 0);
   const rawDisc   = parseFloat(document.getElementById('discount-input').value) || 0;
   const discount  = Math.min(rawDisc, subtotal);
   const afterDisc = subtotal - discount;
-  const vat       = afterDisc * 0.15;
+  const vatRate   = s.vatSales ? s.vatRate / 100 : 0;
+  const vat       = afterDisc * vatRate;
   const total     = afterDisc + vat;
 
   document.getElementById('ct-subtotal').textContent = subtotal.toFixed(2) + ' ر';
   document.getElementById('ct-discount').textContent = discount.toFixed(2)  + ' ر−';
-  document.getElementById('ct-vat').textContent      = vat.toFixed(2)       + ' ر';
+  document.getElementById('ct-vat').textContent      = vat.toFixed(2)       + ' ر' + (s.vatSales ? ` (${s.vatRate}%)` : ' (معفى)');
   document.getElementById('ct-total').textContent    = total.toFixed(2)     + ' ر';
 }
 
@@ -1304,17 +1481,19 @@ function erpClearCart() {
 function erpCheckout(method) {
   if (erpState.cart.length === 0) { showToast('⚠️ الطلب فارغ — أضف صنفاً أولاً'); return; }
 
-  const subtotal  = erpState.cart.reduce((s, i) => s + i.product.price * i.qty, 0);
+  const s         = erpState.settings;
+  const subtotal  = erpState.cart.reduce((sum, i) => sum + i.product.price * i.qty, 0);
   const rawDisc   = parseFloat(document.getElementById('discount-input').value) || 0;
   const discount  = Math.min(rawDisc, subtotal);
   const afterDisc = subtotal - discount;
-  const vat       = afterDisc * 0.15;
+  const vatRate   = s.vatSales ? s.vatRate / 100 : 0;
+  const vat       = afterDisc * vatRate;
   const total     = afterDisc + vat;
 
   const sale = {
     id:        'INV-' + Date.now(),
     items:     erpState.cart.map(c => ({ name: c.product.name, price: c.product.price, qty: c.qty })),
-    subtotal, discount, vat, total, method,
+    subtotal, discount, vat, vatRate: s.vatRate, vatSales: s.vatSales, total, method,
     createdAt: new Date().toISOString(),
   };
 
@@ -1342,7 +1521,7 @@ function erpShowReceipt(sale) {
     </div>
     <div class="r-items">${items}</div>
     ${sale.discount > 0 ? `<div class="r-item" style="color:#e11d48"><span>خصم</span><span>−${sale.discount.toFixed(2)} ر</span></div>` : ''}
-    <div class="r-item" style="color:#888"><span>ضريبة القيمة المضافة 15%</span><span>${sale.vat.toFixed(2)} ر</span></div>
+    ${sale.vatSales !== false && sale.vat > 0 ? `<div class="r-item" style="color:#888"><span>ضريبة القيمة المضافة ${sale.vatRate || 15}%</span><span>${sale.vat.toFixed(2)} ر</span></div>` : (sale.vat === 0 ? '<div class="r-item" style="color:#888"><span>ضريبة القيمة المضافة</span><span>معفى</span></div>' : '')}
     <div class="r-total"><span>الإجمالي</span><span>${sale.total.toFixed(2)} ر</span></div>
     <div class="r-item" style="font-size:.76rem;color:#888;margin-top:.45rem"><span>طريقة الدفع</span><span>${sale.method}</span></div>
     <div class="r-footer">شكراً لزيارتكم · جنان برو ERP</div>
@@ -1469,7 +1648,158 @@ function erpRenderReports() {
       <div class="kpi-value">${avgSale.toFixed(2)} <span style="font-size:.88rem">ر</span></div>
       <div class="kpi-sub">لكل عملية بيع</div>
     </div>
-    <div class="kpi-card">
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   المشتريات — رفع فواتير ومزامنة المخزون
+   ══════════════════════════════════════════════════════════════════ */
+const _purItems = []; // أصناف الفاتورة المؤقتة
+
+function erpPurVatToggle() {
+  const on = document.getElementById('pur-vat-on').checked;
+  document.getElementById('pur-vat-rate-wrap').style.display = on ? 'flex' : 'none';
+  erpPurCalcTotals();
+}
+
+function erpHandlePurchaseFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const prev = document.getElementById('pur-preview');
+  prev.innerHTML = '';
+  prev.style.display = 'block';
+  if (file.type.startsWith('image/')) {
+    const img = document.createElement('img');
+    img.style.cssText = 'width:100%;max-height:320px;object-fit:contain;display:block;background:#000';
+    img.src = URL.createObjectURL(file);
+    prev.appendChild(img);
+  } else if (file.type === 'application/pdf' || file.name.endsWith('.pdf')) {
+    const embed = document.createElement('embed');
+    embed.type = 'application/pdf';
+    embed.style.cssText = 'width:100%;height:320px;display:block';
+    embed.src = URL.createObjectURL(file);
+    prev.appendChild(embed);
+  }
+  showToast('📎 تم رفع الفاتورة — أدخل الأصناف يدوياً');
+}
+
+function erpAddPurchaseItem() {
+  const name = document.getElementById('pur-item-name').value.trim();
+  const qty  = parseInt(document.getElementById('pur-item-qty').value)  || 1;
+  const cost = parseFloat(document.getElementById('pur-item-cost').value) || 0;
+  if (!name) { showToast('⚠️ أدخل اسم الصنف'); return; }
+  _purItems.push({ name, qty, cost });
+  document.getElementById('pur-item-name').value = '';
+  document.getElementById('pur-item-qty').value  = 1;
+  document.getElementById('pur-item-cost').value = '';
+  erpPurRenderItems();
+  erpPurCalcTotals();
+}
+
+function erpPurRenderItems() {
+  const list = document.getElementById('pur-items-list');
+  if (_purItems.length === 0) { list.innerHTML = ''; return; }
+  list.innerHTML = _purItems.map((it, i) => `
+    <div style="display:flex;align-items:center;justify-content:space-between;background:var(--bg4);border-radius:8px;padding:.45rem .75rem;font-size:.83rem">
+      <span>${it.name}</span>
+      <span style="color:var(--muted)">×${it.qty}</span>
+      <span style="font-weight:700">${(it.cost * it.qty).toFixed(2)} ر</span>
+      <button onclick="_purItems.splice(${i},1);erpPurRenderItems();erpPurCalcTotals()"
+        style="border:none;background:none;color:#ef4444;cursor:pointer;font-size:.9rem;padding:0 .2rem">✕</button>
+    </div>`).join('');
+}
+
+function erpPurCalcTotals() {
+  const subtotal = _purItems.reduce((s, it) => s + it.cost * it.qty, 0);
+  const vatOn  = document.getElementById('pur-vat-on').checked;
+  const vatPct = parseFloat(document.getElementById('pur-vat-pct').value) || 0;
+  const vat    = vatOn ? subtotal * vatPct / 100 : 0;
+  const total  = subtotal + vat;
+  const box    = document.getElementById('pur-totals-box');
+  box.style.display = _purItems.length > 0 ? 'block' : 'none';
+  document.getElementById('pur-subtotal').textContent  = subtotal.toFixed(2) + ' ر';
+  document.getElementById('pur-vat-val').textContent   = vat.toFixed(2) + ' ر' + (vatOn ? ` (${vatPct}%)` : ' (معفى)');
+  document.getElementById('pur-total-val').textContent = total.toFixed(2) + ' ر';
+  return { subtotal, vat, total, vatPct, vatOn };
+}
+
+function erpSavePurchase() {
+  if (_purItems.length === 0) { showToast('⚠️ أضف صنفاً واحداً على الأقل'); return; }
+  const supplier = document.getElementById('pur-supplier').value.trim() || 'مورد غير محدد';
+  const invNum   = document.getElementById('pur-inv-num').value.trim() || ('PUR-' + Date.now());
+  const totals   = erpPurCalcTotals();
+
+  const purchase = {
+    id: invNum, supplier,
+    items: _purItems.map(it => ({ ...it })),
+    subtotal: totals.subtotal, vat: totals.vat, vatPct: totals.vatPct,
+    vatOn: totals.vatOn, total: totals.total,
+    createdAt: new Date().toISOString(),
+  };
+
+  // ── مزامنة المخزون: زيادة الكمية للمنتجات الموجودة / إضافة منتج جديد ──
+  _purItems.forEach(it => {
+    const existing = erpState.products.find(p =>
+      p.name.trim().toLowerCase() === it.name.trim().toLowerCase()
+    );
+    if (existing) {
+      if (existing.stock === undefined) existing.stock = 0;
+      existing.stock += it.qty;
+      // تحديث تكلفة الشراء الأخيرة
+      existing.lastCost = it.cost;
+    } else {
+      // منتج جديد تلقائياً
+      erpState.products.push({
+        id: 'pur-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
+        name: it.name, category: 'مشتريات', price: it.cost,
+        barcode: '', icon: '📦', stock: it.qty, lastCost: it.cost,
+      });
+    }
+  });
+
+  erpState.purchases.unshift(purchase);
+  erpSave();
+
+  // مسح الحقول
+  _purItems.length = 0;
+  erpPurRenderItems();
+  document.getElementById('pur-supplier').value = '';
+  document.getElementById('pur-inv-num').value  = '';
+  document.getElementById('pur-vat-on').checked = false;
+  document.getElementById('pur-vat-rate-wrap').style.display = 'none';
+  document.getElementById('pur-preview').style.display = 'none';
+  document.getElementById('pur-preview').innerHTML = '';
+  erpPurCalcTotals();
+
+  showToast(`✅ تم حفظ الفاتورة ومزامنة ${purchase.items.length} صنف في المخزون`);
+  erpRenderPurchases();
+}
+
+function erpRenderPurchases() {
+  const hist = document.getElementById('pur-history-list');
+  if (!hist) return;
+  if (erpState.purchases.length === 0) {
+    hist.innerHTML = '<div style="color:var(--muted);font-size:.83rem;text-align:center;padding:1.5rem">لا توجد فواتير مشتريات مسجلة بعد</div>';
+    return;
+  }
+  hist.innerHTML = erpState.purchases.slice(0, 30).map(p => {
+    const date = new Date(p.createdAt).toLocaleDateString('ar-SA');
+    return `
+      <div style="background:var(--bg4);border-radius:10px;padding:.7rem 1rem;display:flex;flex-direction:column;gap:.3rem">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-weight:800;font-size:.87rem">${p.supplier}</span>
+          <span style="font-size:.75rem;color:var(--muted)">${date}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)">
+          <span>${p.id} · ${p.items.length} صنف</span>
+          <span style="font-weight:800;color:var(--accent)">${p.total.toFixed(2)} ر</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
       <div class="kpi-label">عدد المنتجات / الخدمات</div>
       <div class="kpi-value">${erpState.products.length}</div>
       <div class="kpi-sub">في قاعدة البيانات</div>
@@ -1502,11 +1832,53 @@ function erpRenderReports() {
 function erpRenderSettings() {
   const sess = erpState.session;
   const cfg  = ACTIVITY_CONFIG[sess.activity];
+  const s    = erpState.settings;
   document.getElementById('ss-biz-name').textContent = sess.bizName;
   document.getElementById('ss-owner').textContent    = sess.owner;
   document.getElementById('ss-phone').textContent    = sess.phone || '—';
   document.getElementById('ss-activity').textContent = cfg.label;
   document.getElementById('ss-date').textContent     = new Date(sess.registeredAt).toLocaleDateString('ar-SA');
+  // إعدادات الضريبة
+  document.getElementById('ss-vat-rate').value    = s.vatRate;
+  document.getElementById('ss-vat-sales').checked = s.vatSales;
+  document.getElementById('ss-vat-purch').checked = s.vatPurchases;
+  // هامش الربح
+  document.getElementById('ss-margin').value = s.profitMargin || '';
+}
+
+/** حفظ إعدادات الضريبة */
+function saveVatSettings() {
+  const rate = parseFloat(document.getElementById('ss-vat-rate').value);
+  if (isNaN(rate) || rate < 0 || rate > 100) { showToast('⚠️ نسبة ضريبة غير صحيحة (0-100)'); return; }
+  erpState.settings.vatRate      = rate;
+  erpState.settings.vatSales     = document.getElementById('ss-vat-sales').checked;
+  erpState.settings.vatPurchases = document.getElementById('ss-vat-purch').checked;
+  erpSave();
+  showToast('✅ تم حفظ إعدادات الضريبة');
+  erpUpdateTotals();
+}
+
+/** تطبيق هامش ربح جماعي على جميع المنتجات */
+function applyBulkMargin() {
+  const pct = parseFloat(document.getElementById('ss-margin').value);
+  if (isNaN(pct) || pct < 0 || pct > 10000) { showToast('⚠️ أدخل نسبة صحيحة (0-10000%)'); return; }
+  const costKey = 'jnerp_costs';
+  let costs = {};
+  try { costs = JSON.parse(localStorage.getItem(costKey) || '{}'); } catch(e) {}
+
+  // إذا لم تُحفظ تكاليف مسبقاً → اعتبر السعر الحالي هو التكلفة وسعّر عليه
+  erpState.products = erpState.products.map(p => {
+    const cost = costs[p.id] !== undefined ? costs[p.id] : p.price;
+    costs[p.id] = cost; // حفظ التكلفة الأصلية
+    const newPrice = parseFloat((cost * (1 + pct / 100)).toFixed(2));
+    return { ...p, price: newPrice };
+  });
+
+  localStorage.setItem(costKey, JSON.stringify(costs));
+  erpState.settings.profitMargin = pct;
+  erpSave();
+  showToast(`✅ تم تطبيق هامش ربح ${pct}% على ${erpState.products.length} صنف`);
+  erpUpdateTotals();
 }
 
 function erpResetSales() {
