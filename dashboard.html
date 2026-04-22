@@ -2366,6 +2366,10 @@ window.addEventListener('load', _syncGatewayViewportLock);
           <i class="fa-solid fa-truck-ramp-box"></i> كتالوج الموردين
           <span class="nav-badge" style="background:#16a34a;margin-right:auto">جديد</span>
         </div>
+        <div class="nav-sub-item" id="nav-jenan-pro" onclick="gotoSub('jenan-pro','navgrp-growth','nav-jenan-pro')">
+          <i class="fa-solid fa-rocket"></i> جنان برو — ERP وPOS
+          <span class="nav-badge" style="background:#7c3aed;margin-right:auto">قريباً</span>
+        </div>
       </div>
     </div>
 
@@ -5072,6 +5076,118 @@ window.addEventListener('load', _syncGatewayViewportLock);
       <div class="software-grid" id="software-grid"></div>
     </div>
 
+    <!-- ===== JENAN PRO — Enterprise Software ===== -->
+    <div class="page" id="page-jenan-pro">
+
+      <!-- Hero Banner -->
+      <div style="background:linear-gradient(135deg,#1e1b4b,#312e81,#1e1b4b);border-radius:18px;padding:2.5rem 2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 20% 50%,rgba(99,102,241,.35) 0%,transparent 55%),radial-gradient(circle at 82% 40%,rgba(167,139,250,.2) 0%,transparent 50%);pointer-events:none"></div>
+        <div style="position:relative;z-index:1">
+          <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.3rem 1rem;font-size:.72rem;color:#c7d2fe;font-weight:700;margin-bottom:1rem">
+            <i class="fa-solid fa-rocket"></i> الإطلاق الرسمي — Q3 2026
+          </div>
+          <h1 style="color:#fff;font-size:1.75rem;font-weight:900;margin-bottom:.5rem">جنان برو <span style="color:#a5b4fc">Enterprise</span></h1>
+          <p style="color:rgba(199,210,254,.8);max-width:540px;margin:0 auto 1.75rem;line-height:1.85;font-size:.9rem">منظومة برمجية متكاملة ومخصصة للمشاريع الصغيرة والمتوسطة في المملكة — نظام ERP · نقاط البيع POS · تطبيقات موبايل · برمجة مخصصة</p>
+          <div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+            <button onclick="jpScrollToConfigurator()" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);border:none;color:#fff;padding:.75rem 1.75rem;border-radius:30px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(79,70,229,.4);display:inline-flex;align-items:center;gap:.5rem"><i class="fa-solid fa-calculator"></i> احسب سعرك الآن</button>
+            <button onclick="jpContactWhatsApp()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:.75rem 1.75rem;border-radius:30px;font-family:'Tajawal',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem"><i class="fa-brands fa-whatsapp"></i> احجز استشارة مجانية</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1rem;margin-bottom:2rem">
+
+        <!-- ERP -->
+        <div style="background:var(--bg3);border:1px solid rgba(99,102,241,.3);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#4f46e5,#7c3aed)"></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;margin-bottom:1rem"><i class="fa-solid fa-sitemap" style="color:#fff;font-size:1.1rem"></i></div>
+          <h3 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">نظام ERP متكامل</h3>
+          <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">إدارة الموارد · المحاسبة · الموارد البشرية · المخزون · تقارير لحظية</p>
+          <div style="margin-bottom:1rem"><span style="font-size:1.5rem;font-weight:900;color:#6366f1">8,500</span><span style="font-size:.75rem;color:var(--muted);font-weight:600"> ر / شهرياً + إعداد 2,000 ر</span></div>
+          <ul style="list-style:none;padding:0;margin:0 0 1rem;font-size:.78rem;color:var(--muted);line-height:2.1">
+            <li><i class="fa-solid fa-check" style="color:#6366f1;margin-left:.4rem"></i>وحدة محاسبة وميزانية كاملة</li>
+            <li><i class="fa-solid fa-check" style="color:#6366f1;margin-left:.4rem"></i>إدارة موظفين وحضور وغياب</li>
+            <li><i class="fa-solid fa-check" style="color:#6366f1;margin-left:.4rem"></i>تقارير ZATCA + ملف الزكاة</li>
+            <li><i class="fa-solid fa-check" style="color:#6366f1;margin-left:.4rem"></i>دعم فني + تدريب أون لاين</li>
+          </ul>
+          <button onclick="jpAddToQuote('erp')" id="jp-btn-erp" style="width:100%;background:rgba(99,102,241,.12);border:1.5px solid rgba(99,102,241,.4);color:#818cf8;padding:.6rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s"><i class="fa-solid fa-plus"></i> أضف للعرض</button>
+        </div>
+
+        <!-- POS -->
+        <div style="background:var(--bg3);border:1px solid rgba(20,184,166,.3);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#0d9488,#14b8a6)"></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#0d9488,#14b8a6);display:flex;align-items:center;justify-content:center;margin-bottom:1rem"><i class="fa-solid fa-cash-register" style="color:#fff;font-size:1.1rem"></i></div>
+          <h3 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">نظام نقاط البيع POS</h3>
+          <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">كاشير ذكي · إدارة مخزون · تقارير مبيعات · ولاء العملاء</p>
+          <div style="margin-bottom:1rem"><span style="font-size:1.5rem;font-weight:900;color:#14b8a6">3,500</span><span style="font-size:.75rem;color:var(--muted);font-weight:600"> ر / شهرياً + إعداد 800 ر</span></div>
+          <ul style="list-style:none;padding:0;margin:0 0 1rem;font-size:.78rem;color:var(--muted);line-height:2.1">
+            <li><i class="fa-solid fa-check" style="color:#14b8a6;margin-left:.4rem"></i>فاتورة إلكترونية ZATCA-compliant</li>
+            <li><i class="fa-solid fa-check" style="color:#14b8a6;margin-left:.4rem"></i>إدارة طاولات + طلبات المطاعم</li>
+            <li><i class="fa-solid fa-check" style="color:#14b8a6;margin-left:.4rem"></i>تكامل مع مزودي الدفع السعوديين</li>
+            <li><i class="fa-solid fa-check" style="color:#14b8a6;margin-left:.4rem"></i>تطبيق تاجر على الجوال مجاناً</li>
+          </ul>
+          <button onclick="jpAddToQuote('pos')" id="jp-btn-pos" style="width:100%;background:rgba(20,184,166,.12);border:1.5px solid rgba(20,184,166,.4);color:#2dd4bf;padding:.6rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s"><i class="fa-solid fa-plus"></i> أضف للعرض</button>
+        </div>
+
+        <!-- Mobile App -->
+        <div style="background:var(--bg3);border:1px solid rgba(249,115,22,.3);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#ea580c,#f97316)"></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ea580c,#f97316);display:flex;align-items:center;justify-content:center;margin-bottom:1rem"><i class="fa-solid fa-mobile-screen" style="color:#fff;font-size:1.1rem"></i></div>
+          <h3 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">تطبيق موبايل مخصص</h3>
+          <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">iOS + Android · تصميم مخصص · نشر على المتجر · صيانة سنوية</p>
+          <div style="margin-bottom:1rem"><span style="font-size:1.5rem;font-weight:900;color:#f97316">من 18,000</span><span style="font-size:.75rem;color:var(--muted);font-weight:600"> ر · دفعة واحدة</span></div>
+          <ul style="list-style:none;padding:0;margin:0 0 1rem;font-size:.78rem;color:var(--muted);line-height:2.1">
+            <li><i class="fa-solid fa-check" style="color:#f97316;margin-left:.4rem"></i>تصميم UI/UX احترافي بالعربي</li>
+            <li><i class="fa-solid fa-check" style="color:#f97316;margin-left:.4rem"></i>لوحة إدارة ويب مرفقة</li>
+            <li><i class="fa-solid fa-check" style="color:#f97316;margin-left:.4rem"></i>نظام إشعارات Push + تتبع</li>
+            <li><i class="fa-solid fa-check" style="color:#f97316;margin-left:.4rem"></i>صيانة سنة مجاناً بعد التسليم</li>
+          </ul>
+          <button onclick="jpAddToQuote('mobile')" id="jp-btn-mobile" style="width:100%;background:rgba(249,115,22,.12);border:1.5px solid rgba(249,115,22,.4);color:#fb923c;padding:.6rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s"><i class="fa-solid fa-plus"></i> أضف للعرض</button>
+        </div>
+
+        <!-- Custom Dev -->
+        <div style="background:var(--bg3);border:1px solid rgba(168,85,247,.3);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#7c3aed,#a855f7)"></div>
+          <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;margin-bottom:1rem"><i class="fa-solid fa-code" style="color:#fff;font-size:1.1rem"></i></div>
+          <h3 style="font-size:1rem;font-weight:900;margin-bottom:.3rem">برمجة وتطوير مخصص</h3>
+          <p style="font-size:.75rem;color:var(--muted);margin-bottom:1rem;line-height:1.7">أتمتة أعمال · API integrations · منصات ويب · حلول AI مخصصة</p>
+          <div style="margin-bottom:1rem"><span style="font-size:1.5rem;font-weight:900;color:#a855f7">حسب المتطلبات</span></div>
+          <ul style="list-style:none;padding:0;margin:0 0 1rem;font-size:.78rem;color:var(--muted);line-height:2.1">
+            <li><i class="fa-solid fa-check" style="color:#a855f7;margin-left:.4rem"></i>تحليل متطلبات مجاناً</li>
+            <li><i class="fa-solid fa-check" style="color:#a855f7;margin-left:.4rem"></i>تكامل مع أنظمتك القائمة</li>
+            <li><i class="fa-solid fa-check" style="color:#a855f7;margin-left:.4rem"></i>توثيق تقني كامل + تدريب</li>
+            <li><i class="fa-solid fa-check" style="color:#a855f7;margin-left:.4rem"></i>ضمان الجودة 6 أشهر</li>
+          </ul>
+          <button onclick="jpAddToQuote('custom')" id="jp-btn-custom" style="width:100%;background:rgba(168,85,247,.12);border:1.5px solid rgba(168,85,247,.4);color:#c084fc;padding:.6rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;transition:background .2s"><i class="fa-solid fa-plus"></i> أضف للعرض</button>
+        </div>
+      </div>
+
+      <!-- Quote Configurator -->
+      <div id="jp-configurator" style="background:var(--bg3);border:1px solid var(--border);border-radius:18px;padding:1.75rem;margin-bottom:1.5rem">
+        <h3 style="font-size:.95rem;font-weight:900;margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem"><i class="fa-solid fa-calculator" style="color:#6366f1"></i>منشئ عرض الأسعار الفوري</h3>
+        <div id="jp-quote-items" style="min-height:76px;background:var(--bg2);border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.85rem;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center">
+          لم تختر أي منتج بعد — اضغط "أضف للعرض" أعلاه لتبدأ
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+          <div id="jp-quote-total" style="font-size:.95rem;font-weight:700;color:var(--text)">الإجمالي: <span style="color:#6366f1;font-size:1.15rem;font-weight:900">0 ريال</span></div>
+          <div style="display:flex;gap:.65rem">
+            <button onclick="jpClearQuote()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:.55rem 1.1rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.82rem;cursor:pointer"><i class="fa-solid fa-trash" style="margin-left:.3rem"></i>مسح</button>
+            <button onclick="jpSubmitQuote()" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);border:none;color:#fff;padding:.55rem 1.4rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem"><i class="fa-solid fa-paper-plane"></i>احصل على العرض الرسمي</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Badges -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem">
+        <div style="background:var(--bg2);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--border)"><i class="fa-solid fa-shield-check" style="font-size:1.3rem;color:#6366f1;flex-shrink:0"></i><div><div style="font-size:.8rem;font-weight:700">متوافق مع اللوائح السعودية</div><div style="font-size:.7rem;color:var(--muted)">ZATCA · وزارة التجارة 2026</div></div></div>
+        <div style="background:var(--bg2);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--border)"><i class="fa-solid fa-headset" style="font-size:1.3rem;color:#14b8a6;flex-shrink:0"></i><div><div style="font-size:.8rem;font-weight:700">دعم فني 24/7 بالعربي</div><div style="font-size:.7rem;color:var(--muted)">فريق متخصص داخل المملكة</div></div></div>
+        <div style="background:var(--bg2);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--border)"><i class="fa-solid fa-clock-rotate-left" style="font-size:1.3rem;color:#f97316;flex-shrink:0"></i><div><div style="font-size:.8rem;font-weight:700">تسليم خلال 30-60 يوماً</div><div style="font-size:.7rem;color:var(--muted)">جدول زمني محدد وملزم</div></div></div>
+        <div style="background:var(--bg2);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:.75rem;border:1px solid var(--border)"><i class="fa-solid fa-rotate" style="font-size:1.3rem;color:#a855f7;flex-shrink:0"></i><div><div style="font-size:.8rem;font-weight:700">ضمان الرضا أو الاسترداد</div><div style="font-size:.7rem;color:var(--muted)">ضمان 14 يوماً بدون شروط</div></div></div>
+      </div>
+
+    </div>
+
     <!-- ===== REPORTS ===== -->
     <div class="page" id="page-reports">
       <div class="sec-hd">
@@ -7054,7 +7170,7 @@ const PA_QUESTIONS = [
       { id:'pa_name',   label:'اسم المشروع',            type:'text',   placeholder:'مثال: مطعم شاورما الأصيل', required:true },
       { id:'pa_type',   label:'نوع النشاط التجاري',     type:'select', options:['تجارة تجزئة','مطعم / مقهى','خدمات مهنية','تقنية / تطبيقات','تصنيع / إنتاج','عقارات','تجارة إلكترونية','تعليم وتدريب','صحة وجمال','أخرى'], required:true },
       { id:'pa_city',   label:'المدينة والمنطقة',       type:'text',   placeholder:'مثال: الرياض — حي النزهة', required:true },
-      { id:'pa_capital', label:'رأس المال الإجمالي المستثمر (ريال)', type:'number', placeholder:'مثال: 200000 — يشمل التجهيزات والإيجار الأول والاحتياطي النقدي', required:false },
+      { id:'pa_capital', label:'رأس المال الإجمالي المستثمر (ريال)', type:'number', placeholder:'مثال: 200000 — يشمل التجهيزات والإيجار الأول والاحتياطي النقدي', required:false, minVal:1 },
       { id:'pa_desc',   label:'وصف موجز للمشروع وفكرته', type:'textarea', placeholder:'مثال: مطعم متخصص في الشاورما السورية في حي النزهة، يستهدف موظفي الشركات والأسر في وقت الغداء والعشاء', required:false },
     ]
   },
@@ -7315,8 +7431,17 @@ function paNavNext() {
     }
     if (q.type === 'number' && val !== '') {
       const num = parseFloat(val);
+      // حماية للتقسيم على صفر والأرقام السالبة
       if (isNaN(num) || num < 0) {
         showToast('القيمة يجب أن تكون صفراً أو أكبر: ' + q.label);
+        el.focus();
+        el.style.borderColor = '#e74c3c';
+        setTimeout(() => { el.style.borderColor = ''; }, 2200);
+        return;
+      }
+      // تحقق من الحد الأدنى للحقول ذات minVal (مثل رأس المال: يجب > 0)
+      if (q.minVal !== undefined && num < q.minVal) {
+        showToast('قيمة “' + q.label + '” يجب أن تكون أكبر من صفر، أو اتركه فارغاً');
         el.focus();
         el.style.borderColor = '#e74c3c';
         setTimeout(() => { el.style.borderColor = ''; }, 2200);
@@ -7483,46 +7608,221 @@ function _paShowFreePreview() {
   if (el) el.textContent = parseInt(el.textContent||0)+1;
 }
 
+/**
+ * printPaReport() — Premium PDF Print
+ * بدلاً من طباعة innerHTML المظلم مباشرةً، تُعيد هذه الدالة
+ * بناء تقرير مطبوع نظيف بخلفية بيضاء ويشمل:
+ *  - KPI Cards رئيسية (4 مؤشرات)
+ *  - Premium NPV + ROI Box بطباعة بارزة
+ *  - جدول السيناريوهات الثلاثة مع Bar Chart مرئي
+ *  - جدول الملخص المالي الشهري
+ *  - تذييل احترافي + علامة مائية
+ */
 function printPaReport() {
-  const content = document.getElementById('pa-report-container');
-  if (!content) return;
-  const win = window.open('', '_blank', 'width=900,height=700');
-  win.document.write(`<!DOCTYPE html><html dir="rtl" lang="ar">
-<head><meta charset="UTF-8">
-<title>تقرير التحليل المالي — جنان بيز</title>
+  const a = paState?.answers;
+  if (!a || !a.pa_revenue) { showToast('لا يوجد تقرير — أكمل التحليل أولاً'); return; }
+
+  // ── إعادة حساب كل الأرقام المالية بشكل نظيف للطباعة ──
+  const sector    = a.pa_type || 'أخرى';
+  const revenue   = parseFloat(a.pa_revenue)    || 0;
+  const rent      = parseFloat(a.pa_rent)       || 0;
+  const salaries  = parseFloat(a.pa_salaries)   || 0;
+  const utilities = parseFloat(a.pa_utilities)  || 0;
+  const fixedOth  = parseFloat(a.pa_fixed_other)|| 0;
+  const cogs      = parseFloat(a.pa_cogs)       || 0;
+  const marketing = parseFloat(a.pa_marketing)  || 0;
+  const varOth    = parseFloat(a.pa_var_other)  || 0;
+  const capital   = parseFloat(a.pa_capital)    || 0;
+
+  const totalFixed    = rent + salaries + utilities + fixedOth;
+  const totalVariable = cogs + marketing + varOth;
+  const totalCosts    = totalFixed + totalVariable;
+  const grossProfit   = revenue - cogs;
+  const netProfit     = revenue - totalCosts;
+  const grossMargin   = revenue > 0 ? (grossProfit / revenue * 100) : 0;
+  const netMargin     = revenue > 0 ? (netProfit  / revenue * 100) : 0;
+  const cmRatio       = revenue > 0 ? Math.max(1 - (cogs + varOth) / revenue, 0.01) : 0.01;
+  const breakEven     = Math.round(totalFixed / cmRatio);
+
+  // ── ROI + Payback — محمية من القسمة على صفر ──
+  const roi           = capital > 0 ? (netProfit * 12 / capital * 100) : 0;
+  const paybackMonths = netProfit > 0 && capital > 0 ? Math.ceil(capital / netProfit) : 0;
+
+  // ── NPV (معدل خصم 10% — 3 سنوات مُركَّبة) ──
+  const SECTOR_GROWTH = {
+    'مطعم / مقهى':0.11,'تجارة تجزئة':0.09,'تجارة إلكترونية':0.20,
+    'خدمات مهنية':0.13,'تقنية / تطبيقات':0.25,'صحة وجمال':0.15,
+    'تعليم وتدريب':0.17,'تصنيع / إنتاج':0.10,'عقارات':0.08,'أخرى':0.10,
+  };
+  const gr    = SECTOR_GROWTH[sector] || 0.10;
+  const y2Net = netProfit * (1 + gr);
+  const y3Net = netProfit * Math.pow(1 + gr, 2);
+  const npv   = capital > 0 ? Math.round(
+    -capital
+    + (netProfit * 12) / 1.10
+    + (y2Net    * 12) / Math.pow(1.10, 2)
+    + (y3Net    * 12) / Math.pow(1.10, 3)
+  ) : 0;
+
+  // ── السيناريوهات الثلاثة: متشائم / أساسي / متفائل ──
+  const scenarios = [
+    { label:'متشائم (−20% إيرادات)', color:'#dc2626', bg:'#fef2f2',
+      rev: Math.round(revenue * 0.80),
+      net: Math.round(revenue * 0.80 - cogs * 0.80 - marketing * 0.80 - varOth * 0.80 - totalFixed) },
+    { label:'أساسي (Base Case)',      color:'#d97706', bg:'#fffbeb', rev: revenue, net: netProfit },
+    { label:'متفائل (+20% إيرادات)', color:'#16a34a', bg:'#f0fdf4',
+      rev: Math.round(revenue * 1.20),
+      net: Math.round(revenue * 1.20 - cogs * 1.20 - marketing * 1.20 - varOth * 1.20 - totalFixed) },
+  ];
+
+  const fmt   = v => Math.round(v).toLocaleString('ar-SA');
+  const today = new Date().toLocaleDateString('ar-SA', {year:'numeric',month:'long',day:'numeric'});
+  const maxRev = Math.max(...scenarios.map(s => s.rev), 1);
+
+  const win = window.open('', '_blank', 'width=960,height=720');
+  win.document.write(`<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+<meta charset="UTF-8"><title>تقرير التحليل المالي — ${escHtml(a.pa_name)||'المشروع'}</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Tajawal',sans-serif;background:#fff;color:#0f172a;padding:32px;direction:rtl}
-  .print-header{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #4E73C2;padding-bottom:14px;margin-bottom:24px}
-  .brand-logo{font-size:1.4rem;font-weight:900;color:#4E73C2}
-  .brand-sub{font-size:.75rem;color:#64748b;margin-top:2px}
-  .watermark{position:fixed;bottom:28px;right:28px;font-size:.72rem;color:#cbd5e1;font-weight:700}
-  .pa-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
-  .pa-kpi{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center}
-  .pa-kpi-val{font-size:1.4rem;font-weight:900;color:#4E73C2}
-  .pa-kpi-lbl{font-size:.7rem;color:#64748b;margin-top:4px}
-  table{width:100%;border-collapse:collapse;margin:10px 0}
-  th{background:#4E73C2;color:#fff;padding:8px 10px;font-size:.8rem}
-  td{padding:7px 10px;font-size:.8rem;border-bottom:1px solid #f1f5f9}
-  h2,h3{color:#1e293b;margin:18px 0 10px}
-  .section{margin-bottom:20px}
-  @media print{.watermark{display:block} @page{margin:1.5cm}}
-</style>
-</head><body>
-<div class="print-header">
-  <div class="brand-logo">جنان بيز <span style="font-size:.8rem;background:#4E73C2;color:#fff;padding:2px 8px;border-radius:6px;margin-right:6px">PRO</span></div>
-  <div style="text-align:left">
-    <div class="brand-sub">تقرير التحليل المالي الاحترافي</div>
-    <div class="brand-sub">jenan-biz.com | ${new Date().toLocaleDateString('ar-SA')}</div>
+  body{font-family:'Tajawal',sans-serif;background:#fff;color:#0f172a;direction:rtl;font-size:13px;padding:24px}
+  @page{margin:1.8cm 1.5cm;size:A4}
+  /* Header */
+  .ph{background:linear-gradient(135deg,#1e3a8a,#4e73c2);color:#fff;border-radius:10px;padding:16px 20px;margin-bottom:18px;display:flex;align-items:center;justify-content:space-between}
+  .ph-brand{font-size:1.35rem;font-weight:900}
+  /* KPI Grid */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .kpi-card{border:1.5px solid #e2e8f0;border-radius:10px;padding:12px;text-align:center}
+  .kpi-val{font-size:1.3rem;font-weight:900}
+  .kpi-lbl{font-size:.67rem;color:#64748b;margin-top:4px}
+  /* NPV/ROI Premium Box */
+  .prem{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #3b82f6;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+  .prem-title{font-size:.72rem;font-weight:800;color:#1e40af;border-bottom:1px solid #bfdbfe;padding-bottom:6px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+  .prem-metrics{display:flex;gap:0}
+  .prem-m{flex:1;text-align:center;padding:0 14px;border-left:1.5px solid #bfdbfe}
+  .prem-m:last-child{border-left:none}
+  .prem-badge{display:inline-block;background:#1e3a8a;color:#fff;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:20px;margin-bottom:5px}
+  .prem-val{font-size:1.9rem;font-weight:900;line-height:1.1}
+  .prem-desc{font-size:.65rem;color:#1e40af;margin-top:3px}
+  /* Scenario Table */
+  .sc-title{font-size:.9rem;font-weight:900;color:#1e293b;margin:18px 0 10px;display:flex;align-items:center;gap:6px}
+  .sc-wrap{border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:20px}
+  .sc-row-head{display:grid;grid-template-columns:2fr 1.5fr 1.5fr 1fr 2fr;background:#f8fafc;padding:8px 14px;font-size:.72rem;font-weight:700;color:#475569}
+  .sc-row{display:grid;grid-template-columns:2fr 1.5fr 1.5fr 1fr 2fr;padding:10px 14px;border-top:1px solid #f1f5f9;align-items:center}
+  .sc-label{font-size:.8rem;font-weight:800;padding:6px 14px;border-bottom:1px solid #f1f5f9}
+  .bar-bg{background:#f1f5f9;border-radius:4px;height:8px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:4px}
+  /* Summary table */
+  .sec{margin-bottom:16px}
+  .sec h3{font-size:.85rem;font-weight:900;color:#1e3a8a;border-bottom:1.5px solid #dbeafe;padding-bottom:5px;margin-bottom:8px}
+  table.std{width:100%;border-collapse:collapse}
+  table.std th{background:#f8fafc;font-size:.73rem;padding:7px 10px;font-weight:700;color:#475569;border-bottom:1px solid #e2e8f0;text-align:right}
+  table.std td{padding:7px 10px;font-size:.74rem;border-bottom:1px solid #f8fafc;text-align:right}
+  .watermark{margin-top:22px;padding-top:10px;border-top:1px solid #e2e8f0;font-size:.63rem;color:#94a3b8;text-align:center;line-height:1.6}
+  @media print{body{padding:0}.watermark{position:fixed;bottom:8px;left:0;right:0;border-top:none;padding-top:4px}}
+</style></head><body>
+
+<!-- Header -->
+<div class="ph">
+  <div>
+    <div class="ph-brand">جنان بيز <span style="font-size:.7rem;background:rgba(255,255,255,.2);padding:2px 8px;border-radius:6px;margin-right:6px">PRO</span></div>
+    <div style="font-size:.72rem;opacity:.75;margin-top:2px">المنصة الذكية للأعمال والاستثمار · تقرير التحليل المالي الاحترافي</div>
+  </div>
+  <div style="text-align:left;font-size:.75rem;opacity:.85">
+    <div style="font-weight:800">${escHtml(a.pa_name)||'المشروع'} · ${escHtml(a.pa_type)||''}</div>
+    <div>${escHtml(a.pa_city)||''} · ${today}</div>
   </div>
 </div>
-${content.innerHTML}
-<div class="watermark">© جنان بيز — هذا التقرير صادر بشعار جنان بيز · للإصدار بشعار منشأتك: White-Label بـ 2,000 ريال</div>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+  <div class="kpi-card" style="border-color:${netProfit>=0?'#86efac':'#fca5a5'}">
+    <div class="kpi-val" style="color:${netProfit>=0?'#16a34a':'#dc2626'}">${netProfit>=0?'+':''}${fmt(netProfit)} ر</div>
+    <div class="kpi-lbl">صافي الربح / شهر</div>
+  </div>
+  <div class="kpi-card" style="border-color:${netMargin>=15?'#86efac':'#fde68a'}">
+    <div class="kpi-val" style="color:${netMargin>=15?'#16a34a':'#d97706'}">${netMargin.toFixed(1)}%</div>
+    <div class="kpi-lbl">هامش الربح الصافي</div>
+  </div>
+  <div class="kpi-card" style="border-color:${roi>=20?'#86efac':'#fde68a'}">
+    <div class="kpi-val" style="color:${roi>=20?'#16a34a':'#d97706'}">${capital>0?roi.toFixed(1)+'%':'—'}</div>
+    <div class="kpi-lbl">عائد الاستثمار السنوي ROI</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-val" style="color:#1e40af">${fmt(breakEven)} ر</div>
+    <div class="kpi-lbl">نقطة التعادل / شهر</div>
+  </div>
+</div>
+
+${capital > 0 ? `
+<!-- Premium NPV + ROI Box -->
+<div class="prem">
+  <div class="prem-title"><span style="font-size:1rem">📊</span> مؤشرات الاستثمار المتقدمة — بيانات 3 سنوات بمعدل خصم 10%</div>
+  <div class="prem-metrics">
+    <div class="prem-m">
+      <div class="prem-badge">NPV · صافي القيمة الحالية</div>
+      <div class="prem-val" style="color:${npv>=0?'#16a34a':'#dc2626'}">${npv>=0?'+':''}${Math.round(npv).toLocaleString('ar-SA')}</div>
+      <div class="prem-desc">ريال · أفق 3 سنوات · خصم 10%</div>
+      <div style="font-size:.65rem;color:#475569;margin-top:4px">${npv>0?'✅ المشروع يُولّد قيمة موجبة للمستثمر':'⚠ راجع الهيكل المالي'}</div>
+    </div>
+    <div class="prem-m">
+      <div class="prem-badge">ROI · عائد الاستثمار السنوي</div>
+      <div class="prem-val" style="color:${roi>=25?'#16a34a':roi>=12?'#d97706':'#dc2626'};font-size:2.2rem">${roi.toFixed(1)}%</div>
+      <div class="prem-desc">سنوياً · رأس المال المُستثمَر: ${fmt(capital)} ر</div>
+      <div style="font-size:.65rem;color:#475569;margin-top:4px">${roi>=25?'🏆 عائد استثنائي':roi>=15?'✅ عائد ممتاز':roi>=8?'⚠ عائد مقبول':'🚨 عائد ضعيف'}</div>
+    </div>
+    <div class="prem-m">
+      <div class="prem-badge">Payback · استرداد رأس المال</div>
+      <div class="prem-val" style="color:#1e40af;font-size:2rem">${paybackMonths>0?paybackMonths:'∞'}</div>
+      <div class="prem-desc">${paybackMonths>0?'شهراً حتى استرداد رأس المال':'الاسترداد يتطلب تحسين الهامش'}</div>
+      <div style="font-size:.65rem;color:#475569;margin-top:4px">${paybackMonths>0&&paybackMonths<=18?'✅ ممتاز (أقل من 18 شهر)':paybackMonths>18?'⚠ مطوّل — راجع الاستراتيجية':''}</div>
+    </div>
+  </div>
+</div>` : ''}
+
+<!-- Scenario Analysis Table -->
+<div class="sc-title">📋 تحليل السيناريوهات الثلاثة</div>
+<div class="sc-wrap">
+  <div class="sc-row-head">
+    <span>السيناريو</span><span>الإيرادات / شهر</span><span>صافي الربح / شهر</span><span>الهامش</span><span>مخطط الإيرادات</span>
+  </div>
+  ${scenarios.map(sc => {
+    const scMargin = sc.rev > 0 ? (sc.net/sc.rev*100).toFixed(1) : '0';
+    const barW = Math.round(sc.rev / maxRev * 100);
+    return `
+  <div class="sc-label" style="background:${sc.bg};color:${sc.color}">${sc.label}</div>
+  <div class="sc-row">
+    <span style="font-weight:700">${fmt(sc.rev)} ر.س</span>
+    <span style="font-weight:800;color:${sc.net>=0?sc.color:'#dc2626'}">${sc.net>=0?'+':''}${fmt(sc.net)} ر.س</span>
+    <span style="font-weight:700;color:${sc.color}">${scMargin}%</span>
+    <span style="font-size:.72rem;color:#64748b">${capital>0&&sc.net>0?(sc.net*12/capital*100).toFixed(1)+'%':'—'}</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:${barW}%;background:${sc.color}"></div></div>
+  </div>`;
+  }).join('')}
+</div>
+
+<!-- Monthly Financial Summary -->
+<div class="sec">
+  <h3>الملخص المالي الشهري</h3>
+  <table class="std">
+    <tr><th>البند</th><th>القيمة (ريال)</th><th>النسبة من الإيراد</th></tr>
+    <tr><td>الإيرادات الشهرية</td><td style="font-weight:700;color:#16a34a">${fmt(revenue)} ر</td><td>100%</td></tr>
+    <tr><td>تكلفة البضاعة / الخدمة</td><td>${fmt(cogs)} ر</td><td>${revenue>0?(cogs/revenue*100).toFixed(1)+'%':'—'}</td></tr>
+    <tr><td>التكاليف الثابتة الإجمالية</td><td>${fmt(totalFixed)} ر</td><td>${revenue>0?(totalFixed/revenue*100).toFixed(1)+'%':'—'}</td></tr>
+    <tr><td>إجمالي الربح (Gross Profit)</td><td style="font-weight:700">${fmt(grossProfit)} ر</td><td style="font-weight:700">${grossMargin.toFixed(1)}%</td></tr>
+    <tr style="background:#f0fdf4"><td style="font-weight:800">صافي الربح الشهري</td><td style="font-weight:900;color:${netProfit>=0?'#16a34a':'#dc2626'}">${netProfit>=0?'+':''}${fmt(netProfit)} ر</td><td style="font-weight:900;color:${netProfit>=0?'#16a34a':'#dc2626'}">${netMargin.toFixed(1)}%</td></tr>
+  </table>
+</div>
+
+<div class="watermark">
+  © جنان بيز للأعمال والاستثمار — jenan-biz.com · ${today}<br>
+  هذا التقرير أُعدّ استناداً لبيانات GASTAT وZATCA ووزارة التجارة السعودية 2026. الأرقام تقديرية ولا تُعدّ ضماناً لأي نتائج فعلية.<br>
+  للإصدار بشعار منشأتك (White-Label): تواصل مع جنان بيز
+</div>
 </body></html>`);
   win.document.close();
   win.focus();
-  setTimeout(() => win.print(), 500);
+  setTimeout(() => win.print(), 600);
 }
 
 function buildProjectAnalysisReport() {
@@ -7575,6 +7875,9 @@ function buildProjectAnalysisReport() {
                         : totalFixed;
 
   // ── رأس المال والعائد على الاستثمار ──
+  // ROI = (صافي الربح الشهري × 12) / رأس المال  × 100
+  // Payback = رأس المال / صافي الربح الشهري (بالشهور)
+  // محمية من القسمة على صفر: التحقق من capital > 0 و netProfit > 0
   const capital        = parseFloat(a.pa_capital) || 0;
   const roi            = capital > 0 ? (netProfit * 12 / capital * 100) : 0;
   const paybackMonths  = netProfit > 0 && capital > 0 ? Math.ceil(capital / netProfit) : 0;
@@ -7679,6 +7982,9 @@ function buildProjectAnalysisReport() {
   const paY3GrowthPct = ((Math.pow(1 + paGrowthRate, 2) - 1) * 100).toFixed(0);
 
   // ── NPV (معدل خصم 10% — المرجع السعودي للمستثمرين) ──
+  // الصيغة: NPV = −رأسالمال + Σ (صافيالربحسنوي ÷ (1+r)^t) لـ t=1..3
+  // الفرضية: التدفقات النقدية = صافي الربح الشهري × 12 لكل سنة
+  // محمية من القسمة على صفر: capital > 0 قبل الحساب
   const discRate   = 0.10;
   const npv        = capital > 0 ? Math.round(
     -capital
@@ -7688,6 +7994,9 @@ function buildProjectAnalysisReport() {
   ) : 0;
 
   // ── تحليل السيناريوهات الثلاثة ──
+  // المتشائم: إيراد −20% وتكاليف متغيرة −20%
+  // الأساسي: البيانات كما هي من المستخدم
+  // المتفائل: إيراد +20% وتكاليف متغيرة +20% (التكاليف الثابتة تبقى كما هي)
   const scenPessPA = {
     label:'متشائم −20%', color:'#ef4444',
     rev: Math.round(revenue * 0.80),
@@ -10101,6 +10410,143 @@ function generateFeasibilityStudy() {
   }, 2400);
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   JENAN PRO MODULE — Enterprise Software Pricing & Quote Engine
+   ──────────────────────────────────────────────────────────────────
+   Architecture: localStorage-backed quote engine
+   Schema version: 1.0 (أبريل 2026)
+
+   localStorage keys:
+     jp_quotes  — Array<Quote> (max 20 quotes)
+     jp_cart    — Current active cart (transient, session only)
+
+   Quote Schema:
+   {
+     id:         number,      // Date.now() timestamp
+     products:   string[],    // e.g. ['erp', 'pos']
+     setupTotal: number,      // one-time setup fees total
+     monthlyTotal: number,    // monthly subscription total
+     createdAt:  string,      // ISO 8601
+     status:     string       // 'draft' | 'sent' | 'accepted'
+   }
+
+   Product Catalog (JENAN_PRO_CATALOG):
+     erp    — 8,500 ر/شهر + 2,000 ر إعداد
+     pos    — 3,500 ر/شهر + 800 ر إعداد
+     mobile — 18,000 ر دفعة واحدة
+     custom — سعر حسب المتطلبات
+   ══════════════════════════════════════════════════════════════════ */
+
+/** كتالوج منتجات جنان برو — المصدر الوحيد للحقيقة للأسعار */
+const JENAN_PRO_CATALOG = {
+  erp:    { name:'نظام ERP متكامل',       monthly:8500, setup:2000,  icon:'fa-sitemap',       color:'#818cf8' },
+  pos:    { name:'نظام نقاط البيع POS',   monthly:3500, setup:800,   icon:'fa-cash-register', color:'#2dd4bf' },
+  mobile: { name:'تطبيق موبايل مخصص',    monthly:0,    setup:18000, icon:'fa-mobile-screen', color:'#fb923c' },
+  custom: { name:'برمجة وتطوير مخصص',    monthly:0,    setup:0,     icon:'fa-code',          color:'#c084fc' },
+};
+
+let jpCart = []; // سلة العرض الحالية (مؤقتة حتى الإرسال)
+
+/** إضافة/إزالة منتج من سلة العرض (Toggle) */
+function jpAddToQuote(productId) {
+  const btn = document.getElementById('jp-btn-' + productId);
+  const p   = JENAN_PRO_CATALOG[productId];
+  if (!p) return;
+  if (jpCart.includes(productId)) {
+    jpCart = jpCart.filter(id => id !== productId);
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-plus"></i> أضف للعرض'; btn.style.background = ''; }
+  } else {
+    jpCart.push(productId);
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-check"></i> تمت الإضافة ✓'; btn.style.background = 'rgba(99,102,241,.2)'; }
+  }
+  jpRenderCart();
+}
+
+/** عرض محتويات السلة وحساب الإجمالي */
+function jpRenderCart() {
+  const container = document.getElementById('jp-quote-items');
+  const totalEl   = document.getElementById('jp-quote-total');
+  if (!container) return;
+  if (jpCart.length === 0) {
+    container.innerHTML = 'لم تختر أي منتج بعد — اضغط "أضف للعرض" أعلاه لتبدأ';
+    container.style.cssText += ';display:flex;align-items:center;justify-content:center;text-align:center';
+    if (totalEl) totalEl.innerHTML = 'الإجمالي: <span style="color:#6366f1;font-size:1.15rem;font-weight:900">0 ريال</span>';
+    return;
+  }
+  let setupTotal = 0, monthlyTotal = 0;
+  const rows = jpCart.map(id => {
+    const p = JENAN_PRO_CATALOG[id];
+    if (!p) return '';
+    setupTotal   += p.setup;
+    monthlyTotal += p.monthly;
+    return `<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .85rem;background:var(--bg);border-radius:10px;margin-bottom:.45rem">
+      <i class="fa-solid ${p.icon}" style="color:${p.color};font-size:1rem;flex-shrink:0"></i>
+      <div style="flex:1;font-size:.83rem;font-weight:700">${p.name}</div>
+      <div style="font-size:.76rem;color:var(--muted)">
+        ${p.setup > 0    ? `<span style="color:var(--text)">إعداد: ${p.setup.toLocaleString('ar-SA')} ر</span>` : ''}
+        ${p.monthly > 0  ? ` · <span style="color:var(--text)">${p.monthly.toLocaleString('ar-SA')} ر/شهر</span>` : ''}
+        ${p.setup === 0 && p.monthly === 0 ? '<span style="color:#c084fc">سعر حسب المتطلبات</span>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+  container.style.cssText = container.style.cssText.replace(/display:[^;]+/, '');
+  container.innerHTML = rows;
+  // الإجمالي
+  const parts = [];
+  if (setupTotal   > 0) parts.push(`إعداد: <strong>${setupTotal.toLocaleString('ar-SA')} ر</strong>`);
+  if (monthlyTotal > 0) parts.push(`شهرياً: <strong>${monthlyTotal.toLocaleString('ar-SA')} ر</strong>`);
+  if (totalEl) totalEl.innerHTML = 'الإجمالي: <span style="color:#6366f1;font-size:1.1rem;font-weight:900">' + (parts.join(' · ') || 'حسب المتطلبات') + '</span>';
+}
+
+/** مسح السلة بالكامل وإعادة تعيين الأزرار */
+function jpClearQuote() {
+  jpCart = [];
+  Object.keys(JENAN_PRO_CATALOG).forEach(id => {
+    const btn = document.getElementById('jp-btn-' + id);
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-plus"></i> أضف للعرض'; btn.style.background = ''; }
+  });
+  jpRenderCart();
+}
+
+/** حفظ عرض الأسعار في localStorage وإرساله */
+function jpSubmitQuote() {
+  if (jpCart.length === 0) { showToast('اختر منتجاً واحداً على الأقل'); return; }
+  let setupTotal = 0, monthlyTotal = 0;
+  jpCart.forEach(id => {
+    const p = JENAN_PRO_CATALOG[id];
+    if (p) { setupTotal += p.setup; monthlyTotal += p.monthly; }
+  });
+  // بناء كائن العرض وفق Schema
+  const quote = {
+    id:           Date.now(),
+    products:     [...jpCart],
+    setupTotal,
+    monthlyTotal,
+    createdAt:    new Date().toISOString(),
+    status:       'draft',
+  };
+  // حفظ آخر 20 عرض في localStorage
+  try {
+    const saved = JSON.parse(localStorage.getItem('jp_quotes') || '[]');
+    saved.unshift(quote);
+    localStorage.setItem('jp_quotes', JSON.stringify(saved.slice(0, 20)));
+  } catch(e) { /* localStorage غير متاح */ }
+  showToast('✅ تم حفظ عرض الأسعار — سيتواصل معك فريقنا خلال 24 ساعة');
+  jpClearQuote();
+}
+
+/** تمرير ناعم نحو منشئ العروض */
+function jpScrollToConfigurator() {
+  const el = document.getElementById('jp-configurator');
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/** فتح واتساب لحجز استشارة */
+function jpContactWhatsApp() {
+  const msg = encodeURIComponent('مرحباً، أرغب في استشارة مجانية حول منتجات جنان برو Enterprise');
+  window.open('https://wa.me/966500000000?text=' + msg, '_blank');
+}
+
 /* ══ Paid Analysis Page Functions ══ */
 function initPaidAnalysis() {
   // تنظيف عند الدخول للصفحة
@@ -10348,6 +10794,9 @@ function buildSimpleReport() {
   const y3GrowthPct = ((Math.pow(1 + growthRate, 2) - 1) * 100).toFixed(0);
 
   // ── NPV (معدل خصم 10% — المرجع السعودي للمستثمرين) ──
+  // الصيغة: NPV = −رأسالمال + Σ (صافيالربحسنوي ÷ (1+r)^t) لـ t=1..3
+  // NPV > 0: المشروع يفوق تكلفة الفرصة بمعدل الخصم المحدد
+  // محمية من القسمة على صفر: تحقق من capital > 0 قبل الحساب
   const discRate = 0.10;
   const npv = capital > 0 ? Math.round(
     -capital
@@ -10357,6 +10806,7 @@ function buildSimpleReport() {
   ) : 0;
 
   // ── تحليل السيناريوهات الثلاثة (−20% / أساسي / +20%) ──
+  // التكاليف الثابتة لا تتغير في أي سيناريو — فقط الإيرادات والتكاليف المتغيرة تتأثر
   const scenFS = [
     { label:'متشائم −20%', color:'#ef4444',
       rev: Math.round(revenue * 0.80),
