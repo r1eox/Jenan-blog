@@ -845,6 +845,74 @@ body {
       </div>
     </div>
 
+    <!-- ─── عرض المحاسبة ─── -->
+    <div class="view" id="view-accounting" style="flex-direction:column;padding:1.15rem;overflow-y:auto;gap:1rem">
+
+      <!-- تبويبات -->
+      <div style="display:flex;gap:.4rem;background:var(--bg3);border-radius:12px;padding:.3rem">
+        <button id="acc-tab-pl" onclick="accSetTab('pl')"
+          style="flex:1;padding:.55rem;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;background:var(--accent);color:#fff;transition:background .2s,color .2s">
+          <i class="fa-solid fa-chart-pie" style="margin-left:.35rem"></i>أرباح وخسائر
+        </button>
+        <button id="acc-tab-exp" onclick="accSetTab('exp')"
+          style="flex:1;padding:.55rem;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;background:transparent;color:var(--muted);transition:background .2s,color .2s">
+          <i class="fa-solid fa-receipt" style="margin-left:.35rem"></i>المصروفات
+        </button>
+        <button id="acc-tab-inv" onclick="accSetTab('inv')"
+          style="flex:1;padding:.55rem;border:none;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:800;cursor:pointer;background:transparent;color:var(--muted);transition:background .2s,color .2s">
+          <i class="fa-solid fa-file-invoice" style="margin-left:.35rem"></i>فواتير
+        </button>
+      </div>
+
+      <!-- لوحة P&L -->
+      <div id="acc-panel-pl" style="display:flex;flex-direction:column;gap:.75rem">
+        <select id="acc-period" onchange="accRenderPL()"
+          style="padding:.55rem .75rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.83rem;width:100%">
+          <option value="month">هذا الشهر</option>
+          <option value="quarter">آخر 3 أشهر</option>
+          <option value="year">هذا العام</option>
+          <option value="all">الكل</option>
+        </select>
+        <div id="acc-pl-content"></div>
+      </div>
+
+      <!-- لوحة المصروفات -->
+      <div id="acc-panel-exp" style="display:none;flex-direction:column;gap:.85rem">
+        <div style="background:var(--bg3);border-radius:14px;padding:1rem;display:flex;flex-direction:column;gap:.65rem;border:1.5px solid var(--border)">
+          <div style="font-size:.88rem;font-weight:800"><i class="fa-solid fa-plus-circle" style="color:var(--accent);margin-left:.4rem"></i>تسجيل مصروف جديد</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+            <select id="exp-cat" style="padding:.55rem .7rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.82rem">
+              <option>إيجار</option><option>رواتب</option><option>كهرباء ومياه</option>
+              <option>مواد خام</option><option>صيانة</option><option>تسويق وإعلان</option>
+              <option>نقل وتوصيل</option><option>أخرى</option>
+            </select>
+            <input type="number" id="exp-amount" placeholder="المبلغ (ر)" min="0" step="0.01"
+              style="padding:.55rem .7rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.82rem;text-align:right">
+          </div>
+          <input type="text" id="exp-desc" placeholder="وصف المصروف (اختياري)"
+            style="padding:.55rem .7rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.82rem">
+          <input type="date" id="exp-date"
+            style="padding:.55rem .7rem;border-radius:10px;border:1.5px solid var(--border);background:var(--bg4);color:var(--text);font-family:'Tajawal',sans-serif;font-size:.82rem">
+          <button onclick="accAddExpense()"
+            style="padding:.65rem;border:none;border-radius:10px;background:var(--accent);color:#fff;font-family:'Tajawal',sans-serif;font-size:.88rem;font-weight:800;cursor:pointer"
+            onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
+            <i class="fa-solid fa-plus" style="margin-left:.4rem"></i>تسجيل المصروف
+          </button>
+        </div>
+        <div id="acc-exp-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
+      </div>
+
+      <!-- لوحة الفواتير ZATCA -->
+      <div id="acc-panel-inv" style="display:none;flex-direction:column;gap:.65rem">
+        <div style="background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.25);border-radius:11px;padding:.7rem .9rem;font-size:.78rem;color:var(--muted);line-height:1.75">
+          <i class="fa-solid fa-circle-info" style="margin-left:.4rem;color:var(--accent)"></i>
+          اضغط على أي فاتورة لطباعتها بصيغة <strong style="color:var(--text)">ZATCA</strong> متوافقة مع متطلبات هيئة الزكاة.
+        </div>
+        <div id="acc-inv-list" style="display:flex;flex-direction:column;gap:.5rem"></div>
+      </div>
+
+    </div>
+
     <!-- ─── عرض متجر البرمجيات ─── -->
     <div class="view" id="view-store" style="flex-direction:column;padding:1.15rem;overflow-y:auto;gap:1rem">
 
@@ -1040,15 +1108,19 @@ const ACTIVITY_CONFIG = {
       pos: 'كاشير نقطة البيع',
       products: 'إدارة المنتجات',
       reports: 'تقارير المبيعات',
+      purchases: 'فواتير المشتريات',
+      accounting: 'محاسبة بلا تعقيد',
       store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
-      { id: 'pos',      icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
-      { id: 'products', icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
-      { id: 'reports',  icon: 'fa-chart-line',     label: 'التقارير'           },
-      { id: 'store',    icon: 'fa-store',           label: 'متجر البرمجيات'     },
-      { id: 'settings', icon: 'fa-gear',           label: 'الإعدادات'          },
+      { id: 'pos',        icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
+      { id: 'products',   icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
+      { id: 'reports',    icon: 'fa-chart-line',     label: 'التقارير'           },
+      { id: 'purchases',  icon: 'fa-file-invoice',   label: 'المشتريات'          },
+      { id: 'accounting', icon: 'fa-calculator',     label: 'المحاسبة'           },
+      { id: 'store',      icon: 'fa-store',          label: 'متجر البرمجيات'     },
+      { id: 'settings',   icon: 'fa-gear',           label: 'الإعدادات'          },
     ],
     seedProducts: [
       /* خضروات وفواكه */
@@ -1109,17 +1181,21 @@ const ACTIVITY_CONFIG = {
     color2: '#ea580c',
     viewTitle: {
       pos: 'الكاشير والطلبات',
+      products: 'قائمة الطعام',
+      reports: 'تقارير المبيعات',
       purchases: 'فواتير المشتريات',
+      accounting: 'محاسبة بلا تعقيد',
       store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
-      { id: 'pos',       icon: 'fa-utensils',     label: 'الكاشير والطلبات'  },
-      { id: 'products',  icon: 'fa-book-open',    label: 'قائمة الطعام'      },
-      { id: 'reports',   icon: 'fa-chart-line',   label: 'التقارير'           },
-      { id: 'purchases', icon: 'fa-file-invoice', label: 'المشتريات'          },
-      { id: 'store',     icon: 'fa-store',        label: 'متجر البرمجيات'     },
-      { id: 'settings',  icon: 'fa-gear',         label: 'الإعدادات'          },
+      { id: 'pos',        icon: 'fa-utensils',      label: 'الكاشير والطلبات'  },
+      { id: 'products',   icon: 'fa-book-open',     label: 'قائمة الطعام'      },
+      { id: 'reports',    icon: 'fa-chart-line',    label: 'التقارير'           },
+      { id: 'purchases',  icon: 'fa-file-invoice',  label: 'المشتريات'          },
+      { id: 'accounting', icon: 'fa-calculator',    label: 'المحاسبة'           },
+      { id: 'store',      icon: 'fa-store',         label: 'متجر البرمجيات'     },
+      { id: 'settings',   icon: 'fa-gear',          label: 'الإعدادات'          },
     ],
     seedProducts: [
       /* مشويات */
@@ -1167,16 +1243,18 @@ const ACTIVITY_CONFIG = {
       products: 'إدارة الخدمات',
       reports: 'تقارير الإيرادات',
       purchases: 'فواتير المشتريات',
+      accounting: 'محاسبة بلا تعقيد',
       store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
-      { id: 'pos',       icon: 'fa-scissors',    label: 'كاشير الخدمات'    },
-      { id: 'products',  icon: 'fa-list-check',  label: 'إدارة الخدمات'    },
-      { id: 'reports',   icon: 'fa-chart-line',  label: 'التقارير'          },
-      { id: 'purchases', icon: 'fa-file-invoice',label: 'المشتريات'         },
-      { id: 'store',     icon: 'fa-store',       label: 'متجر البرمجيات'    },
-      { id: 'settings',  icon: 'fa-gear',        label: 'الإعدادات'         },
+      { id: 'pos',        icon: 'fa-scissors',     label: 'كاشير الخدمات'    },
+      { id: 'products',   icon: 'fa-list-check',   label: 'إدارة الخدمات'    },
+      { id: 'reports',    icon: 'fa-chart-line',   label: 'التقارير'          },
+      { id: 'purchases',  icon: 'fa-file-invoice', label: 'المشتريات'         },
+      { id: 'accounting', icon: 'fa-calculator',   label: 'المحاسبة'          },
+      { id: 'store',      icon: 'fa-store',        label: 'متجر البرمجيات'    },
+      { id: 'settings',   icon: 'fa-gear',         label: 'الإعدادات'         },
     ],
     seedProducts: [
       /* تصفيف الشعر */
@@ -1219,6 +1297,7 @@ const erpState = {
   products:         [],     // قائمة المنتجات/الخدمات
   sales:            [],     // سجل عمليات البيع
   purchases:        [],     // سجل فواتير المشتريات
+  expenses:         [],     // سجل المصروفات التشغيلية
   cart:             [],     // الطلب الحالي [{product, qty}]
   selectedActivity: null,   // النشاط المختار في الإعداد
   selectedCat:      'الكل',// الفئة المحددة في POS
@@ -1241,6 +1320,7 @@ function erpLoad() {
     erpState.products  = JSON.parse(localStorage.getItem('jnerp_products')  || '[]');
     erpState.sales     = JSON.parse(localStorage.getItem('jnerp_sales')     || '[]');
     erpState.purchases = JSON.parse(localStorage.getItem('jnerp_purchases') || '[]');
+    erpState.expenses  = JSON.parse(localStorage.getItem('jnerp_expenses')  || '[]');
     const saved = JSON.parse(localStorage.getItem('jnerp_settings') || 'null');
     if (saved) Object.assign(erpState.settings, saved);
   } catch(e) { /* بيانات تالفة — ابدأ من جديد */ }
@@ -1253,6 +1333,7 @@ function erpSave() {
     if (erpState.products)  localStorage.setItem('jnerp_products',  JSON.stringify(erpState.products));
     if (erpState.sales)     localStorage.setItem('jnerp_sales',     JSON.stringify(erpState.sales.slice(0, 500)));
     if (erpState.purchases) localStorage.setItem('jnerp_purchases', JSON.stringify(erpState.purchases.slice(0, 500)));
+    if (erpState.expenses)  localStorage.setItem('jnerp_expenses',  JSON.stringify(erpState.expenses.slice(0, 1000)));
     localStorage.setItem('jnerp_settings', JSON.stringify(erpState.settings));
   } catch(e) { /* مساحة ممتلئة */ }
 }
@@ -1281,7 +1362,8 @@ function showView(id) {
   if (id === 'products')  erpRenderProductsTable();
   if (id === 'settings')  erpRenderSettings();
   if (id === 'store')     erpRenderStore();
-  if (id === 'purchases') erpRenderPurchases();
+  if (id === 'purchases')  erpRenderPurchases();
+  if (id === 'accounting')  accRenderAccounting();
   // إخفاء زر "مسح الطلب" في غير POS
   document.querySelector('.topbar-btn').style.display = (id === 'pos') ? '' : 'none';
 }
@@ -2013,8 +2095,8 @@ const STORE_MODULES = [
   {
     id: 'accounting', name: 'محاسبة بلا تعقيد',
     icon: 'fa-calculator', color: '#6366f1', color2: '#4f46e5',
-    badge: 'الأكثر طلباً', badgeColor: 'rgba(99,102,241,.2)',
-    price: 299, priceNote: 'شهرياً',
+    badge: '✓ مُثبَّت', badgeColor: 'rgba(34,197,94,.2)',
+    price: 0,   priceNote: 'مجاني ومدمج',
     desc: 'محاسبة متكاملة مصممة خصيصاً لمستخدمي جنان برو — فواتير ZATCA، تقارير P&L، ميزانية تجارية آنية.',
     features: ['فاتورة إلكترونية متوافقة ZATCA', 'تقرير الأرباح والخسائر شهرياً', 'ميزانية تجارية وتدفقات نقدية', 'مصاريف + مصادر دخل مصنفة', 'ربط مباشر مع عمليات الكاشير'],
   },
@@ -2085,12 +2167,252 @@ function erpRenderStore() {
           ${m.features.map(f => '<li><span style="margin-left:.35rem">✔</span>' + f + '</li>').join('')}
         </ul>
         <div style="display:flex;align-items:baseline;gap:.35rem;margin-top:auto;padding-top:.55rem;border-top:1px solid var(--border)">${priceStr}</div>
-        <button onclick="window.open('https://wa.me/966500000000?text=${waMsg}','_blank')"
+        <button onclick="m.id === 'accounting' ? showView('accounting') : window.open('https://wa.me/966500000000?text=${waMsg}','_blank')"
           style="width:100%;padding:.62rem;border:none;border-radius:10px;background:linear-gradient(135deg,${m.color},${m.color2});color:#fff;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
           <i class="fa-brands fa-whatsapp"></i> اطلب تفعيل الوحدة
         </button>
       </div>`;
   }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   محاسبة بلا تعقيد — الوحدة المحاسبية
+   ══════════════════════════════════════════════════════════════════ */
+
+function accSetTab(tab) {
+  ['pl','exp','inv'].forEach(t => {
+    const panel = document.getElementById('acc-panel-' + t);
+    if (panel) panel.style.display = t === tab ? 'flex' : 'none';
+    const btn = document.getElementById('acc-tab-' + t);
+    if (btn) {
+      btn.style.background = t === tab ? 'var(--accent)' : 'transparent';
+      btn.style.color      = t === tab ? '#fff' : 'var(--muted)';
+    }
+  });
+  // P&L uses block layout
+  if (tab === 'pl') {
+    const pl = document.getElementById('acc-panel-pl');
+    if (pl) pl.style.display = 'flex';
+    accRenderPL();
+  }
+  if (tab === 'exp') accRenderExpenses();
+  if (tab === 'inv') accRenderInvoices();
+}
+
+function accRenderAccounting() { accSetTab('pl'); }
+
+function accRenderPL() {
+  const period  = document.getElementById('acc-period')?.value || 'month';
+  const now     = new Date();
+  let fromDate;
+  if      (period === 'month')   fromDate = new Date(now.getFullYear(), now.getMonth(), 1);
+  else if (period === 'quarter') fromDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+  else if (period === 'year')    fromDate = new Date(now.getFullYear(), 0, 1);
+  else                           fromDate = new Date(0);
+
+  const sales     = erpState.sales.filter(s     => new Date(s.createdAt) >= fromDate);
+  const purchases = erpState.purchases.filter(p => new Date(p.createdAt) >= fromDate);
+  const expenses  = erpState.expenses.filter(e  => new Date(e.date)      >= fromDate);
+
+  const revenue      = sales.reduce((s, x)     => s + (x.total     || 0), 0);
+  const cogTotal     = purchases.reduce((s, x) => s + (x.subtotal  || x.total || 0), 0);
+  const grossProfit  = revenue - cogTotal;
+  const expTotal     = expenses.reduce((s, x)  => s + (x.amount    || 0), 0);
+  const netProfit    = grossProfit - expTotal;
+  const vatCollected = sales.reduce((s, x)     => s + (x.vat       || 0), 0);
+  const vatPaid      = purchases.reduce((s, x) => s + (x.vat       || 0), 0);
+  const vatDue       = vatCollected - vatPaid;
+
+  const fmt   = n => n.toFixed(2);
+  const clr   = n => n >= 0 ? '#22c55e' : '#ef4444';
+  const pctOf = (v, b) => b > 0 ? ` <span style="color:var(--muted);font-size:.68rem">(${(Math.abs(v)/b*100).toFixed(1)}%)</span>` : '';
+
+  const plRow = (label, val, base, isCost, isBold) => {
+    const sign = isCost && val > 0 ? '−' : '';
+    const c    = isCost ? '#ef4444' : isBold ? clr(val) : 'var(--text)';
+    const w    = isBold ? '800' : '500';
+    const fs   = isBold ? '.86rem' : '.81rem';
+    return `<div style="padding:.58rem 1rem;display:flex;justify-content:space-between;align-items:center;font-size:${fs};font-weight:${w};border-bottom:1px solid var(--border)">
+      <span>${label}</span>
+      <span style="color:${c}">${sign}${fmt(Math.abs(val))} ر${pctOf(val, base)}</span>
+    </div>`;
+  };
+
+  const el = document.getElementById('acc-pl-content');
+  if (!el) return;
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+      <div style="background:var(--bg3);border-radius:13px;padding:1rem;border:1.5px solid var(--border)">
+        <div style="font-size:.69rem;color:var(--muted);font-weight:700;margin-bottom:.3rem">إجمالي المبيعات</div>
+        <div style="font-size:1.2rem;font-weight:900;color:#22c55e">${fmt(revenue)} <span style="font-size:.78rem">ر</span></div>
+        <div style="font-size:.69rem;color:var(--muted);margin-top:.2rem">${sales.length} فاتورة</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:13px;padding:1rem;border:1.5px solid var(--border)">
+        <div style="font-size:.69rem;color:var(--muted);font-weight:700;margin-bottom:.3rem">صافي الربح</div>
+        <div style="font-size:1.2rem;font-weight:900;color:${clr(netProfit)}">${fmt(netProfit)} <span style="font-size:.78rem">ر</span></div>
+        <div style="font-size:.69rem;color:var(--muted);margin-top:.2rem">هامش ${revenue > 0 ? (netProfit/revenue*100).toFixed(1)+'%' : '—'}</div>
+      </div>
+    </div>
+
+    <div style="background:var(--bg3);border-radius:14px;overflow:hidden;border:1.5px solid var(--border)">
+      <div style="padding:.7rem 1rem;font-size:.82rem;font-weight:900;border-bottom:1px solid var(--border);background:var(--bg4)">
+        <i class="fa-solid fa-file-invoice-dollar" style="margin-left:.4rem;color:var(--accent)"></i>قائمة الأرباح والخسائر
+      </div>
+      ${plRow('الإيرادات (مبيعات)', revenue, null, false, false)}
+      ${plRow('تكلفة المشتريات', cogTotal, revenue, true, false)}
+      ${plRow('مجمل الربح', grossProfit, revenue, false, true)}
+      ${plRow('المصروفات التشغيلية', expTotal, revenue, true, false)}
+      <div style="padding:.65rem 1rem;display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:.9rem;background:${netProfit>=0?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border-top:2px solid ${clr(netProfit)}">
+        <span>صافي الربح / الخسارة</span>
+        <span style="color:${clr(netProfit)}">${netProfit>=0?'+':''}${fmt(netProfit)} ر</span>
+      </div>
+    </div>
+
+    <div style="background:var(--bg3);border-radius:14px;overflow:hidden;border:1.5px solid var(--border)">
+      <div style="padding:.7rem 1rem;font-size:.82rem;font-weight:900;border-bottom:1px solid var(--border);background:var(--bg4)">
+        <i class="fa-solid fa-percent" style="margin-left:.4rem;color:#f97316"></i>ضريبة القيمة المضافة (VAT)
+      </div>
+      ${plRow('VAT محصّل من العملاء', vatCollected, null, false, false)}
+      ${plRow('VAT مدفوع للموردين', vatPaid, null, true, false)}
+      <div style="padding:.65rem 1rem;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.86rem;background:var(--bg4);border-top:1.5px solid var(--border)">
+        <span>VAT المستحق للهيئة</span>
+        <span style="color:${clr(vatDue)}">${fmt(vatDue)} ر</span>
+      </div>
+    </div>`;
+}
+
+function accRenderExpenses() {
+  const dateEl = document.getElementById('exp-date');
+  if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().slice(0, 10);
+  const list = document.getElementById('acc-exp-list');
+  if (!list) return;
+  if (!erpState.expenses.length) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.82rem;padding:1.5rem">لا توجد مصروفات مسجلة بعد</div>';
+    return;
+  }
+  const grandTotal = erpState.expenses.reduce((s, e) => s + e.amount, 0);
+  list.innerHTML = `
+    <div style="background:var(--bg3);border-radius:12px;padding:.7rem 1rem;border:1.5px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:.82rem;font-weight:800">إجمالي المصروفات</span>
+      <span style="font-size:1rem;font-weight:900;color:#ef4444">${grandTotal.toFixed(2)} ر</span>
+    </div>
+    ${erpState.expenses.slice(0, 60).map(e => `
+      <div style="background:var(--bg3);border-radius:11px;padding:.62rem .9rem;display:flex;align-items:center;gap:.6rem;border:1px solid var(--border)">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.83rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.category}${e.desc ? ' · ' + e.desc : ''}</div>
+          <div style="font-size:.71rem;color:var(--muted);margin-top:.12rem">${new Date(e.date).toLocaleDateString('ar-SA')}</div>
+        </div>
+        <span style="font-weight:800;color:#ef4444;font-size:.87rem;white-space:nowrap">${e.amount.toFixed(2)} ر</span>
+        <button onclick="accDeleteExpense('${e.id}')"
+          style="border:none;background:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.2rem .3rem;border-radius:6px;flex-shrink:0"
+          onmouseenter="this.style.color='#ef4444'" onmouseleave="this.style.color=''">✕</button>
+      </div>`).join('')}`;
+}
+
+function accAddExpense() {
+  const cat    = document.getElementById('exp-cat').value;
+  const amount = parseFloat(document.getElementById('exp-amount').value);
+  const desc   = document.getElementById('exp-desc').value.trim();
+  const date   = document.getElementById('exp-date').value || new Date().toISOString().slice(0, 10);
+  if (!amount || amount <= 0) { showToast('⚠️ أدخل مبلغاً صحيحاً'); return; }
+  erpState.expenses.unshift({ id: 'exp-' + Date.now(), category: cat, desc, amount, date, createdAt: new Date().toISOString() });
+  erpSave();
+  document.getElementById('exp-amount').value = '';
+  document.getElementById('exp-desc').value   = '';
+  showToast('✅ تم تسجيل المصروف');
+  accRenderExpenses();
+}
+
+function accDeleteExpense(id) {
+  erpState.expenses = erpState.expenses.filter(e => e.id !== id);
+  erpSave();
+  accRenderExpenses();
+}
+
+function accRenderInvoices() {
+  const list = document.getElementById('acc-inv-list');
+  if (!list) return;
+  if (!erpState.sales.length) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:.82rem;padding:1.5rem">لا توجد مبيعات مسجلة بعد</div>';
+    return;
+  }
+  list.innerHTML = erpState.sales.slice(0, 50).map(s => {
+    const date = new Date(s.createdAt).toLocaleString('ar-SA');
+    return `
+      <div style="background:var(--bg3);border-radius:11px;padding:.68rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.65rem;border:1px solid var(--border);cursor:pointer;transition:border-color .2s"
+        onclick="accPrintZATCAInvoice('${s.id}')" onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor=''">
+        <div>
+          <div style="font-size:.83rem;font-weight:800">${s.id}</div>
+          <div style="font-size:.71rem;color:var(--muted);margin-top:.13rem">${date} · ${(s.items||[]).length} صنف</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.7rem">
+          <span style="font-weight:900;color:var(--accent);font-size:.9rem">${(s.total||0).toFixed(2)} ر</span>
+          <i class="fa-solid fa-print" style="color:var(--muted);font-size:.82rem"></i>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function accPrintZATCAInvoice(saleId) {
+  const sale = erpState.sales.find(s => s.id === saleId);
+  if (!sale) return;
+  const biz     = erpState.session || {};
+  const vatRate = sale.vatRate || erpState.settings.vatRate || 15;
+  const actName = biz.activity === 'supermarket' ? 'سوبرماركت وتموين' : biz.activity === 'restaurant' ? 'مطعم وكافيه' : 'صالون تجميل';
+  const date    = new Date(sale.createdAt).toLocaleString('ar-SA');
+  const methodMap = { cash:'💵 نقداً', card:'💳 بطاقة', transfer:'📲 تحويل' };
+  const win = window.open('', '_blank', 'width=440,height=720');
+  win.document.write(`<!DOCTYPE html><html dir="rtl" lang="ar"><head>
+    <meta charset="UTF-8"><title>فاتورة ضريبية — ${sale.id}</title>
+    <style>
+      *{box-sizing:border-box;margin:0;padding:0}
+      body{font-family:Tahoma,Arial,sans-serif;font-size:13px;color:#111;padding:22px;max-width:420px;margin:0 auto}
+      .logo{font-size:22px;font-weight:900;text-align:center;margin-bottom:3px}
+      .sub{font-size:11px;color:#555;text-align:center}
+      .divider{border:none;border-top:2px solid #111;margin:10px 0}
+      .inv-title{text-align:center;font-size:14px;font-weight:800;padding:6px 0;background:#f3f4f6;border-radius:6px;margin:8px 0}
+      table{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px}
+      th{background:#f3f4f6;padding:5px 7px;text-align:right;border:1px solid #e5e7eb}
+      td{padding:5px 7px;border:1px solid #e5e7eb;text-align:right}
+      .row{display:flex;justify-content:space-between;padding:3px 0;font-size:13px}
+      .grand{font-size:16px;font-weight:900;border-top:2.5px solid #111;padding-top:9px;margin-top:8px}
+      .footer{font-size:10px;color:#888;text-align:center;margin-top:16px;border-top:1px dashed #ccc;padding-top:10px;line-height:1.7}
+      @media print{body{padding:0}}
+    </style>
+  </head><body>
+    <div class="logo">${biz.bizName || 'منشأتي'}</div>
+    <div class="sub">${actName}</div>
+    <div class="sub">الرقم الضريبي: ${biz.vatNumber || '—'}</div>
+    <hr class="divider">
+    <div class="inv-title">فاتورة ضريبية بسيطة — ZATCA</div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:8px">
+      <span>رقم الفاتورة: <strong>${sale.id}</strong></span>
+      <span>${date}</span>
+    </div>
+    <table>
+      <thead><tr><th>الصنف</th><th>الكمية</th><th>السعر</th><th>الإجمالي</th></tr></thead>
+      <tbody>${(sale.items||[]).map(it=>`
+        <tr><td>${it.name}</td><td style="text-align:center">${it.qty}</td>
+            <td>${(it.price||0).toFixed(2)} ر</td>
+            <td>${((it.price||0)*(it.qty||1)).toFixed(2)} ر</td></tr>`).join('')}
+      </tbody>
+    </table>
+    <div>
+      <div class="row"><span>المجموع قبل الضريبة:</span><span>${(sale.subtotal||0).toFixed(2)} ر</span></div>
+      ${(sale.discount||0)>0?`<div class="row"><span>الخصم:</span><span>− ${(sale.discount||0).toFixed(2)} ر</span></div>`:''}
+      ${(sale.vat||0)>0?`<div class="row"><span>ضريبة القيمة المضافة (${vatRate}%):</span><span>${(sale.vat||0).toFixed(2)} ر</span></div>`:''}
+      <div class="row grand"><span>الإجمالي المستحق:</span><span>${(sale.total||0).toFixed(2)} ر</span></div>
+    </div>
+    <div class="row" style="margin-top:8px;font-size:12px">
+      <span>طريقة الدفع:</span><span>${methodMap[sale.method] || sale.method || '—'}</span>
+    </div>
+    <div class="footer">
+      هذه فاتورة ضريبية بسيطة وفق متطلبات ZATCA<br>
+      تم الإصدار بواسطة نظام جنان بيز ERP — jenan-biz
+    </div>
+    <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`);
+  win.document.close();
 }
 
 /* ══════════════════════════════════════════════════════════════════
