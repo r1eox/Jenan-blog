@@ -685,6 +685,26 @@ body {
       </div>
     </div>
 
+    <!-- ─── عرض متجر البرمجيات ─── -->
+    <div class="view" id="view-store" style="flex-direction:column;padding:1.15rem;overflow-y:auto;gap:1rem">
+
+      <!-- Hero -->
+      <div style="background:linear-gradient(135deg,#1e1b4b,#312e81);border-radius:18px;padding:1.75rem 1.5rem;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 20% 60%,rgba(99,102,241,.35) 0%,transparent 55%),radial-gradient(circle at 80% 30%,rgba(167,139,250,.2) 0%,transparent 50%);pointer-events:none"></div>
+        <div style="position:relative;z-index:1">
+          <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:.28rem .9rem;font-size:.69rem;color:#c7d2fe;font-weight:700;margin-bottom:.75rem">
+            <i class="fa-solid fa-store"></i> متجر وحدات جنان برو
+          </div>
+          <h2 style="color:#fff;font-size:1.25rem;font-weight:900;margin-bottom:.35rem">وسّع نظامك بوحدات ذكية</h2>
+          <p style="color:rgba(199,210,254,.8);font-size:.82rem;line-height:1.8;max-width:480px">أضف وحدات متخصصة لتطوير أعمالك — محاسبة احترافية، موارد بشرية، مخزون متقدم، توصيل، وولاء عملاء. كل وحدة جاهزة للتركيب خلال ساعات.</p>
+        </div>
+      </div>
+
+      <!-- شبكة الوحدات -->
+      <div id="store-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.85rem"></div>
+
+    </div>
+
   </div><!-- /main-area -->
 </div><!-- /screen-app -->
 
@@ -768,12 +788,14 @@ const ACTIVITY_CONFIG = {
       pos: 'كاشير نقطة البيع',
       products: 'إدارة المنتجات',
       reports: 'تقارير المبيعات',
+      store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
       { id: 'pos',      icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
       { id: 'products', icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
       { id: 'reports',  icon: 'fa-chart-line',     label: 'التقارير'           },
+      { id: 'store',    icon: 'fa-store',           label: 'متجر البرمجيات'     },
       { id: 'settings', icon: 'fa-gear',           label: 'الإعدادات'          },
     ],
     seedProducts: [
@@ -837,12 +859,14 @@ const ACTIVITY_CONFIG = {
       pos: 'الكاشير والطلبات',
       products: 'إدارة قائمة الطعام',
       reports: 'تقارير الإيرادات',
+      store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
       { id: 'pos',      icon: 'fa-utensils',   label: 'الكاشير والطلبات'  },
       { id: 'products', icon: 'fa-book-open',  label: 'قائمة الطعام'      },
       { id: 'reports',  icon: 'fa-chart-line', label: 'التقارير'           },
+      { id: 'store',    icon: 'fa-store',      label: 'متجر البرمجيات'     },
       { id: 'settings', icon: 'fa-gear',       label: 'الإعدادات'          },
     ],
     seedProducts: [
@@ -890,12 +914,14 @@ const ACTIVITY_CONFIG = {
       pos: 'كاشير الخدمات',
       products: 'إدارة الخدمات',
       reports: 'تقارير الإيرادات',
+      store: 'متجر البرمجيات',
       settings: 'الإعدادات',
     },
     nav: [
       { id: 'pos',      icon: 'fa-scissors',   label: 'كاشير الخدمات'    },
       { id: 'products', icon: 'fa-list-check',  label: 'إدارة الخدمات'    },
       { id: 'reports',  icon: 'fa-chart-line',  label: 'التقارير'          },
+      { id: 'store',    icon: 'fa-store',       label: 'متجر البرمجيات'    },
       { id: 'settings', icon: 'fa-gear',        label: 'الإعدادات'         },
     ],
     seedProducts: [
@@ -988,6 +1014,7 @@ function showView(id) {
   if (id === 'reports')  erpRenderReports();
   if (id === 'products') erpRenderProductsTable();
   if (id === 'settings') erpRenderSettings();
+  if (id === 'store')    erpRenderStore();
   // إخفاء زر "مسح الطلب" في غير POS
   document.querySelector('.topbar-btn').style.display = (id === 'pos') ? '' : 'none';
 }
@@ -1509,6 +1536,98 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
     if (e.target === this) closeModal(this.id);
   });
 });
+
+/* ══════════════════════════════════════════════════════════════════
+   متجر البرمجيات — كتالوج الوحدات الإضافية
+   ________________________________________________________________
+   كل وحدة تحتوي على:
+     id, name, icon, color, color2, badge, badgeColor,
+     price, priceNote, desc, features[], phone
+   ══════════════════════════════════════════════════════════════════ */
+
+const STORE_MODULES = [
+  {
+    id: 'accounting', name: 'محاسبة بلا تعقيد',
+    icon: 'fa-calculator', color: '#6366f1', color2: '#4f46e5',
+    badge: 'الأكثر طلباً', badgeColor: 'rgba(99,102,241,.2)',
+    price: 299, priceNote: 'شهرياً',
+    desc: 'محاسبة متكاملة مصممة خصيصاً لمستخدمي جنان برو — فواتير ZATCA، تقارير P&L، ميزانية تجارية آنية.',
+    features: ['فاتورة إلكترونية متوافقة ZATCA', 'تقرير الأرباح والخسائر شهرياً', 'ميزانية تجارية وتدفقات نقدية', 'مصاريف + مصادر دخل مصنفة', 'ربط مباشر مع عمليات الكاشير'],
+  },
+  {
+    id: 'hr', name: 'إدارة الموارد البشرية',
+    icon: 'fa-users', color: '#14b8a6', color2: '#0d9488',
+    badge: 'جديد', badgeColor: 'rgba(20,184,166,.2)',
+    price: 199, priceNote: 'شهرياً',
+    desc: 'إدارة موظفيك بسهولة — حضور وغياب، رواتب، إجازات، وتقييم أداء بسيط.',
+    features: ['سجل حضور وغياب بصمة الإصبع', 'مسير الرواتب والاستقطاعات', 'طلبات الإجازة والموافقة إلكترونياً', 'ملف الموظف مع الوثائق', 'تقييم أداء ربعي'],
+  },
+  {
+    id: 'inventory', name: 'مخزون ومشتريات متقدم',
+    icon: 'fa-boxes-stacked', color: '#f97316', color2: '#ea580c',
+    badge: 'شائع', badgeColor: 'rgba(249,115,22,.2)',
+    price: 249, priceNote: 'شهرياً',
+    desc: 'تحكم كامل بمخزونك — تنبيهات نفاد المخزون، طلبيات شراء آلية، تتبع الموردين.',
+    features: ['تنبيه نفاد مخزون فوري', 'طلبيات شراء آلية للموردين', 'تقرير منتجات بطيئة الحركة', 'ربط مؤتمت بالكاشير والمخزون', 'دعم أكثر من فرع ومستودع'],
+  },
+  {
+    id: 'delivery', name: 'إدارة التوصيل',
+    icon: 'fa-motorcycle', color: '#a855f7', color2: '#7c3aed',
+    badge: 'متقدم', badgeColor: 'rgba(168,85,247,.2)',
+    price: 179, priceNote: 'شهرياً',
+    desc: 'برنامج توصيل متكامل — تتبع السائقين، خرائط حية، إشعارات SMS للعميل.',
+    features: ['تتبع السائقين على الخريطة لحظياً', 'توزيع طلبات آلي على أقرب سائق', 'إشعار العميل عند كل مرحلة', 'تقرير أداء سائقين يومي', 'دعم تكامل خرائط Google'],
+  },
+  {
+    id: 'loyalty', name: 'ولاء العملاء ونقاط',
+    icon: 'fa-star', color: '#eab308', color2: '#ca8a04',
+    badge: 'جديد', badgeColor: 'rgba(234,179,8,.2)',
+    price: 149, priceNote: 'شهرياً',
+    desc: 'برنامج نقاط ومكافآت يشجع عودة عميلك — درجات وخصومات مخصصة.',
+    features: ['بطاقة ولاء رقمية لكل عميل', 'نقاط على كل عملية شراء', 'خصومات تلقائية عند التحصيل', 'إشعارات عروض وتخفيضات', 'تقرير أكثر العملاء ولاءً'],
+  },
+  {
+    id: 'booking', name: 'حجوزات ومواعيد',
+    icon: 'fa-calendar-check', color: '#f43f5e', color2: '#e11d48',
+    badge: 'مناسب للصالونات', badgeColor: 'rgba(244,63,94,.2)',
+    price: 129, priceNote: 'شهرياً',
+    desc: 'نظام حجوزات أونلاين متكامل — عميلك يحجز من واتساب أو الرابط.',
+    features: ['صفحة حجز خاصة بمنشأتك', 'تذكير تلقائي قبل الموعد', 'إدارة جدول موظفين وخدمات', 'رسائل تأكيد + إلغاء آلي', 'تقرير مشغولية وأوقات ذروة الطلب'],
+  },
+];
+
+/** عرض بطاقات وحدات المتجر */
+function erpRenderStore() {
+  const grid = document.getElementById('store-grid');
+  if (!grid) return;
+  grid.innerHTML = STORE_MODULES.map(m => {
+    const priceStr = m.price > 0
+      ? `<span style="font-size:1.1rem;font-weight:900;color:${m.color}">${m.price.toLocaleString('ar-SA')} ر</span><span style="font-size:.71rem;color:var(--muted);margin-right:.3rem">${m.priceNote}</span>`
+      : `<span style="font-size:1rem;font-weight:900;color:${m.color}">حسب المتطلبات</span>`;
+    const bizName = (erpState.session && erpState.session.bizName) || '';
+    const waMsg   = encodeURIComponent('مرحباً، أرغب في تفعيل وحدة "' + m.name + '" لنظام جنان برو — المنشأة: ' + bizName);
+    return `
+      <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.35rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s" onmouseenter="this.style.transform='translateY(-3px)';this.style.borderColor='${m.color}'" onmouseleave="this.style.transform='';this.style.borderColor=''">
+        <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,${m.color},${m.color2});border-radius:16px 16px 0 0"></div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem">
+          <div style="width:48px;height:48px;border-radius:14px;background:${m.color}1a;display:flex;align-items:center;justify-content:center;font-size:1.3rem">
+            <i class="fa-solid ${m.icon}" style="color:${m.color}"></i>
+          </div>
+          <span style="background:${m.badgeColor};color:${m.color};font-size:.66rem;font-weight:800;padding:.22rem .65rem;border-radius:20px;white-space:nowrap">${m.badge}</span>
+        </div>
+        <div style="font-size:.95rem;font-weight:900">${m.name}</div>
+        <div style="font-size:.77rem;color:var(--muted);line-height:1.75">${m.desc}</div>
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:.28rem;font-size:.76rem;color:var(--muted)">
+          ${m.features.map(f => '<li><span style="margin-left:.35rem">✔</span>' + f + '</li>').join('')}
+        </ul>
+        <div style="display:flex;align-items:baseline;gap:.35rem;margin-top:auto;padding-top:.55rem;border-top:1px solid var(--border)">${priceStr}</div>
+        <button onclick="window.open('https://wa.me/966500000000?text=${waMsg}','_blank')"
+          style="width:100%;padding:.62rem;border:none;border-radius:10px;background:linear-gradient(135deg,${m.color},${m.color2});color:#fff;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
+          <i class="fa-brands fa-whatsapp"></i> اطلب تفعيل الوحدة
+        </button>
+      </div>`;
+  }).join('');
+}
 
 /* ══════════════════════════════════════════════════════════════════
    التهيئة — نقطة الدخول الرئيسية
