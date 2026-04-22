@@ -214,8 +214,8 @@ const JENAN_CONFIG = {
   // ---- استوديو التصميم ----
   design: {
     fonts: ["Tajawal", "Cairo", "IBM Plex Arabic"],
-    defaultPrimary: "#4E73C2",    /* أزرق BIZ */
-    defaultSecondary: "#1a1a2e",  /* أسود Jenan */
+    defaultPrimary: "#4B6BE0",    /* أزرق BIZ (من الشعار) */
+    defaultSecondary: "#1a1a1a",  /* أسود Jenan (من الشعار) */
     templates: ["logo", "letterhead", "business_card", "social_post"],
   },
 

@@ -32,7 +32,7 @@
     .str-3 .pw-bar:nth-child(-n+3){background:#eab308}
     .str-4 .pw-bar{background:#22c55e}
     .reg-step-dot { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:800; border:2px solid #cbd5e1; color:#94a3b8; background:#fff; transition:.3s; }
-    .reg-step.active .reg-step-dot { background:linear-gradient(135deg,#4E73C2,#1E3A8A); border-color:transparent; color:#fff; box-shadow:0 4px 12px rgba(78,115,194,.45); }
+    .reg-step.active .reg-step-dot { background:linear-gradient(135deg,#4B6BE0,#7B5BE0); border-color:transparent; color:#fff; box-shadow:0 4px 12px rgba(75,107,224,.45); }
     .reg-step.done   .reg-step-dot { background:linear-gradient(135deg,#1E3A8A,#0f2060); border-color:transparent; color:#fff; }
     .reg-step-line { width:28px; height:2px; background:#e2e8f0; }
     .field-err { border-color:#ef4444 !important; }
@@ -46,14 +46,14 @@
      style="flex:1;height:100vh;padding:1rem 2rem 0.8rem;">
 
   <!-- خلفية نقطية -->
-  <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(78,115,194,.1) 1px,transparent 1px);background-size:26px 26px;"></div>
-  <div class="absolute pointer-events-none" style="top:-100px;left:-100px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(78,115,194,.15) 0%,transparent 70%);"></div>
+  <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(75,107,224,.1) 1px,transparent 1px);background-size:26px 26px;"></div>
+  <div class="absolute pointer-events-none" style="top:-100px;left:-100px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(75,107,224,.15) 0%,transparent 70%);"></div>
   <div class="absolute pointer-events-none" style="bottom:-60px;right:-60px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(0,255,200,.05) 0%,transparent 70%);"></div>
 
   <!-- شعار -->
   <div class="relative z-10 flex justify-end items-center">
     <div class="text-right">
-      <div class="leading-none" style="font-family:'Georgia',serif;font-size:1.75rem;font-weight:900;color:#fff;letter-spacing:-.5px;">Jenan <span style="color:#93c5fd;">BIZ</span></div>
+      <div class="leading-none" style="font-family:'Georgia',serif;font-size:1.75rem;font-weight:900;color:#fff;letter-spacing:-.5px;">Jenan <span style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">BIZ</span></div>
       <div class="text-xs mt-0.5" style="color:rgba(255,255,255,.45);">المنصة الذكية للأعمال</div>
     </div>
   </div>
@@ -68,8 +68,8 @@
   <div class="relative z-10 flex flex-col gap-1.5">
 
     <div class="glass-card p-2.5 rounded-xl flex items-center gap-3 hover:bg-white/10 transition cursor-default">
-      <div class="w-11 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:linear-gradient(135deg,rgba(78,115,194,.25),rgba(30,58,138,.15));border:1px solid rgba(78,115,194,.35);box-shadow:0 0 16px rgba(78,115,194,.2),inset 0 1px 0 rgba(255,255,255,.08);">
-        <i class="fa-solid fa-file-invoice-dollar" style="color:#7ba7e8;filter:drop-shadow(0 0 6px rgba(78,115,194,.8));"></i>
+      <div class="w-11 h-10 rounded-xl flex-shrink-0 flex items-center justify-center" style="background:linear-gradient(135deg,rgba(75,107,224,.25),rgba(123,91,224,.15));border:1px solid rgba(75,107,224,.35);box-shadow:0 0 16px rgba(75,107,224,.2),inset 0 1px 0 rgba(255,255,255,.08);">
+        <i class="fa-solid fa-file-invoice-dollar" style="color:#a78bfa;filter:drop-shadow(0 0 6px rgba(75,107,224,.8));"></i>
       </div>
       <div class="flex-1">
         <div class="text-white font-bold text-sm">إعداد دراسات جدوى متكاملة</div>
@@ -131,10 +131,10 @@
       <div class="text-center flex-1">
         <svg width="52" height="52" viewBox="0 0 64 64">
           <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="5"/>
-          <circle id="gauge-risk" cx="32" cy="32" r="26" fill="none" stroke="#4E73C2" stroke-width="5"
+          <circle id="gauge-risk" cx="32" cy="32" r="26" fill="none" stroke="#4B6BE0" stroke-width="5"
             stroke-dasharray="145.2 163.4" stroke-dashoffset="40.8"
             stroke-linecap="round" transform="rotate(-90 32 32)"
-            style="filter:drop-shadow(0 0 6px #4E73C2) drop-shadow(0 0 14px #4E73C2) drop-shadow(0 0 24px rgba(78,115,194,.4))"/>
+            style="filter:drop-shadow(0 0 6px #4B6BE0) drop-shadow(0 0 14px #4B6BE0) drop-shadow(0 0 24px rgba(75,107,224,.4))"/>
           <text id="gauge-risk-txt" x="32" y="36" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold" font-family="Tajawal,sans-serif">--</text>
         </svg>
         <div class="text-xs" style="color:rgba(255,255,255,.55);">تقييم المخاطر</div>
@@ -143,11 +143,11 @@
       <div class="flex-1 text-center">
         <div id="stat-growth" class="text-blue-300 font-black text-xs mb-1">...</div>
         <div class="flex items-end justify-center gap-0.5" style="height:28px;">
-          <div class="w-1.5 rounded-t" style="height:40%;background:rgba(78,115,194,.35)"></div>
-          <div class="w-1.5 rounded-t" style="height:65%;background:rgba(78,115,194,.55)"></div>
-          <div class="w-1.5 rounded-t" style="height:80%;background:rgba(78,115,194,.75)"></div>
-          <div class="w-1.5 rounded-t" style="height:100%;background:#4E73C2;box-shadow:0 0 8px rgba(78,115,194,.9),0 0 18px rgba(78,115,194,.5),0 0 30px rgba(78,115,194,.25)"></div>
-          <div class="w-1.5 rounded-t" style="height:85%;background:rgba(78,115,194,.6)"></div>
+          <div class="w-1.5 rounded-t" style="height:40%;background:rgba(75,107,224,.35)"></div>
+          <div class="w-1.5 rounded-t" style="height:65%;background:rgba(75,107,224,.55)"></div>
+          <div class="w-1.5 rounded-t" style="height:80%;background:rgba(75,107,224,.75)"></div>
+          <div class="w-1.5 rounded-t" style="height:100%;background:#4B6BE0;box-shadow:0 0 8px rgba(75,107,224,.9),0 0 18px rgba(75,107,224,.5),0 0 30px rgba(75,107,224,.25)"></div>
+          <div class="w-1.5 rounded-t" style="height:85%;background:rgba(75,107,224,.6)"></div>
         </div>
         <div class="text-xs mt-1" style="color:rgba(255,255,255,.45);">تحليل السوق</div>
       </div>
@@ -243,7 +243,7 @@
         </div>
         <button type="submit" id="login-btn"
           class="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white font-bold transition hover:-translate-y-0.5 disabled:opacity-60"
-          style="background:linear-gradient(135deg,#4E73C2,#1E3A8A);box-shadow:0 4px 20px rgba(78,115,194,.35)">
+          style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0);box-shadow:0 4px 20px rgba(75,107,224,.35)">
           <span id="login-txt">تسجيل الدخول</span>
           <div class="spinner" id="login-spin"></div>
           <i class="fa-solid fa-arrow-left" id="login-icon"></i>
@@ -321,7 +321,7 @@
           </div>
           <button type="submit"
             class="w-full py-3 rounded-xl text-white font-bold hover:-translate-y-0.5 transition"
-            style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">
+            style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">
             التالي <i class="fa-solid fa-arrow-left mr-1"></i>
           </button>
         </form>
@@ -366,7 +366,7 @@
               class="flex-1 py-3 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-100 transition text-sm">رجوع</button>
             <button type="submit"
               class="flex-1 py-3 rounded-xl text-white font-bold hover:-translate-y-0.5 transition text-sm"
-              style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">التالي <i class="fa-solid fa-arrow-left mr-1"></i></button>
+              style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">التالي <i class="fa-solid fa-arrow-left mr-1"></i></button>
           </div>
         </form>
       </div>
@@ -387,7 +387,7 @@
         </div>
         <button onclick="verifyOTP()"
           class="w-full py-3 rounded-xl text-white font-bold flex items-center justify-center gap-2 hover:-translate-y-0.5 transition"
-          style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">
+          style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">
           تحقق وإنشاء الحساب <i class="fa-solid fa-check"></i>
         </button>
         <div id="reg-success" class="text-center mt-4" style="display:none">
@@ -420,7 +420,7 @@
           </div>
           <button type="submit"
             class="w-full py-3 rounded-xl text-white font-bold hover:-translate-y-0.5 transition"
-            style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">
+            style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">
             إرسال رمز التحقق <i class="fa-solid fa-paper-plane mr-1"></i>
           </button>
           <button type="button" onclick="show('login')"
@@ -448,7 +448,7 @@
         </div>
         <button onclick="verifyResetOTP()"
           class="w-full py-3 rounded-xl text-white font-bold hover:-translate-y-0.5 transition"
-          style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">تحقق من الرمز</button>
+          style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">تحقق من الرمز</button>
       </div>
 
       <div id="reset-s3" style="display:none" class="space-y-4">
@@ -472,7 +472,7 @@
         </div>
         <button onclick="saveNewPass()"
           class="w-full py-3 rounded-xl text-white font-bold hover:-translate-y-0.5 transition"
-          style="background:linear-gradient(135deg,#4E73C2,#1E3A8A)">
+          style="background:linear-gradient(135deg,#4B6BE0,#7B5BE0)">
           حفظ كلمة المرور الجديدة <i class="fa-solid fa-floppy-disk mr-1"></i>
         </button>
         <div id="reset-success" class="text-center py-4" style="display:none">

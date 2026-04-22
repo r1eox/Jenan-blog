@@ -6,12 +6,15 @@
 /* ---- المتغيرات (Design Tokens) ---- */
 :root {
   /* الألوان — مستوحاة من شعار جنان بيز */
-  --clr-primary:        #4E73C2;   /* أزرق BIZ */
-  --clr-primary-dark:   #3558A8;
-  --clr-primary-light:  #EEF2FC;
-  --clr-secondary:      #1a1a2e;   /* أسود Jenan */
-  --clr-secondary-dark: #0d0d1a;
-  --clr-accent:         #7B9ED4;   /* أزرق فاتح */
+  --clr-primary:        #4B6BE0;   /* أزرق BIZ (من الشعار) */
+  --clr-primary-dark:   #3655CC;
+  --clr-primary-light:  #EEF0FC;
+  --clr-secondary:      #1a1a1a;   /* أسود Jenan (من الشعار) */
+  --clr-secondary-dark: #0d0d0d;
+  --clr-accent:         #7B5BE0;   /* بنفسجي BIZ gradient (من الشعار) */
+  --clr-accent-light:   #F0ECFD;
+  --clr-grad-start:     #4B6BE0;   /* بداية gradient الشعار */
+  --clr-grad-end:       #7B5BE0;   /* نهاية gradient الشعار */
   --clr-danger:         #ef4444;
   --clr-warning:        #f59e0b;
   --clr-success:        #22c55e;
