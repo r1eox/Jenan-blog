@@ -1253,43 +1253,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .nav-sub-item i{width:18px;text-align:center;font-size:.9rem;flex-shrink:0}
 .nav-group-header.group-active{color:#fff;background:rgba(78,115,194,.15)}
 
-/* ══ JenanPro قسم خاص — أسود ذهبي احترافي ══ */
-#navgrp-growth > .nav-group-header{
-  margin:.15rem .6rem;
-  padding:.72rem 1.25rem;
-  border-radius:10px;
-  background:linear-gradient(135deg,#0e0e0e 0%,#1a1500 60%,#120f00 100%);
-  border:1px solid rgba(201,162,39,.35);
-  position:relative;overflow:hidden;
-  box-shadow:0 4px 18px rgba(0,0,0,.45),inset 0 1px 0 rgba(201,162,39,.15);
-  color:#f0d060;
-}
-#navgrp-growth > .nav-group-header::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1.5px;
-  background:linear-gradient(90deg,transparent,#c9a227 35%,#f0d060 65%,transparent);
-}
-#navgrp-growth > .nav-group-header::after{
-  content:'';position:absolute;bottom:-22px;left:-18px;
-  width:70px;height:70px;border-radius:50%;
-  background:radial-gradient(circle,rgba(201,162,39,.18) 0%,transparent 70%);
-  pointer-events:none;
-}
-#navgrp-growth > .nav-group-header .group-ico{
-  color:#c9a227;
-  filter:drop-shadow(0 0 5px rgba(201,162,39,.6));
-}
-#navgrp-growth > .nav-group-header .group-label{
-  font-weight:900;letter-spacing:.08em;font-size:1.08rem;
-  color:#fff !important;
-  -webkit-text-fill-color:#fff !important;
-  text-shadow:0 0 16px rgba(201,162,39,1),0 0 6px rgba(255,220,80,.9),0 1px 2px rgba(0,0,0,1);
-}
-#navgrp-growth > .nav-group-header .ng-arrow{color:rgba(201,162,39,.6)}
-#navgrp-growth > .nav-group-header:hover{
-  background:linear-gradient(135deg,#141400 0%,#221a00 60%,#1a1200 100%);
-  border-color:rgba(201,162,39,.6);
-  box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 18px rgba(201,162,39,.2),inset 0 1px 0 rgba(201,162,39,.22);
-}
+/* ══ JenanPro — عناصر الخدمات الداخلية فقط ══ */
 /* العناصر داخل قسم JenanPro */
 #navgrp-growth .nav-sub-item{
   margin:.12rem .6rem .12rem 1.1rem;
@@ -2413,9 +2377,9 @@ window.addEventListener('load', _syncGatewayViewportLock);
 
     <!-- ══ JenanPro ══ -->
     <div class="nav-group" id="navgrp-growth">
-      <div class="nav-group-header" onclick="toggleNavGroup('navgrp-growth')" style="justify-content:space-between">
+      <div class="nav-group-header" onclick="toggleNavGroup('navgrp-growth')">
+        <img src="assets/images/logo.svg" alt="Jenan Pro" style="width:65px;height:auto;object-fit:contain;filter:drop-shadow(0 0 8px rgba(201,162,39,.8)) brightness(1.3)">
         <i class="fa-solid fa-chevron-left ng-arrow"></i>
-        <img src="assets/images/logo.svg" alt="Jenan Pro" style="width:65px;height:auto;object-fit:contain;filter:drop-shadow(0 0 14px rgba(201,162,39,1)) drop-shadow(0 0 6px rgba(255,230,80,.9)) brightness(1.4)">
       </div>
       <div class="nav-sub">
         <div class="nav-sub-item" id="nav-software" onclick="gotoSub('software','navgrp-growth','nav-software')">
