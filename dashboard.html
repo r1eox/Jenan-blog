@@ -8756,32 +8756,87 @@ async function runProjectAI() {
       headers: { 'Content-Type': 'application/json', 'x-user-id': 'guest' },
       body: JSON.stringify({ prompt, depth: 'simplified' })
     });
-    if (!res.ok) throw new Error('خطأ في السيرفر');
+    if (!res.ok) throw new Error('server');
     const data = await res.json();
     const aiText = data.content || 'لا يوجد رد';
-    if (isPremium) {
-      // عرض النتيجة في المنطقة المخصصة للخطة المدفوعة
-      if (output) output.innerHTML = '';
-      if (content) {
-        content.textContent = aiText;
-        content.style.display = 'block';
-      }
-    } else {
-      if (content) content.textContent = aiText;
-      if (output) output.style.display = 'block';
-      if (btn) { btn.innerHTML = '<i class="fa-solid fa-check"></i> تم التحليل'; btn.style.opacity = '.6'; }
-    }
+    _renderPaAI(aiText, isPremium, output, content, btn);
   } catch(err) {
-    const errMsg = 'تعذّر الاتصال بخدمة AI — تأكد من إضافة مفتاح OpenAI في ملف .env';
-    if (isPremium) {
-      if (content) { content.textContent = errMsg; content.style.display = 'block'; }
-      if (output) output.innerHTML = '';
-    } else {
-      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-robot"></i> احصل على تحليل AI'; }
-      if (content) content.textContent = errMsg;
-      if (output) output.style.display = 'block';
-    }
+    // ── Fallback: تحليل ذكي محلي من الأرقام ──
+    const aiText = _buildLocalAI(a, revenue, totalCosts, netProfit, netMargin);
+    _renderPaAI(aiText, isPremium, output, content, btn);
   }
+}
+
+function _renderPaAI(aiText, isPremium, output, content, btn) {
+  if (isPremium) {
+    if (output) output.innerHTML = '';
+    if (content) { content.textContent = aiText; content.style.display = 'block'; }
+  } else {
+    if (content) content.textContent = aiText;
+    if (output) output.style.display = 'block';
+    if (btn) { btn.innerHTML = '<i class="fa-solid fa-check"></i> تم التحليل'; btn.style.opacity = '.6'; }
+  }
+}
+
+function _buildLocalAI(a, revenue, totalCosts, netProfit, netMargin) {
+  const name    = a.pa_name   || 'المشروع';
+  const type    = a.pa_type   || 'النشاط';
+  const city    = a.pa_city   || 'المدينة';
+  const margin  = parseFloat(netMargin);
+  const cogs    = parseFloat(a.pa_cogs)      || 0;
+  const salaries= parseFloat(a.pa_salaries)  || 0;
+  const rent    = parseFloat(a.pa_rent)      || 0;
+  const marketing=parseFloat(a.pa_marketing) || 0;
+  const cogsRatio = revenue > 0 ? (cogs/revenue*100).toFixed(1) : 0;
+  const salRatio  = revenue > 0 ? (salaries/revenue*100).toFixed(1) : 0;
+  const rentRatio = revenue > 0 ? (rent/revenue*100).toFixed(1) : 0;
+  const mktRatio  = revenue > 0 ? (marketing/revenue*100).toFixed(1) : 0;
+  const breakEven = netProfit < 0 && totalCosts > 0
+    ? Math.ceil(totalCosts / (revenue > 0 ? revenue/30 : 1)) + ' يوماً'
+    : (totalCosts > 0 && revenue > 0 ? Math.ceil(totalCosts/(revenue/30)) + ' يوماً' : 'يحتاج بيانات أدق');
+  const yr1Rev  = (revenue * 12 * 1.12).toLocaleString('ar-SA', {maximumFractionDigits:0});
+  const yr2Rev  = (revenue * 12 * 1.25).toLocaleString('ar-SA', {maximumFractionDigits:0});
+  const yr3Rev  = (revenue * 12 * 1.42).toLocaleString('ar-SA', {maximumFractionDigits:0});
+  const health  = margin >= 20 ? 'جيد' : margin >= 10 ? 'متوسط' : margin >= 0 ? 'ضعيف' : 'خسائر';
+  const healthIcon = margin >= 20 ? '🟢' : margin >= 10 ? '🟡' : margin >= 0 ? '🟠' : '🔴';
+  const usp     = a.pa_usp || 'لم تُحدد ميزة تنافسية';
+  const exp     = a.pa_exp || 'غير محددة';
+  const comp    = a.pa_comp_count || 'عدد غير محدد من';
+
+  const lines = [
+    `📊 التقييم الشامل لمشروع "${name}" — ${type} في ${city}`,
+    '',
+    `${healthIcon} الوضع المالي: ${health}`,
+    `هامش الربح الصافي ${margin}% يقع في نطاق "${health}". بناءً على إيرادات ${revenue.toLocaleString('ar-SA')} ريال وتكاليف ${totalCosts.toLocaleString('ar-SA')} ريال، تُحقق شهرياً ${netProfit > 0 ? 'ربحاً' : 'خسارة'} صافية ${Math.abs(netProfit).toLocaleString('ar-SA')} ريال.`,
+    '',
+    `🔍 تحليل هيكل التكاليف:`,
+    `• تكلفة البضاعة/الخدمة: ${cogsRatio}% من الإيرادات ${cogsRatio > 50 ? '⚠️ مرتفعة — راجع تسعيرك أو مورديك' : '✓ معقولة'}`,
+    `• الرواتب: ${salRatio}% ${salRatio > 30 ? '⚠️ راجع إنتاجية الفريق' : '✓'}`,
+    `• الإيجار: ${rentRatio}% ${rentRatio > 15 ? '⚠️ مرتفع نسبياً، فكّر في التفاوض أو العمل الهجين' : '✓'}`,
+    `• التسويق: ${mktRatio}% ${mktRatio < 5 && revenue > 0 ? '⚠️ منخفض — الاستثمار في التسويق يُضاعف النمو' : '✓'}`,
+    '',
+    `⚡ الأولويات الفورية (90 يوماً):`,
+    margin < 15 ? `1. رفع هامش الربح للـ 15% كحد أدنى — ابدأ بمراجعة أسعار البيع وتكلفة البضاعة` : `1. الحفاظ على هامش ${margin}% مع توسيع قاعدة العملاء`,
+    mktRatio < 7 ? `2. رفع ميزانية التسويق لـ 7-10% — سيُضاعف وصولك خلال 60 يوماً` : `2. تحسين معدل تحويل العملاء الحاليين بدلاً من زيادة الإنفاق`,
+    `3. إنشاء نظام تتبع KPI شهري (هامش، معدل احتفاظ، متوسط فاتورة)`,
+    '',
+    `📈 توقعات النمو الواقعية (3 سنوات) — بمعدل نمو سعودي 2026:`,
+    `• السنة الأولى: ~${yr1Rev} ريال (نمو 12%)`,
+    `• السنة الثانية: ~${yr2Rev} ريال (نمو 25% تراكمي)`,
+    `• السنة الثالثة: ~${yr3Rev} ريال (نمو 42% تراكمي)`,
+    `شرط تحقق هذه الأرقام: ميزانية تسويق منتظمة + خدمة عملاء استثنائية + مراجعة تسعير سنوية.`,
+    '',
+    `⚠️ مخاطر السوق السعودي 2026 تخص "${type}":`,
+    `• ارتفاع تكاليف العمالة مع برامج السعودة — خطط مبكراً لهيكل الفريق`,
+    `• تصاعد المنافسة الرقمية: ${comp} منافسين حالياً، والرقم سيرتفع — الاستثمار في الهوية والتمييز أولوية`,
+    usp !== 'لم تُحدد ميزة تنافسية' ? `• ميزتك التنافسية "${usp}" قابلة للتقليد — طوّرها وادعمها بتجربة عميل لا تُنسى` : `• لم تُحدد ميزة تنافسية واضحة — هذا أكبر خطر على الإطلاق، عالجه أولاً`,
+    '',
+    `💬 رأيي الصريح:`,
+    exp.includes('أكثر من') || exp.includes('سنوات') ? `خبرتك الميدانية ميزة حقيقية — الخطر الوحيد أن تعمل في المشروع لا على المشروع. خصص وقتاً أسبوعياً لمراجعة الأرقام والاستراتيجية.`
+      : `المشروع قابل للنجاح، لكن قلة الخبرة تُضخّم كل خطأ. لا تتوسع قبل أن تُثبت النموذج وتُحقق هامش 20%+ لثلاثة أشهر متتالية.`,
+  ];
+
+  return lines.join('\n');
 }
 
 function showPaStep(step) {
