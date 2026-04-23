@@ -210,6 +210,50 @@ body {
 ════════════════════════════════ */
 #view-pos { flex-direction: row; overflow: hidden; }
 
+/* وضع الباركود للسوبرماركت — يخفي شبكة المنتجات */
+body[data-activity="supermarket"] .pos-products-grid { display: none !important; }
+body[data-activity="supermarket"] .cats-bar { display: none !important; }
+
+/* منطقة الباركود */
+.barcode-scan-zone {
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.1rem; padding: 1.4rem;
+  background: var(--bg3); border: 2px dashed var(--border);
+  border-radius: 16px; margin-bottom: .75rem;
+}
+body[data-activity="supermarket"] .barcode-scan-zone { display: flex; }
+.barcode-input-wrap {
+  display: flex; gap: .5rem; width: 100%; max-width: 420px;
+}
+.barcode-field {
+  flex: 1; padding: .7rem 1rem;
+  background: var(--bg2); border: 2px solid var(--accent);
+  border-radius: 12px; color: var(--text);
+  font-family: 'Tajawal', sans-serif; font-size: 1rem; outline: none;
+  font-weight: 700; letter-spacing: .06em;
+  transition: box-shadow .2s;
+}
+.barcode-field:focus { box-shadow: 0 0 0 3px var(--accent-bg); }
+.barcode-field::placeholder { color: var(--muted); font-weight: 400; letter-spacing: 0; }
+.barcode-scan-btn {
+  padding: .7rem 1.1rem; border-radius: 12px;
+  background: var(--accent); color: #fff; border: none; cursor: pointer;
+  font-size: 1.1rem; transition: opacity .2s;
+}
+.barcode-scan-btn:hover { opacity: .88; }
+.barcode-result {
+  min-height: 44px; width: 100%; max-width: 420px;
+  border-radius: 10px; padding: .55rem 1rem;
+  font-size: .88rem; font-weight: 700;
+  background: var(--accent-bg); color: var(--accent);
+  border: 1.5px solid rgba(var(--accent-rgb, 16,185,129),.25);
+  display: flex; align-items: center; gap: .6rem;
+  opacity: 0; transition: opacity .25s;
+}
+.barcode-result.show { opacity: 1; }
+.barcode-result.err { background: rgba(239,68,68,.1); color: #ef4444; border-color: rgba(239,68,68,.25); }
+
 /* لوحة المنتجات */
 .pos-products { flex: 1; padding: .85rem; overflow-y: auto; display: flex; flex-direction: column; gap: .65rem; }
 .pos-search-bar { display: flex; gap: .5rem; }
@@ -613,12 +657,33 @@ body {
 
       <!-- المنتجات — يمين -->
       <div class="pos-products">
+        <!-- ══ منطقة الباركود (سوبرماركت فقط) ══ -->
+        <div class="barcode-scan-zone">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.88rem;color:var(--muted);font-weight:700">
+            <i class="fa-solid fa-barcode" style="font-size:1.3rem;color:var(--accent)"></i>
+            امسح الباركود أو اكتبه ثم اضغط Enter
+          </div>
+          <div class="barcode-input-wrap">
+            <input class="barcode-field" type="text" id="barcode-input"
+              placeholder="0000000000000"
+              autofocus autocomplete="off"
+              onkeydown="if(event.key==='Enter')barcodeAdd()">
+            <button class="barcode-scan-btn" onclick="barcodeAdd()" title="إضافة">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+          <div class="barcode-result" id="barcode-result">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="barcode-result-text"></span>
+          </div>
+        </div>
+
         <div class="pos-search-bar">
           <input class="pos-search" type="text" id="pos-search" placeholder="ابحث عن منتج أو خدمة..." oninput="erpFilterProducts()">
           <button class="topbar-btn" onclick="erpFilterProducts()"><i class="fa-solid fa-magnifying-glass"></i></button>
         </div>
         <div class="cats-bar" id="cats-bar"><!-- الفئات ديناميكية --></div>
-        <div class="products-grid" id="products-grid"><!-- المنتجات ديناميكية --></div>
+        <div class="products-grid pos-products-grid" id="products-grid"><!-- المنتجات ديناميكية --></div>
       </div>
     </div>
 
@@ -1629,6 +1694,42 @@ function erpAddToCart(productId) {
   showToast('+ ' + prod.name);
 }
 
+/* ══ بحث بالباركود (سوبرماركت) ══ */
+function barcodeAdd() {
+  const input = document.getElementById('barcode-input');
+  const resBox = document.getElementById('barcode-result');
+  const resTxt = document.getElementById('barcode-result-text');
+  const code = (input.value || '').trim();
+  if (!code) return;
+
+  // بحث بالباركود أولاً ثم بالاسم
+  const prod = erpState.products.find(p =>
+    (p.barcode && p.barcode.trim() === code) ||
+    p.name.includes(code)
+  );
+
+  resBox.className = 'barcode-result show';
+  if (prod) {
+    resBox.className = 'barcode-result show';
+    resBox.querySelector('i').className = 'fa-solid fa-circle-check';
+    resTxt.textContent = prod.name + ' — ' + prod.price.toFixed(2) + ' ر';
+    erpAddToCart(prod.id);
+    // تركيز على المدخل من جديد
+    input.value = '';
+    input.focus();
+    // إخفاء الرسالة بعد 2 ثانية
+    clearTimeout(window._bcTimer);
+    window._bcTimer = setTimeout(() => { resBox.className = 'barcode-result'; }, 2200);
+  } else {
+    resBox.className = 'barcode-result show err';
+    resBox.querySelector('i').className = 'fa-solid fa-circle-xmark';
+    resTxt.textContent = 'لم يُعثر على منتج: ' + code;
+    input.select();
+    clearTimeout(window._bcTimer);
+    window._bcTimer = setTimeout(() => { resBox.className = 'barcode-result'; }, 2500);
+  }
+}
+
 function erpChangeQty(productId, delta) {
   const item = erpState.cart.find(c => c.product.id === productId);
   if (!item) return;
@@ -1716,12 +1817,29 @@ function erpCheckout(method) {
   };
 
   erpState.sales.unshift(sale);
+
+  // ══ مزامنة المخزون: خصم الكميات المباعة ══
+  erpState.cart.forEach(cartItem => {
+    const prod = erpState.products.find(p => p.id === cartItem.product.id);
+    if (prod) {
+      if (typeof prod.stock === 'number') {
+        prod.stock = Math.max(0, prod.stock - cartItem.qty);
+      } else {
+        prod.stock = 0; // أول خصم يُنشئ المخزون
+      }
+    }
+  });
+
   erpSave();
   erpShowReceipt(sale);
 
   erpState.cart = [];
   document.getElementById('discount-input').value = '';
   erpRenderCart();
+
+  // إعادة التركيز على الباركود إذا كنا في سوبرماركت
+  const bc = document.getElementById('barcode-input');
+  if (bc) { bc.value = ''; bc.focus(); }
 }
 
 function erpShowReceipt(sale) {
