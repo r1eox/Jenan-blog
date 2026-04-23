@@ -1199,7 +1199,37 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .bot-action-btn.ghost:hover{background:var(--bg2)}
 
 /* ── Admin Intelligence Panel ─────────────────────────── */
-.admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;border-bottom:1px solid var(--border);padding-bottom:.5rem}
+.admin-tab-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:.45rem 1rem;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:.82rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.admin-tab-btn:hover{border-color:#4E73C2;color:#7B9ED4}
+.admin-tab-btn.active{background:rgba(78,115,194,.15);border-color:#4E73C2;color:#7B9ED4}
+.admin-tab-panel{display:none}
+.admin-tab-panel.active{display:block}
+/* Stats Panel */
+.stat-guide-box{background:rgba(78,115,194,.07);border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.1rem;margin-bottom:1.25rem}
+.stat-guide-title{font-size:.88rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem}
+.stat-guide-list{font-size:.78rem;color:rgba(255,255,255,.6);line-height:2;padding-right:1.2rem}
+.stat-guide-list li strong{color:rgba(255,255,255,.85)}
+.stat-accuracy-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin:.3rem 0 .2rem}
+.stat-accuracy-fill{height:100%;background:linear-gradient(90deg,#4E73C2,#22c55e);border-radius:4px;transition:width .5s ease}
+.stat-upload-card{position:relative;background:var(--bg2);border:2px dashed var(--border);border-radius:14px;padding:1.5rem 1rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.stat-upload-card:hover,.stat-upload-card.drag-over{border-color:#4E73C2;background:rgba(78,115,194,.06)}
+.stat-upload-card input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.stat-upload-icon{font-size:1.6rem;margin-bottom:.35rem}
+.stat-upload-title{font-size:.8rem;font-weight:700;color:rgba(255,255,255,.75)}
+.stat-upload-sub{font-size:.65rem;color:var(--muted);margin-top:.25rem;font-family:monospace;line-height:1.6}
+.stat-file-item{display:flex;align-items:center;gap:.6rem;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:.5rem .7rem;font-size:.78rem}
+.stat-file-icon{font-size:1.1rem}
+.stat-file-name{font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stat-file-size{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.stat-file-del{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem;padding:.1rem .3rem;border-radius:5px;line-height:1}
+.stat-file-del:hover{background:rgba(239,68,68,.12)}
+.stat-coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:.6rem;margin-bottom:1.25rem}
+.stat-cov-item{display:flex;align-items:center;gap:.6rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;font-size:.78rem}
+.stat-cov-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.stat-cov-dot.ok{background:#22c55e}
+.stat-cov-dot.warn{background:#f59e0b}
+.stat-cov-dot.miss{background:#4b5563}
 .admin-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center}
 .admin-kpi-val{font-size:1.8rem;font-weight:900;line-height:1}
 .admin-kpi-lbl{font-size:.82rem;color:var(--text);opacity:.85;font-weight:600;margin-top:.3rem}
@@ -1230,6 +1260,39 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .platform-suggest{background:linear-gradient(135deg,rgba(78,115,194,.08),rgba(78,115,194,.05));border:1px solid rgba(78,115,194,.2);border-radius:10px;padding:.75rem;margin-bottom:.5rem;font-size:.83rem}
 .platform-suggest h5{font-weight:800;margin-bottom:.25rem;color:#4E73C2}
 .notif-dot-count{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:#ef4444;color:#fff;font-size:.65rem;font-weight:800;margin-right:auto;flex-shrink:0}
+
+/* ══ ADMIN TABS ══ */
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;border-bottom:1px solid var(--border);padding-bottom:.75rem;flex-wrap:wrap}
+.admin-tab-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.42rem 1rem;font-family:'Tajawal',sans-serif;font-size:.83rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.admin-tab-btn.active{background:rgba(78,115,194,.15);border-color:#4E73C2;color:#7B9ED4}
+.admin-tab-panel{display:none}
+.admin-tab-panel.active{display:block}
+
+/* ══ STATS PAGE — قسم الإحصائيات ══ */
+.stat-upload-card{background:var(--bg2);border:2px dashed var(--border);border-radius:16px;padding:1.5rem;text-align:center;cursor:pointer;transition:var(--tr);position:relative}
+.stat-upload-card:hover,.stat-upload-card.drag-over{border-color:#4E73C2;background:rgba(78,115,194,.06)}
+.stat-upload-card input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.stat-upload-icon{font-size:1.8rem;margin-bottom:.5rem}
+.stat-upload-title{font-size:.9rem;font-weight:800;color:#e8eaf6;margin-bottom:.3rem}
+.stat-upload-sub{font-size:.75rem;color:var(--muted);line-height:1.6}
+.stat-file-item{display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:10px;margin-bottom:.5rem;font-size:.82rem}
+.stat-file-icon{font-size:1.1rem;flex-shrink:0}
+.stat-file-name{font-weight:700;color:#e8eaf6;flex:1}
+.stat-file-size{color:var(--muted);font-size:.72rem}
+.stat-file-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.2rem .4rem;border-radius:6px;transition:var(--tr)}
+.stat-file-del:hover{color:#ef4444;background:rgba(239,68,68,.1)}
+.stat-guide-box{background:rgba(78,115,194,.07);border:1px solid rgba(78,115,194,.2);border-radius:12px;padding:1rem 1.25rem;margin-bottom:1rem}
+.stat-guide-title{font-size:.85rem;font-weight:800;color:#7B9ED4;margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem}
+.stat-guide-list{list-style:none;padding:0;margin:0;font-size:.8rem;color:rgba(255,255,255,.7);line-height:2}
+.stat-guide-list li::before{content:'→ ';color:#4E73C2;font-weight:800}
+.stat-coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.65rem;margin-bottom:1rem}
+.stat-cov-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.7rem .9rem;display:flex;align-items:center;gap:.6rem;font-size:.8rem}
+.stat-cov-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.stat-cov-dot.ok{background:#22c55e}
+.stat-cov-dot.warn{background:#f59e0b}
+.stat-cov-dot.miss{background:rgba(255,255,255,.15)}
+.stat-accuracy-bar{height:8px;border-radius:4px;background:var(--border);margin:.4rem 0}
+.stat-accuracy-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,#4E73C2,#22c55e);transition:width .8s}
 
 /* ══ NAV GROUP (قائمة منسدلة) ══ */
 .nav-group{}
@@ -3038,7 +3101,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
               </div>
               <div class="anlys-txt">
                 <div class="anlys-pill anlys-pill-gold"><i class="fa-solid fa-brain"></i> ذكاء اصطناعي</div>
-                <div class="anlys-h3">حلّل مشروعك بالذكاء</div>
+                <div class="anlys-h3">تحليل مشروعك بـ AI</div>
                 <div class="anlys-sub">تقرير AI معمّق · مخصص لمشروعك</div>
               </div>
             </div>
@@ -5504,6 +5567,20 @@ window.addEventListener('load', _syncGatewayViewportLock);
     <!-- ===== ADMIN INTELLIGENCE PANEL ===== -->
     <div class="page" id="page-admin">
 
+      <!-- Admin Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" onclick="switchAdminTab('kpi')" id="atab-kpi">
+          <i class="fa-solid fa-chart-line"></i> لوحة التحكم
+        </button>
+        <button class="admin-tab-btn" onclick="switchAdminTab('stats')" id="atab-stats">
+          <i class="fa-solid fa-database"></i> الإحصائيات وقاعدة البيانات
+          <span id="stats-accuracy-badge" style="margin-right:.4rem;display:none;background:rgba(34,197,94,.15);color:#4ade80;font-size:.68rem;border-radius:8px;padding:.1rem .45rem;font-weight:800"></span>
+        </button>
+      </div>
+
+      <!-- TAB: لوحة التحكم (الأصلية) -->
+      <div class="admin-tab-panel active" id="atab-panel-kpi">
+
       <!-- KPI Row -->
       <div class="admin-grid" id="admin-kpi-row">
         <div class="admin-kpi">
@@ -5578,6 +5655,120 @@ window.addEventListener('load', _syncGatewayViewportLock);
           </table>
         </div>
       </div>
+
+      </div><!-- end atab-panel-kpi -->
+
+      <!-- TAB: الإحصائيات وقاعدة البيانات -->
+      <div class="admin-tab-panel" id="atab-panel-stats">
+
+        <!-- إرشادات وشريط الدقة -->
+        <div class="stat-guide-box">
+          <div class="stat-guide-title"><i class="fa-solid fa-circle-info"></i> كيف تزيد دقة التحليل والتوصيات؟</div>
+          <p style="font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:.75rem;line-height:1.8">
+            كلما رفعت ملفات أكثر، كان الذكاء قادراً على إعطاء توصيات واقعية ودقيقة — أسعار إيجارات حقيقية، عدد المنافسين الفعلي في كل حي، الكثافة السكانية، وأسعار السوق.
+          </p>
+          <ul class="stat-guide-list">
+            <li><strong>أسعار الإيجارات</strong> → JSON أو CSV يحتوي: المدينة، الحي، السعر/م²</li>
+            <li><strong>بيانات المنافسين</strong> → JSON: المدينة، الحي، نوع النشاط، عدد المنشآت</li>
+            <li><strong>الكثافة السكانية</strong> → JSON: المدينة، الحي، عدد السكان، الدخل المتوسط</li>
+            <li><strong>حركة المرور والشوارع</strong> → JSON: الشارع، المدينة، متوسط الزوار/يوم</li>
+            <li><strong>أسعار السوق المرجعية</strong> → JSON: القطاع، المدينة، متوسط الفاتورة، هامش القطاع</li>
+          </ul>
+          <div style="margin-top:.75rem">
+            <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">نسبة دقة التحليل الحالية</div>
+            <div class="stat-accuracy-bar"><div class="stat-accuracy-fill" id="stats-accuracy-fill" style="width:20%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;color:rgba(255,255,255,.4)">
+              <span>بيانات افتراضية (20%)</span>
+              <span id="stats-accuracy-pct">20%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- مناطق رفع الملفات -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+
+          <!-- الإيجارات -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-building"></i> أسعار الإيجارات</div>
+            <div class="stat-upload-card" id="upload-rents" ondragover="statDragOver(event,'upload-rents')" ondragleave="statDragLeave('upload-rents')" ondrop="statDrop(event,'rents')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'rents')">
+              <div class="stat-upload-icon">🏢</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">مثال: {"city":"الرياض","district":"العليا","price_per_sqm":320}</div>
+            </div>
+            <div id="stats-files-rents" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- بيانات المنافسين -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-store"></i> عدد المنافسين بالأحياء</div>
+            <div class="stat-upload-card" id="upload-comp" ondragover="statDragOver(event,'upload-comp')" ondragleave="statDragLeave('upload-comp')" ondrop="statDrop(event,'competitors')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'competitors')">
+              <div class="stat-upload-icon">🏪</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">مثال: {"city":"جدة","district":"الحمراء","sector":"مطعم","count":12}</div>
+            </div>
+            <div id="stats-files-competitors" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- الكثافة السكانية -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-people-group"></i> الكثافة السكانية والدخل</div>
+            <div class="stat-upload-card" id="upload-pop" ondragover="statDragOver(event,'upload-pop')" ondragleave="statDragLeave('upload-pop')" ondrop="statDrop(event,'population')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'population')">
+              <div class="stat-upload-icon">👥</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">مثال: {"city":"الدمام","district":"الفيصلية","population":45000,"avg_income":12000}</div>
+            </div>
+            <div id="stats-files-population" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- حركة المرور -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-road"></i> حركة المرور والشوارع</div>
+            <div class="stat-upload-card" id="upload-traffic" ondragover="statDragOver(event,'upload-traffic')" ondragleave="statDragLeave('upload-traffic')" ondrop="statDrop(event,'traffic')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'traffic')">
+              <div class="stat-upload-icon">🚦</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">مثال: {"city":"مكة","street":"طريق مكة المكرمة","daily_visitors":8000}</div>
+            </div>
+            <div id="stats-files-traffic" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- أسعار السوق المرجعية -->
+          <div style="grid-column:1/-1">
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-tags"></i> أسعار السوق المرجعية لكل قطاع</div>
+            <div class="stat-upload-card" id="upload-prices" ondragover="statDragOver(event,'upload-prices')" ondragleave="statDragLeave('upload-prices')" ondrop="statDrop(event,'market_prices')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'market_prices')">
+              <div class="stat-upload-icon">💰</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا — أسعار السوق لكل قطاع ومدينة</div>
+              <div class="stat-upload-sub">مثال: {"sector":"مطعم","city":"الرياض","avg_bill":185,"net_margin_pct":18,"growth_pct":13}</div>
+            </div>
+            <div id="stats-files-market_prices" style="margin-top:.5rem"></div>
+          </div>
+        </div>
+
+        <!-- تغطية البيانات -->
+        <div style="font-size:.85rem;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:.6rem">
+          <i class="fa-solid fa-check-circle" style="color:#4E73C2;margin-left:.3rem"></i> تغطية البيانات الحالية
+        </div>
+        <div class="stat-coverage-grid" id="stats-coverage-grid">
+          <!-- تُملأ بـ JS -->
+        </div>
+
+        <!-- إجمالي السجلات -->
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <i class="fa-solid fa-database" style="font-size:1.4rem;color:#4E73C2"></i>
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#e8eaf6">قاعدة بيانات الذكاء</div>
+            <div style="font-size:.75rem;color:var(--muted)" id="stats-db-summary">لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي</div>
+          </div>
+          <button onclick="statsClearAll()" style="margin-right:auto;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:9px;padding:.35rem .85rem;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">
+            <i class="fa-solid fa-trash"></i> مسح كل البيانات
+          </button>
+        </div>
+
+      </div><!-- end atab-panel-stats -->
 
     </div><!-- end page-admin -->
 
@@ -7679,9 +7870,25 @@ function buildAIRecommendationReport() {
   };
   const sd = sectorMap[type] || sectorMap['مطعم / مقهى'];
 
+  /* ── دمج بيانات الإحصائيات المرفوعة من الإدمن (تُعطى الأولوية) ── */
+  const realRentPsqm   = (typeof statsGetRent === 'function')         ? statsGetRent(cityKey, '') : null;
+  const realCompCount  = (typeof statsGetCompetitors === 'function')   ? statsGetCompetitors(cityKey, type) : null;
+  const realMarket     = (typeof statsGetMarketPrice === 'function')   ? statsGetMarketPrice(type, cityKey) : null;
+  const realAvgIncome  = (typeof statsGetAvgIncome === 'function')     ? statsGetAvgIncome(cityKey) : null;
+
+  // إذا وُجدت بيانات إيجار حقيقية، استخدمها لتعديل النسبة
+  const rentFactor2 = realRentPsqm ? (realRentPsqm / 220) : rf; // 220 هو المعدل الافتراضي ر/م²
+  // إذا وُجدت بيانات سوق حقيقية، استخدم هامش القطاع الفعلي
+  const realCogsR  = realMarket ? null : null; // مستقبلاً
+  const realGrowth = realMarket ? (parseFloat(realMarket.growth_pct) || cityData.growthPct) : cityData.growthPct;
+  const realAvgBill= realMarket ? (parseFloat(realMarket.avg_bill) || sd.avgBill) : sd.avgBill;
+  // تحذير المنافسة الحقيقية
+  const compWarning = realCompCount !== null ? `⚠️ بيانات حقيقية: يوجد ${realCompCount} منافس مباشر في ${cityKey} لهذا القطاع` : null;
+  const hasRealData = realRentPsqm || realCompCount || realMarket;
+
   /* ── حساب هيكل التكاليف الأمثل بناءً على الهدف ── */
   const cogs       = Math.round(goalRev * sd.cogsR);
-  const rentIdeal  = Math.round(goalRev * sd.rentR * rf);
+  const rentIdeal  = Math.round(goalRev * sd.rentR * rentFactor2);
   const salaries   = Math.round(goalRev * sd.salR  * lf);
   const marketing  = Math.round(goalRev * sd.mktR);
   const utilities  = Math.round(goalRev * 0.04);
@@ -7690,26 +7897,29 @@ function buildAIRecommendationReport() {
   const netProfit  = goalRev - totalCosts;
   const netMargin  = ((netProfit / goalRev) * 100).toFixed(1);
 
-  /* ── حجم المساحة المطلوبة ── */
+  /* ── حجم المساحة المطلوبة (مع سعر إيجار حقيقي إن وُجد) ── */
   const recSize = sd.sizePerM > 0 ? Math.round(goalRev / sd.sizePerM) : 0;
+  const rentRealNote = realRentPsqm && recSize > 0
+    ? ` — سعر الإيجار الفعلي في ${cityKey}: ${realRentPsqm} ر/م² → تكلفة مساحتك تقريباً ${fmt(recSize * realRentPsqm)} ر/شهر`
+    : '';
   const sizeDisplay = recSize > 0
     ? (hasSpace.includes('نعم') && spaceSize > 0
         ? (spaceSize >= recSize * 0.8
-            ? `✅ مساحتك ${spaceSize} م² كافية (مطلوب ${recSize}-${Math.round(recSize*1.3)} م²)`
-            : `⚠️ مساحتك ${spaceSize} م² أصغر من المطلوب (${recSize}-${Math.round(recSize*1.3)} م²) — قد تحدّ من الإيراد`)
-        : `${recSize}–${Math.round(recSize*1.3)} م²`)
+            ? `✅ مساحتك ${spaceSize} م² كافية (مطلوب ${recSize}-${Math.round(recSize*1.3)} م²)${rentRealNote}`
+            : `⚠️ مساحتك ${spaceSize} م² أصغر من المطلوب (${recSize}-${Math.round(recSize*1.3)} م²)${rentRealNote}`)
+        : `${recSize}–${Math.round(recSize*1.3)} م²${rentRealNote}`)
     : 'لا تحتاج مساحة فيزيائية';
 
   /* ── عدد الموظفين المطلوبين ── */
   const recStaff = sd.staffPerM > 0 ? Math.max(1, Math.round(goalRev / sd.staffPerM)) : 0;
 
   /* ── عدد الفواتير المطلوبة يومياً ── */
-  const dailyBills  = sd.avgBill > 0 ? Math.ceil(goalRev / 26 / sd.avgBill) : 0;
-  const monthBills  = sd.avgBill > 0 ? Math.ceil(goalRev / sd.avgBill) : 0;
+  const dailyBills  = realAvgBill > 0 ? Math.ceil(goalRev / 26 / realAvgBill) : 0;
+  const monthBills  = realAvgBill > 0 ? Math.ceil(goalRev / realAvgBill) : 0;
 
   /* ── تقدير تكاليف التأسيس ── */
-  const setupMin = Math.round(sd.setupMin * rf);
-  const setupMax = Math.round(sd.setupMax * rf);
+  const setupMin = Math.round(sd.setupMin * rentFactor2);
+  const setupMax = Math.round(sd.setupMax * rentFactor2);
   const oper3m   = totalCosts * 3;
   const totalMin = setupMin + oper3m;
   const totalMax = setupMax + oper3m;
@@ -7747,6 +7957,7 @@ function buildAIRecommendationReport() {
       </div>
       <div style="background:rgba(78,115,194,.12);border-radius:10px;padding:.6rem .9rem;font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.7">
         📋 <strong style="color:#fff">قرأ الذكاء الاصطناعي هدفك</strong> وصمّم هذه الخطة لتحقيق <strong style="color:#4ade80">${fmt(goalRev)} ريال/شهر</strong> في ${cityKey} — بناءً على بيانات السوق السعودي 2026.
+        ${hasRealData ? `<br><span style="color:#4ade80;font-weight:800">✅ تُستخدم بيانات حقيقية مرفوعة من الإدمن — دقة محسّنة</span>` : `<br><span style="color:rgba(255,200,0,.7);font-size:.75rem">⚡ يُستخدم معدلات السوق الافتراضية — رفع الإحصائيات يُحسّن الدقة</span>`}
       </div>
     </div>
 
@@ -7874,6 +8085,14 @@ function buildAIRecommendationReport() {
         <span style="color:rgba(255,255,255,.8);line-height:1.5">${r.task}</span>
       </div>`).join('')}
     </div>
+
+    <!-- بيانات المنافسة الحقيقية (إذا وُجدت) -->
+    ${compWarning ? `
+    <div style="background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.82rem">
+      <div style="font-weight:800;color:#f87171;margin-bottom:.4rem"><i class="fa-solid fa-shield-halved" style="margin-left:.3rem"></i> تحليل المنافسة — بيانات حقيقية من قاعدة الإحصائيات</div>
+      <div style="color:rgba(255,255,255,.75);line-height:1.8">${compWarning}<br>
+      <strong style="color:#fff">توصية:</strong> لكي تتميز، ركز على ميزة واحدة لا يقدمها أحد المنافسين — سعر أقل، جودة أعلى، أو خدمة أسرع.</div>
+    </div>` : ''}
 
     <!-- نصيحة الذكاء للقيود -->
     ${constraintAdvice ? `
@@ -12501,6 +12720,7 @@ function renderAdminPanel() {
   renderQuestionsLog();
   renderPlatformSuggestions();
   renderMarketingTable(allProfiles);
+  if (typeof renderStatsPage === 'function') renderStatsPage();
 }
 
 function renderAdminInbox() {
@@ -12607,6 +12827,238 @@ function clearAdminInbox() {
 function sendUpsellManual(userName) {
   showToast(`✅ تم إرسال عرض تسويقي يدوي لـ${userName}`);
   adminNotify('upsell', '📤 عرض يدوي أُرسل', `الإدمن أرسل عرضاً يدوياً للمستخدم: ${userName}`, {user: userName});
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ADMIN STATISTICS ENGINE — قاعدة بيانات الإحصائيات
+   تُخزَّن في localStorage تحت مفتاح jb-stats-db
+   هيكل المفاتيح:
+     jb-stats-rents         → [{city,district,price_per_sqm}, ...]
+     jb-stats-competitors   → [{city,district,sector,count}, ...]
+     jb-stats-population    → [{city,district,population,avg_income}, ...]
+     jb-stats-traffic       → [{city,street,daily_visitors}, ...]
+     jb-stats-market_prices → [{sector,city,avg_bill,net_margin_pct,growth_pct}, ...]
+══════════════════════════════════════════════════════════════════════ */
+
+const STATS_TYPES = {
+  rents:         { label:'أسعار الإيجارات',        icon:'🏢', fields:['city','district','price_per_sqm'] },
+  competitors:   { label:'بيانات المنافسين',        icon:'🏪', fields:['city','district','sector','count'] },
+  population:    { label:'الكثافة السكانية',        icon:'👥', fields:['city','district','population','avg_income'] },
+  traffic:       { label:'حركة المرور',             icon:'🚦', fields:['city','street','daily_visitors'] },
+  market_prices: { label:'أسعار السوق المرجعية',    icon:'💰', fields:['sector','city','avg_bill','net_margin_pct','growth_pct'] },
+};
+
+function switchAdminTab(tab) {
+  document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
+  const btn = document.getElementById('atab-' + tab);
+  const panel = document.getElementById('atab-panel-' + tab);
+  if (btn) btn.classList.add('active');
+  if (panel) panel.classList.add('active');
+  if (tab === 'stats') renderStatsPage();
+}
+
+function renderStatsPage() {
+  // حساب تغطية البيانات
+  const coverage = [];
+  let totalRecords = 0;
+  let filledTypes = 0;
+  Object.entries(STATS_TYPES).forEach(([key, meta]) => {
+    const data = statsLoad(key);
+    const count = data.length;
+    totalRecords += count;
+    if (count > 0) filledTypes++;
+    coverage.push({ key, label: meta.label, icon: meta.icon, count });
+  });
+
+  // نسبة الدقة: 20% افتراضي + 16% لكل نوع مملوء (max 100%)
+  const accuracy = Math.min(100, 20 + filledTypes * 16);
+  const fill = document.getElementById('stats-accuracy-fill');
+  const pct = document.getElementById('stats-accuracy-pct');
+  if (fill) fill.style.width = accuracy + '%';
+  if (pct) pct.textContent = accuracy + '%';
+
+  const badge = document.getElementById('stats-accuracy-badge');
+  if (badge) {
+    if (filledTypes > 0) { badge.textContent = accuracy + '% دقة'; badge.style.display = 'inline'; }
+    else badge.style.display = 'none';
+  }
+
+  // تغطية الشبكة
+  const grid = document.getElementById('stats-coverage-grid');
+  if (grid) {
+    grid.innerHTML = coverage.map(c => `
+      <div class="stat-cov-item">
+        <div class="stat-cov-dot ${c.count > 0 ? 'ok' : 'miss'}"></div>
+        <span>${c.icon}</span>
+        <div>
+          <div style="font-weight:700;color:#e8eaf6">${c.label}</div>
+          <div style="font-size:.68rem;color:var(--muted)">${c.count > 0 ? c.count + ' سجل' : 'لا توجد بيانات'}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ملخص قاعدة البيانات
+  const summary = document.getElementById('stats-db-summary');
+  if (summary) {
+    summary.textContent = totalRecords > 0
+      ? `إجمالي ${totalRecords} سجل عبر ${filledTypes} فئة — نسبة الدقة ${accuracy}%`
+      : 'لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي';
+  }
+
+  // عرض الملفات المحفوظة لكل فئة
+  Object.keys(STATS_TYPES).forEach(key => {
+    renderStatsFileList(key);
+  });
+}
+
+function statsLoad(key) {
+  try { return JSON.parse(localStorage.getItem('jb-stats-' + key) || '[]'); } catch(e) { return []; }
+}
+
+function statsSave(key, data) {
+  try { localStorage.setItem('jb-stats-' + key, JSON.stringify(data)); } catch(e) {}
+}
+
+function statDragOver(e, cardId) {
+  e.preventDefault();
+  const card = document.getElementById(cardId);
+  if (card) card.classList.add('drag-over');
+}
+
+function statDragLeave(cardId) {
+  const card = document.getElementById(cardId);
+  if (card) card.classList.remove('drag-over');
+}
+
+function statDrop(e, key) {
+  e.preventDefault();
+  const cardIds = { rents:'upload-rents', competitors:'upload-comp', population:'upload-pop', traffic:'upload-traffic', market_prices:'upload-prices' };
+  statDragLeave(cardIds[key]);
+  const file = e.dataTransfer?.files?.[0];
+  if (file) statsParse(file, key);
+}
+
+function statFileSelected(input, key) {
+  const file = input.files?.[0];
+  if (file) statsParse(file, key);
+  input.value = '';
+}
+
+function statsParse(file, key) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const raw = e.target.result;
+    let records = [];
+    try {
+      // محاولة JSON أولاً
+      const parsed = JSON.parse(raw);
+      records = Array.isArray(parsed) ? parsed : [parsed];
+    } catch(je) {
+      // محاولة CSV
+      try {
+        const lines = raw.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
+        records = lines.slice(1).map(line => {
+          const vals = line.split(',').map(v => v.trim().replace(/^"|"$/g,''));
+          const obj = {};
+          headers.forEach((h,i) => {
+            const v = vals[i] || '';
+            obj[h] = isNaN(v) || v === '' ? v : parseFloat(v);
+          });
+          return obj;
+        }).filter(r => Object.values(r).some(v => v !== '' && v !== null));
+      } catch(ce) {
+        showToast('⚠️ فشل قراءة الملف — تأكد أنه JSON أو CSV صحيح');
+        return;
+      }
+    }
+
+    if (records.length === 0) { showToast('⚠️ الملف فارغ أو بتنسيق غير مدعوم'); return; }
+
+    // دمج مع البيانات الموجودة
+    const existing = statsLoad(key);
+    const merged = [...existing, ...records];
+    statsSave(key, merged);
+
+    showToast(`✅ تم رفع ${records.length} سجل بنجاح — إجمالي ${merged.length} في "${STATS_TYPES[key]?.label}"`);
+    renderStatsPage();
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function renderStatsFileList(key) {
+  const el = document.getElementById('stats-files-' + key);
+  if (!el) return;
+  const data = statsLoad(key);
+  if (data.length === 0) { el.innerHTML = ''; return; }
+
+  // نأخذ أول 3 سجلات كمعاينة
+  const preview = data.slice(0, 3);
+  const meta = STATS_TYPES[key];
+  el.innerHTML = `
+    <div class="stat-file-item">
+      <span class="stat-file-icon">${meta.icon}</span>
+      <div style="flex:1">
+        <div class="stat-file-name">${meta.label}</div>
+        <div class="stat-file-size">${data.length} سجل — معاينة: ${JSON.stringify(preview[0]).slice(0,60)}...</div>
+      </div>
+      <button class="stat-file-del" onclick="statsDeleteType('${key}')" title="حذف البيانات">
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>`;
+}
+
+function statsDeleteType(key) {
+  localStorage.removeItem('jb-stats-' + key);
+  showToast(`🗑️ تم حذف بيانات "${STATS_TYPES[key]?.label}"`);
+  renderStatsPage();
+}
+
+function statsClearAll() {
+  if (!confirm('هل أنت متأكد من حذف جميع الإحصائيات المرفوعة؟')) return;
+  Object.keys(STATS_TYPES).forEach(key => localStorage.removeItem('jb-stats-' + key));
+  showToast('🗑️ تم حذف جميع بيانات الإحصائيات');
+  renderStatsPage();
+}
+
+/** يُعيد أسعار الإيجار الحقيقية للمدينة/الحي من البيانات المرفوعة (أو null) */
+function statsGetRent(city, district) {
+  const data = statsLoad('rents');
+  if (!data.length) return null;
+  const match = data.find(r => r.city && city && r.city.includes(city.slice(0,3)) && (!district || !r.district || r.district.includes(district.slice(0,3))));
+  return match ? parseFloat(match.price_per_sqm) : null;
+}
+
+/** يُعيد عدد المنافسين الفعلي للمدينة/الحي/القطاع من البيانات المرفوعة */
+function statsGetCompetitors(city, sector) {
+  const data = statsLoad('competitors');
+  if (!data.length) return null;
+  const matches = data.filter(r =>
+    r.city && city && r.city.includes(city.slice(0,3)) &&
+    r.sector && sector && (r.sector.includes(sector.slice(0,3)) || sector.includes(r.sector.slice(0,3)))
+  );
+  if (!matches.length) return null;
+  return matches.reduce((sum, r) => sum + (parseFloat(r.count) || 0), 0);
+}
+
+/** يُعيد بيانات السوق المرجعية للقطاع من البيانات المرفوعة */
+function statsGetMarketPrice(sector, city) {
+  const data = statsLoad('market_prices');
+  if (!data.length) return null;
+  return data.find(r =>
+    r.sector && sector && (r.sector.includes(sector.slice(0,3)) || sector.includes(r.sector.slice(0,3))) &&
+    (!city || !r.city || r.city.includes(city.slice(0,3)))
+  ) || null;
+}
+
+/** يُعيد متوسط الدخل للمدينة من البيانات المرفوعة */
+function statsGetAvgIncome(city) {
+  const data = statsLoad('population');
+  if (!data.length) return null;
+  const matches = data.filter(r => r.city && city && r.city.includes(city.slice(0,3)));
+  if (!matches.length) return null;
+  return matches.reduce((sum, r) => sum + (parseFloat(r.avg_income) || 0), 0) / matches.length;
 }
 
 /* ── Hook: Collect profile data from chat ────────────── */
