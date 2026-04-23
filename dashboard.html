@@ -12913,7 +12913,13 @@ function renderAdminPanel() {
   renderQuestionsLog();
   renderPlatformSuggestions();
   renderMarketingTable(allProfiles);
-  if (typeof renderStatsPage === 'function') renderStatsPage();
+  // ضمان أن التبويب الأول نشط عند الفتح
+  switchAdminTab('main');
+  // تحديث شارة الدقة في خريطة جنان
+  const _stTypes = Object.keys(STATS_TYPES);
+  const _filled  = _stTypes.filter(k => { try{ return JSON.parse(localStorage.getItem('jb-stats-'+k)||'[]').length>0; }catch(e){return false;} }).length;
+  const _badge   = document.getElementById('stats-accuracy-badge');
+  if (_badge && _filled > 0) { _badge.textContent = (20+Math.round(_filled*(80/_stTypes.length)))+'% دقة'; _badge.style.display='inline'; }
 }
 
 function renderAdminInbox() {
@@ -13077,6 +13083,36 @@ function renderStatsPage() {
   const pct = document.getElementById('stats-accuracy-pct');
   if (fill) fill.style.width = accuracy + '%';
   if (pct) pct.textContent = accuracy + '%';
+
+  const badge = document.getElementById('stats-accuracy-badge');
+  if (badge) {
+    if (filledTypes > 0) { badge.textContent = accuracy + '% دقة'; badge.style.display = 'inline'; }
+    else badge.style.display = 'none';
+  }
+
+  const grid = document.getElementById('stats-coverage-grid');
+  if (grid) {
+    grid.innerHTML = coverage.map(c => `
+      <div class="stat-cov-item">
+        <div class="stat-cov-dot ${c.count > 0 ? 'ok' : 'miss'}"></div>
+        <span>${c.icon}</span>
+        <div>
+          <div style="font-weight:700;color:#e8eaf6">${c.label}</div>
+          <div style="font-size:.68rem;color:var(--muted)">${c.count > 0 ? c.count + ' سجل' : 'لا توجد بيانات'}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  const summary = document.getElementById('stats-db-summary');
+  if (summary) {
+    summary.textContent = totalRecords > 0
+      ? `إجمالي ${totalRecords} سجل عبر ${filledTypes} فئة — نسبة الدقة ${accuracy}%`
+      : 'لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي';
+  }
+
+  Object.keys(STATS_TYPES).forEach(key => { renderStatsFileList(key); });
+}
+
 function statsGetAvgIncome(city) {
   const data = statsLoad('population');
   if (!data.length) return null;
@@ -13331,40 +13367,6 @@ function renderRoadmapPage() {
       </div>`).join('');
   }
 }
-  const badge = document.getElementById('stats-accuracy-badge');
-  if (badge) {
-    if (filledTypes > 0) { badge.textContent = accuracy + '% دقة'; badge.style.display = 'inline'; }
-    else badge.style.display = 'none';
-  }
-
-  // تغطية الشبكة
-  const grid = document.getElementById('stats-coverage-grid');
-  if (grid) {
-    grid.innerHTML = coverage.map(c => `
-      <div class="stat-cov-item">
-        <div class="stat-cov-dot ${c.count > 0 ? 'ok' : 'miss'}"></div>
-        <span>${c.icon}</span>
-        <div>
-          <div style="font-weight:700;color:#e8eaf6">${c.label}</div>
-          <div style="font-size:.68rem;color:var(--muted)">${c.count > 0 ? c.count + ' سجل' : 'لا توجد بيانات'}</div>
-        </div>
-      </div>`).join('');
-  }
-
-  // ملخص قاعدة البيانات
-  const summary = document.getElementById('stats-db-summary');
-  if (summary) {
-    summary.textContent = totalRecords > 0
-      ? `إجمالي ${totalRecords} سجل عبر ${filledTypes} فئة — نسبة الدقة ${accuracy}%`
-      : 'لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي';
-  }
-
-  // عرض الملفات المحفوظة لكل فئة
-  Object.keys(STATS_TYPES).forEach(key => {
-    renderStatsFileList(key);
-  });
-}
-
 function statsLoad(key) {
   try { return JSON.parse(localStorage.getItem('jb-stats-' + key) || '[]'); } catch(e) { return []; }
 }
