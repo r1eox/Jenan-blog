@@ -5704,16 +5704,29 @@ window.addEventListener('load', _syncGatewayViewportLock);
             <div id="an-pages-list"></div>
           </div>
           <div class="admin-card">
-            <h4><i class="fa-solid fa-location-dot" style="color:#ef4444"></i> توزيع المستخدمين بالمدن
+            <h4><i class="fa-solid fa-location-dot" style="color:#ef4444"></i> توزيع المستخدمين — المدينة والحي
               <span style="margin-right:auto;font-size:.72rem;color:var(--muted)">من ملفات المستخدمين</span>
             </h4>
             <div id="an-cities-list"></div>
+            <div id="an-districts-list" style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)"></div>
           </div>
         </div>
 
-        <!-- جدول أداء الأقسام -->
+        <!-- توزيع الجنس والعمر -->
+        <div class="admin-two-col" style="margin-top:0">
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-venus-mars" style="color:#a78bfa"></i> توزيع الجنس</h4>
+            <div id="an-gender-chart"></div>
+          </div>
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-cake-candles" style="color:#f59e0b"></i> توزيع الفئات العمرية</h4>
+            <div id="an-age-chart"></div>
+          </div>
+        </div>
+
+        <!-- جدول أداء الأقسام من الأعلى للأقل + سبل التطوير -->
         <div class="admin-card" style="margin-bottom:1rem">
-          <h4><i class="fa-solid fa-table" style="color:#4E73C2"></i> أداء الأقسام — من الأعلى إيراداً إلى الأقل</h4>
+          <h4><i class="fa-solid fa-table" style="color:#4E73C2"></i> أداء الأقسام — من الأكثر زيارة وإيراداً إلى الأقل</h4>
           <div style="overflow-x:auto">
             <table style="width:100%;border-collapse:collapse;font-size:.82rem" id="an-sections-table">
               <thead>
@@ -5723,12 +5736,18 @@ window.addEventListener('load', _syncGatewayViewportLock);
                   <th style="padding:.55rem .7rem;text-align:center">الإيراد المقدر</th>
                   <th style="padding:.55rem .7rem;text-align:center">نسبة التفاعل</th>
                   <th style="padding:.55rem .7rem;text-align:center">التقييم</th>
-                  <th style="padding:.55rem .7rem;text-align:right">توصية</th>
+                  <th style="padding:.55rem .7rem;text-align:right">سبل التطوير</th>
                 </tr>
               </thead>
               <tbody id="an-sections-tbody"></tbody>
             </table>
           </div>
+        </div>
+
+        <!-- خطة تطوير الأقسام الضعيفة -->
+        <div class="admin-card" style="margin-bottom:1rem">
+          <h4 style="margin-bottom:.85rem"><i class="fa-solid fa-rocket" style="color:#22c55e"></i> خطة رفع الأقسام الضعيفة لمستوى الأقوى</h4>
+          <div id="an-boost-plan"></div>
         </div>
 
         <!-- ──────── قسم رفع الملفات التطويرية ──────── -->
@@ -12582,12 +12601,15 @@ let USER_PROFILE = _adminLoad('jb-user-profile', {
   // Business signals
   sector: null,
   city: null,
+  district: null,
   capital: null,
   businessAgeMonths: null,        // عمر النشاط بالأشهر
   revenue: 0,                     // الإيرادات المذكورة (ريال)
   hasPOS: false,                  // هل لديه نقاط بيع مرتبطة؟
   hasDebts: null,                 // null=غير محدد | false=نظيف | true=لديه ديون
   employees: null,
+  gender: null,                   // 'male' | 'female' | null
+  age: null,                      // رقم السنة
   financeEligibleNotified: false, // حُدِّد كمرشح للتمويل مرة
   // Intent signals
   askedAbout: [],
@@ -13149,39 +13171,32 @@ const PAGE_META = {
 };
 
 function renderAnalyticsPage() {
-  const visits  = _getPageVisits();
+  const visits   = _getPageVisits();
   const profiles = _adminLoad('jb-user-profiles-all', [USER_PROFILE]);
 
-  // إجمالي الزيارات
+  // KPIs
   const totalVisits = Object.values(visits).reduce((s,v)=>s+v,0);
-  const el_total = document.getElementById('an-total-visits');
-  if (el_total) el_total.textContent = totalVisits || 0;
-
-  // أكثر قسم زيارة
   const sortedPages = Object.entries(visits).sort((a,b)=>b[1]-a[1]);
   const topPage = sortedPages[0];
+  const cityCount = {};
+  profiles.forEach(p => { if(p.city) cityCount[p.city]=(cityCount[p.city]||0)+1; });
+  const sortedCities = Object.entries(cityCount).sort((a,b)=>b[1]-a[1]);
+
+  const el_total = document.getElementById('an-total-visits');
+  if (el_total) el_total.textContent = totalVisits || 0;
   const el_top = document.getElementById('an-top-page');
   if (el_top) el_top.textContent = topPage ? (PAGE_META[topPage[0]]?.label || topPage[0]) : '—';
-
-  // أكثر مدينة
-  const cityCount = {};
-  profiles.forEach(p => { if(p.city) { cityCount[p.city]=(cityCount[p.city]||0)+1; } });
-  const sortedCities = Object.entries(cityCount).sort((a,b)=>b[1]-a[1]);
   const el_city = document.getElementById('an-top-city');
   if (el_city) el_city.textContent = sortedCities[0]?.[0] || '—';
-
-  // معدل النمو (آخر 7 أيام vs قبلها — تقديري)
   const el_growth = document.getElementById('an-growth');
   if (el_growth) el_growth.textContent = profiles.length > 3 ? '+' + Math.round(profiles.length * 1.4) + '%' : 'جديد';
 
-  // قائمة الأقسام بالزيارات
   _renderPagesList(sortedPages, totalVisits);
-  // توزيع المدن
-  _renderCitiesList(sortedCities, profiles.length);
-  // جدول الأقسام
+  _renderCitiesList(sortedCities, profiles.length, profiles);
+  _renderGenderChart(profiles);
+  _renderAgeChart(profiles);
   _renderSectionsTable(visits, profiles);
-  // نصائح التطوير
-  _renderDevTips(sortedPages, visits);
+  _renderBoostPlan(visits);
 }
 
 function _getPageVisits() {
@@ -13210,32 +13225,136 @@ function _renderPagesList(sortedPages, total) {
   }).join('');
 }
 
-function _renderCitiesList(sortedCities, total) {
+function _renderCitiesList(sortedCities, total, profiles) {
+  const cityColors = ['#4E73C2','#22c55e','#f59e0b','#ef4444','#a78bfa','#0d9488','#ec4899','#f97316'];
   const el = document.getElementById('an-cities-list');
+  if (el) {
+    if (!sortedCities.length) {
+      el.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--muted);font-size:.82rem">سيظهر التوزيع الجغرافي للمستخدمين هنا</div>';
+    } else {
+      el.innerHTML = sortedCities.slice(0,6).map(([city,cnt],i) => {
+        const pct = Math.round((cnt/Math.max(total,1))*100);
+        return `<div class="an-city-item">
+          <div class="an-city-dot" style="background:${cityColors[i%cityColors.length]}"></div>
+          <span style="flex:1;font-weight:700">${city}</span>
+          <div style="background:var(--border);border-radius:3px;width:70px;height:6px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${cityColors[i%cityColors.length]};border-radius:3px"></div>
+          </div>
+          <span style="color:${cityColors[i%cityColors.length]};font-weight:800;min-width:22px;text-align:left">${cnt}</span>
+          <span style="color:var(--muted);font-size:.72rem;min-width:32px;text-align:left">${pct}%</span>
+        </div>`;
+      }).join('');
+    }
+  }
+  // توزيع الأحياء
+  const elD = document.getElementById('an-districts-list');
+  if (elD) {
+    const distCount = {};
+    profiles.forEach(p => { if(p.district) distCount[p.district]=(distCount[p.district]||0)+1; });
+    const sortedDist = Object.entries(distCount).sort((a,b)=>b[1]-a[1]);
+    if (!sortedDist.length) {
+      elD.innerHTML = '<div style="font-size:.75rem;color:var(--muted);text-align:center;padding:.5rem">لا توجد بيانات أحياء بعد</div>';
+    } else {
+      elD.innerHTML = `<div style="font-size:.72rem;font-weight:800;color:rgba(255,255,255,.45);margin-bottom:.4rem;letter-spacing:.03em">📍 الأحياء</div>` +
+        sortedDist.slice(0,5).map(([dist,cnt],i) => {
+          const pct = Math.round((cnt/Math.max(total,1))*100);
+          return `<div class="an-city-item">
+            <div class="an-city-dot" style="background:${cityColors[(i+3)%cityColors.length]}"></div>
+            <span style="flex:1;font-weight:600;font-size:.8rem">${dist}</span>
+            <span style="color:${cityColors[(i+3)%cityColors.length]};font-weight:800;min-width:22px;text-align:left">${cnt}</span>
+            <span style="color:var(--muted);font-size:.72rem;min-width:32px;text-align:left">${pct}%</span>
+          </div>`;
+        }).join('');
+    }
+  }
+}
+
+function _renderGenderChart(profiles) {
+  const el = document.getElementById('an-gender-chart');
   if (!el) return;
-  if (!sortedCities.length) {
-    el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem">سيظهر التوزيع الجغرافي للمستخدمين هنا</div>';
+  const counts = { male:0, female:0, unknown:0 };
+  profiles.forEach(p => {
+    if (p.gender === 'male') counts.male++;
+    else if (p.gender === 'female') counts.female++;
+    else counts.unknown++;
+  });
+  const total = profiles.length || 1;
+  const malePct   = Math.round(counts.male   / total * 100);
+  const femalePct = Math.round(counts.female / total * 100);
+  const unknPct   = 100 - malePct - femalePct;
+  if (!counts.male && !counts.female) {
+    el.innerHTML = '<div style="text-align:center;padding:1.2rem;color:var(--muted);font-size:.8rem">لا توجد بيانات جنس بعد</div>';
     return;
   }
-  const cityColors = ['#4E73C2','#22c55e','#f59e0b','#ef4444','#a78bfa','#0d9488','#ec4899','#f97316'];
-  el.innerHTML = sortedCities.slice(0,8).map(([city,cnt],i) => {
-    const pct = Math.round((cnt/Math.max(total,1))*100);
-    return `<div class="an-city-item">
-      <div class="an-city-dot" style="background:${cityColors[i%cityColors.length]}"></div>
-      <span style="flex:1;font-weight:700">${city}</span>
-      <div style="background:var(--border);border-radius:3px;width:80px;height:6px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:${cityColors[i%cityColors.length]};border-radius:3px"></div>
+  el.innerHTML = `
+    <div style="display:flex;gap:.5rem;height:22px;border-radius:8px;overflow:hidden;margin-bottom:.85rem">
+      ${malePct   > 0 ? `<div style="width:${malePct}%;background:#4E73C2;transition:width .5s"></div>` : ''}
+      ${femalePct > 0 ? `<div style="width:${femalePct}%;background:#ec4899;transition:width .5s"></div>` : ''}
+      ${unknPct   > 0 ? `<div style="flex:1;background:rgba(255,255,255,.08)"></div>` : ''}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:.45rem;font-size:.82rem">
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <div style="width:10px;height:10px;border-radius:2px;background:#4E73C2;flex-shrink:0"></div>
+        <span style="flex:1">👨 ذكور</span>
+        <strong style="color:#4E73C2">${counts.male}</strong>
+        <span style="color:var(--muted);min-width:32px;text-align:left">${malePct}%</span>
       </div>
-      <span style="color:${cityColors[i%cityColors.length]};font-weight:800;min-width:22px;text-align:left">${cnt}</span>
-      <span style="color:var(--muted);font-size:.72rem;min-width:32px;text-align:left">${pct}%</span>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <div style="width:10px;height:10px;border-radius:2px;background:#ec4899;flex-shrink:0"></div>
+        <span style="flex:1">👩 إناث</span>
+        <strong style="color:#ec4899">${counts.female}</strong>
+        <span style="color:var(--muted);min-width:32px;text-align:left">${femalePct}%</span>
+      </div>
+      ${unknPct > 0 ? `<div style="display:flex;align-items:center;gap:.5rem">
+        <div style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,.2);flex-shrink:0"></div>
+        <span style="flex:1;color:var(--muted)">غير محدد</span>
+        <strong style="color:var(--muted)">${counts.unknown}</strong>
+        <span style="color:var(--muted);min-width:32px;text-align:left">${unknPct}%</span>
+      </div>` : ''}
     </div>`;
-  }).join('');
+}
+
+function _renderAgeChart(profiles) {
+  const el = document.getElementById('an-age-chart');
+  if (!el) return;
+  const buckets = { '18-24':0, '25-34':0, '35-44':0, '45-54':0, '55+':0, 'غير محدد':0 };
+  profiles.forEach(p => {
+    const a = parseInt(p.age);
+    if (!a) { buckets['غير محدد']++; return; }
+    if (a < 25) buckets['18-24']++;
+    else if (a < 35) buckets['25-34']++;
+    else if (a < 45) buckets['35-44']++;
+    else if (a < 55) buckets['45-54']++;
+    else buckets['55+']++;
+  });
+  const bucketColors = { '18-24':'#22c55e','25-34':'#4E73C2','35-44':'#f59e0b','45-54':'#a78bfa','55+':'#ef4444','غير محدد':'rgba(255,255,255,.2)' };
+  const total = profiles.length || 1;
+  const hasData = Object.entries(buckets).some(([k,v]) => k !== 'غير محدد' && v > 0);
+  if (!hasData) {
+    el.innerHTML = '<div style="text-align:center;padding:1.2rem;color:var(--muted);font-size:.8rem">لا توجد بيانات عمرية بعد</div>';
+    return;
+  }
+  const maxBucket = Math.max(...Object.values(buckets)) || 1;
+  el.innerHTML = Object.entries(buckets)
+    .filter(([,v]) => v > 0)
+    .map(([label, cnt]) => {
+      const pct  = Math.round(cnt / total * 100);
+      const barW = Math.round(cnt / maxBucket * 100);
+      return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font-size:.8rem">
+        <span style="min-width:52px;font-weight:700;color:${bucketColors[label]}">${label}</span>
+        <div style="flex:1;background:rgba(255,255,255,.07);border-radius:3px;height:7px;overflow:hidden">
+          <div style="height:100%;width:${barW}%;background:${bucketColors[label]};border-radius:3px"></div>
+        </div>
+        <strong style="color:${bucketColors[label]};min-width:18px;text-align:left">${cnt}</strong>
+        <span style="color:var(--muted);min-width:32px;text-align:left">${pct}%</span>
+      </div>`;
+    }).join('');
 }
 
 function _renderSectionsTable(visits, profiles) {
   const tbody = document.getElementById('an-sections-tbody');
   if (!tbody) return;
-  // ترتيب حسب الإيراد المقدر
+  // ترتيب: أكثر زيارة أولاً، ثم فرعياً إيراد
   const pages = Object.entries(PAGE_META)
     .filter(([,m]) => m.category !== 'admin' && m.category !== 'navigation')
     .map(([pg, meta]) => ({
@@ -13243,58 +13362,108 @@ function _renderSectionsTable(visits, profiles) {
       visits: visits[pg] || 0,
       rev: meta.rev,
     }))
-    .sort((a,b) => b.rev - a.rev);
+    .sort((a,b) => b.visits - a.visits || b.rev - a.rev);
 
-  const maxRev = pages[0]?.rev || 1;
-  const ratings = ['🥇 ممتاز','🥈 جيد جداً','🥉 جيد','⚡ يحتاج تطوير','⚠️ منخفض'];
-  const tips = {
-    premium: 'أضف محتوى مميز وعروضاً حصرية لزيادة الاشتراكات',
-    core: 'حسّن سرعة التحميل وأضف أمثلة تطبيقية',
-    growth: 'أضف باقات تجريبية مجانية لزيادة التبني',
-    engagement: 'أضف مكافآت ونقاط لرفع التفاعل',
+  const SECTION_TIPS = {
+    'robot':         { action:'ابدأ بتحليل مشروع جديد الآن', boost:'أضف نماذج تحليلات ناجحة في الرئيسية لاستقطاب المستخدمين' },
+    'paid-analysis': { action:'أطلق عرض "أول تحليل بنصف السعر"', boost:'أضف شريط تقدم يُظهر قيمة التقرير قبل الدفع' },
+    'analysis':      { action:'أضف 3 دراسات جدوى جاهزة مجانية', boost:'اربط صفحة الدراسة بتقنية AI لتحليل تلقائي فوري' },
+    'academy':       { action:'أطلق كورس "ابدأ مشروعك" مجانياً', boost:'أضف شهادات قابلة للمشاركة على LinkedIn' },
+    'software':      { action:'أضف قسم "جرّب مجاناً 14 يوم"', boost:'أنشئ مقارنة واضحة بين الباقات' },
+    'design':        { action:'اعرض معرض أعمال حقيقية', boost:'أضف تقييمات العملاء السابقين مع صورة' },
+    'supply':        { action:'أضف أسعار موردين مباشرة', boost:'أضف فلتر "الأقل سعراً - الأسرع توصيلاً"' },
+    'compliance':    { action:'أنشئ دليل ترخيص PDF مجاني', boost:'أضف قائمة مرجعية قابلة للطباعة لكل قطاع' },
+    'referral':      { action:'أطلق حملة "أحِل واربح شهراً مجانياً"', boost:'أضف مستوى ثانٍ للإحالة (إحالة الإحالة)' },
+    'loyalty':       { action:'اجعل النقاط قابلة للتحويل لخصومات', boost:'أضف شريط نقاط الولاء في الرئيسية دائماً' },
+    'seo':           { action:'أضف أداة تدقيق SEO مجانية', boost:'اعرض 5 كلمات مفتاحية ذهبية مجانية عند التسجيل' },
+    'social':        { action:'اعرض نشر تجريبي مجاني لمرة', boost:'أضف تقويماً بصرياً لجدولة المنشورات' },
+    'projects':      { action:'أضف فلتر "فرصة جديدة اليوم"', boost:'أضف إشعارات فورية للمشاريع المناسبة' },
+    'reports':       { action:'أضف قالب تقرير مجاني واحد', boost:'اربط التقارير بنتائج التحليل AI تلقائياً' },
+    'orders':        { action:'أضف لوحة متابعة طلبات بصرية', boost:'أضف إشعار "طلبك على الطريق" عبر واتساب' },
   };
 
+  const maxVisits = pages[0]?.visits || 1;
   tbody.innerHTML = pages.map((item, i) => {
-    const ratingIdx = Math.min(Math.floor(i / (pages.length / 5)), 4);
+    const tip     = SECTION_TIPS[item.pg] || { action:'طوّر هذا القسم', boost:'أضف محتوى جذاباً' };
     const engagement = item.visits > 0 ? Math.min(95, 30 + Math.round(item.visits * 3.5)) + '%' : '0%';
-    const revColor = i < 3 ? '#22c55e' : i < 6 ? '#f59e0b' : '#ef4444';
+    const strength = item.visits >= maxVisits * 0.7 ? { label:'🥇 قوي', c:'#22c55e' }
+                   : item.visits >= maxVisits * 0.35 ? { label:'🥈 متوسط', c:'#f59e0b' }
+                   : { label:'⚠️ ضعيف', c:'#ef4444' };
+    const revColor = item.rev > 3000 ? '#22c55e' : item.rev > 1000 ? '#f59e0b' : '#ef4444';
+    const boostHtml = strength.label.includes('ضعيف')
+      ? `<div style="font-size:.72rem;color:var(--muted)">${tip.action}</div><div style="margin-top:.2rem;font-size:.7rem;background:rgba(239,68,68,.08);border-radius:4px;padding:.15rem .4rem;display:inline-block;color:#f87171">🚀 ${tip.boost}</div>`
+      : `<div style="font-size:.72rem;color:var(--muted)">${tip.action}</div>`;
     return `<tr style="border-bottom:1px solid var(--border)">
       <td style="padding:.6rem .7rem;font-weight:800">${item.meta.icon} ${item.meta.label}</td>
       <td style="padding:.6rem .7rem;text-align:center;color:#4E73C2;font-weight:700">${item.visits}</td>
       <td style="padding:.6rem .7rem;text-align:center;font-weight:800;color:${revColor}">${item.rev > 0 ? item.rev.toLocaleString() + ' ر' : '—'}</td>
       <td style="padding:.6rem .7rem;text-align:center">${engagement}</td>
-      <td style="padding:.6rem .7rem;text-align:center;font-size:.8rem">${ratings[ratingIdx]}</td>
-      <td style="padding:.6rem .7rem;font-size:.75rem;color:var(--muted)">${tips[item.meta.category] || '—'}</td>
+      <td style="padding:.6rem .7rem;text-align:center;font-size:.8rem;color:${strength.c}">${strength.label}</td>
+      <td style="padding:.6rem .7rem">${boostHtml}</td>
     </tr>`;
   }).join('');
 }
 
-function _renderDevTips(sortedPages, visits) {
-  const el = document.getElementById('an-dev-tips');
+function _renderBoostPlan(visits) {
+  const el = document.getElementById('an-boost-plan');
   if (!el) return;
-  const weakPages = Object.entries(PAGE_META)
-    .filter(([pg, m]) => m.category !== 'admin' && m.category !== 'navigation' && (visits[pg]||0) < 3)
-    .slice(0,4);
-  
-  const tips = {
-    'paid-analysis': { tip:'أضف عرضاً تجريبياً مجانياً أو خصم للمستخدمين الجدد لرفع اعتماد التحليل المدفوع بنسبة 60%+', action:'أضف زر "جرّب مجاناً" في الصفحة الرئيسية' },
-    'academy':       { tip:'أضف كورساً قصيراً مجانياً (3 دروس) كمدخل، ثم اعرض الاشتراك الكامل', action:'أنشئ محتوى "ابدأ هنا" مميز' },
-    'software':      { tip:'أضف فيديو تعريفي 60 ثانية يشرح المنتجات المتاحة مع أسعارها', action:'أضف قسم "الأكثر مبيعاً هذا الأسبوع"' },
-    'design':        { tip:'أضف معرض أعمال سابقة حقيقية، والمستخدمون يثقون بالعينات أكثر من الوصف', action:'اطلب من المصممين رفع 3 نماذج لكل خدمة' },
-    'supply':        { tip:'اعرض أسعار موردين وقارنها مباشرة في الصفحة لاستقطاب القرار الفوري', action:'أضف فلتر "الأقل سعراً" و"الأسرع توصيلاً"' },
-    'compliance':    { tip:'أضف قائمة مرجعية مجانية للمتطلبات الشائعة لكل قطاع', action:'أنشئ "دليل الترخيص السريع" PDF مجاني' },
-    'referral':      { tip:'ارفع قيمة المكافأة للإحالة أو أضف مستوى ثانٍ من الإحالات', action:'أطلق حملة "احصل على شهر مجانياً"' },
-    'loyalty':       { tip:'اجعل نقاط الولاء قابلة للتحويل لخصومات حقيقية على الخدمات', action:'أضف شريط النقاط في الصفحة الرئيسية' },
+  const maxVisits = Math.max(...Object.values(visits), 1);
+  const BOOST_PLANS = {
+    'paid-analysis': {
+      title:'تحليل مدفوع',icon:'💎',
+      steps:['🎯 أضف عداد "X مستخدم أصدر تقريره اليوم" في الرئيسية','💰 أطلق عرض "أول تقرير بـ 49 ر فقط" لمدة 72 ساعة','📹 أضف فيديو 90 ثانية يعرض نموذج تقرير حقيقي','🏷️ أضف ضمان "راضٍ أو مسترد" واضحاً','📧 أرسل تذكيراً للمستخدمين الذين وصلوا الخطوة 2 ولم يكملوا']
+    },
+    'academy':{ title:'الأكاديمية',icon:'🎓',
+      steps:['🆓 أتح 3 دروس أولى مجاناً بدون تسجيل','🏆 أضف شهادات مشاركة قابلة للتحميل','📲 أضف إشعار "درس جديد" أسبوعياً','🤝 اربط إتمام الكورس بخصم 20% على خدمة أخرى','⭐ اعرض تقييمات متعلمين سابقين مع صورهم']
+    },
+    'software':{ title:'متجر الأدوات',icon:'🖥️',
+      steps:['🆓 أتح تجربة 14 يوم مجانية لأهم أداة','📊 أضف مقارنة بصرية "بدون / معنا"','🛍️ أضف قسم "الأكثر مبيعاً هذا الأسبوع"','💬 أضف محادثة مباشرة في صفحة المنتج','🎁 أطلق باقة بداية بسعر رمزي']
+    },
+    'design':{ title:'استوديو التصميم',icon:'🎨',
+      steps:['🖼️ أضف معرض 12 عمل حقيقي بتقييمات العملاء','⚡ أضف خدمة "تصميم سريع 24 ساعة"','💡 أتح تصميم شعار مجاني بسيط للمسجلين الجدد','📱 اعرض نماذج منتجات جاهزة قابلة للتخصيص','🏷️ أضف أسعار واضحة وشفافة لكل خدمة']
+    },
+    'supply':{ title:'التوريد',icon:'📦',
+      steps:['💰 اعرض أسعار 5 موردين مقارنة مباشرة','🚚 أضف "أسرع توصيل في مدينتك"','⭐ أضف تقييمات الموردين من المشترين الحقيقيين','🔔 أضف إشعار "انخفض السعر" للمتابعين','📋 أضف قائمة مشتريات جاهزة لكل نشاط']
+    },
+    'referral':{ title:'الإحالات',icon:'🤝',
+      steps:['💎 ارفع مكافأة الإحالة إلى 100 ر لكل صديق','🎯 أضف مستوى ثانٍ: إحالة إحالتك = 30 ر','📊 أضف لوحة متصدري الإحالة الشهرية','📲 أضف زر "شارك الآن" مباشرة في الرئيسية','🏆 خصص جائزة للأعلى إحالة كل شهر']
+    },
+    'compliance':{ title:'الامتثال',icon:'📋',
+      steps:['📄 أنشئ دليل ترخيص PDF مجاني لكل قطاع','✅ أضف قائمة مرجعية تفاعلية قابلة للتأشير','🔔 أضف تذكيرات تجديد التراخيص','🤖 أضف مساعد AI يجيب على أسئلة الامتثال','📞 أضف استشارة مجانية 15 دقيقة للمسجلين']
+    },
+    'loyalty':{ title:'الولاء',icon:'⭐',
+      steps:['💳 اجعل نقاط الولاء قابلة للتحويل لخصومات فورية','📊 أضف شريط النقاط دائماً في الرئيسية','🎁 أضف مكافأة يوم الميلاد تلقائياً','🏆 أضف مستويات: برونز / فضة / ذهب / بلاتين','📧 أرسل ملخص نقاط شهرياً بالبريد']
+    },
   };
 
+  const weakPages = Object.entries(PAGE_META)
+    .filter(([pg, m]) => m.category !== 'admin' && m.category !== 'navigation' && (visits[pg]||0) < (maxVisits * 0.4))
+    .sort((a,b) => (visits[a[0]]||0) - (visits[b[0]]||0))
+    .slice(0, 5);
+
+  if (!weakPages.length) {
+    el.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--muted);font-size:.82rem">🎉 جميع الأقسام تحقق أداءً ممتازاً!</div>';
+    return;
+  }
+
   el.innerHTML = weakPages.map(([pg, meta]) => {
-    const t = tips[pg] || { tip: 'أضف محتوى جذاباً وادعُ المستخدمين لاكتشاف هذا القسم', action: 'روّج للقسم في الرئيسية' };
-    return `<div class="an-dev-tip">
-      <div class="an-dev-tip-title">${meta.icon} ${meta.label} — ${visits[pg]||0} زيارة</div>
-      <div style="color:rgba(255,255,255,.7);margin-bottom:.3rem">${t.tip}</div>
-      <div style="background:rgba(78,115,194,.12);border-radius:6px;padding:.3rem .6rem;display:inline-block;font-size:.76rem;color:#7B9ED4;font-weight:700">✅ إجراء: ${t.action}</div>
+    const plan = BOOST_PLANS[pg];
+    const vCnt = visits[pg] || 0;
+    const topV = Math.max(...Object.values(visits), 1);
+    const gap  = topV - vCnt;
+    if (!plan) {
+      return `<div class="an-dev-tip">
+        <div class="an-dev-tip-title">${meta.icon} ${meta.label} — ${vCnt} زيارة (الفجوة: ${gap} زيارة)</div>
+        <div style="color:rgba(255,255,255,.65)">أضف محتوى مميزاً وروّج للقسم في الرئيسية وقنوات التواصل</div>
+      </div>`;
+    }
+    return `<div class="an-dev-tip" style="margin-bottom:.85rem">
+      <div class="an-dev-tip-title">${plan.icon} ${plan.title} — ${vCnt} زيارة &nbsp;|&nbsp; <span style="color:#f87171">فجوة ${gap} زيارة عن الأعلى</span></div>
+      <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:.3rem">
+        ${plan.steps.map(s => `<div style="font-size:.78rem;color:rgba(255,255,255,.75);display:flex;gap:.4rem;align-items:flex-start"><span style="flex-shrink:0">→</span><span>${s}</span></div>`).join('')}
+      </div>
     </div>`;
-  }).join('') || '<div style="text-align:center;padding:1rem;color:var(--muted);font-size:.82rem">ستظهر توصيات التطوير بعد تسجيل زيارات كافية</div>';
+  }).join('');
 }
 
 function _renderTopVisitsRevenue() {
