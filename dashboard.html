@@ -958,13 +958,15 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .f-field label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem;color:#e8eaf6}
 .pa-hint{margin-top:.45rem;padding:.42rem .75rem;background:rgba(78,115,194,.1);border:1px solid rgba(78,115,194,.22);border-radius:8px;font-size:.77rem;color:rgba(255,255,255,.72);line-height:1.5}
 /* PA Wizard dark-theme overrides */
-#pa-step-1 .fs-wizard-header{background:#111828;border-color:rgba(78,115,194,.2)}
-#pa-step-1 .fs-wizard-title{color:#e8eaf6;font-size:1rem;font-weight:800}
-#pa-step-1 .form-card{background:#111828;border-color:rgba(78,115,194,.2);margin-top:.75rem}
-#pa-step-1 .form-grid{color:#e8eaf6}
+#pa-step-1 .fs-wizard-header{background:#111828;border-color:rgba(78,115,194,.2);padding:.8rem 1.2rem}
+#pa-step-1 .fs-wizard-title{color:#e8eaf6;font-size:.95rem;font-weight:800}
+#pa-step-1 .form-card{background:#111828;border-color:rgba(78,115,194,.2);margin-top:.5rem;padding:1rem 1.25rem}
+#pa-step-1 .form-grid{color:#e8eaf6;gap:.65rem}
 #pa-step-1 .f-field input,
 #pa-step-1 .f-field select,
-#pa-step-1 .f-field textarea{background:#0B1120;color:#e8eaf6;border:1.5px solid rgba(78,115,194,.3);border-radius:10px;padding:.6rem .9rem;font-family:'Tajawal',sans-serif;font-size:.9rem;width:100%}
+#pa-step-1 .f-field textarea{background:#0B1120;color:#e8eaf6;border:1.5px solid rgba(78,115,194,.3);border-radius:10px;padding:.42rem .75rem;font-family:'Tajawal',sans-serif;font-size:.86rem;width:100%}
+#pa-step-1 .f-field label{font-size:.78rem;margin-bottom:.25rem}
+#pa-step-1 .pa-hint{font-size:.7rem;padding:.3rem .6rem;margin-top:.25rem}
 #pa-step-1 .f-field input::placeholder,
 #pa-step-1 .f-field textarea::placeholder{color:rgba(255,255,255,.3)}
 #pa-step-1 .f-field input:focus,
@@ -1846,16 +1848,26 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
   gap:.55rem;
 }
 /* إخفاء الصفحة الثانية والثالثة من الـ flow لعدم تأثيرهم على الارتفاع */
-#page-robot #pa-step-1,
+#page-robot #pa-step-1{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  overflow:hidden;
+  z-index:5;
+  background:#0B1120;
+  padding:.6rem;
+}
 #page-robot #pa-step-2{
   position:absolute;
   top:0;
   left:0;
   right:0;
-  bottom:0;          /* FIX: fill full height of page-robot */
-  overflow-y:auto;   /* FIX: allow scrolling inside the step */
-  z-index:5;         /* FIX: ensure on top of step-0 content */
-  background:#0B1120; /* FIX: always dark background */
+  bottom:0;
+  overflow-y:auto;
+  z-index:5;
+  background:#0B1120;
   padding:.75rem;
 }
 
@@ -7270,6 +7282,38 @@ const PA_QUESTIONS = [
 
 let paState = { currentGroup: 0, answers: {}, started: false };
 
+/* ─── ويزارد الذكاء الاصطناعي — مختلف تماماً عن المجاني ─────────────────
+   المجاني: أنت تُدخل أرقامك → نحلل ما عندك
+   الذكاء: أنت تقول هدفك → نقرر ما تحتاجه
+──────────────────────────────────────────────────────────────────────── */
+const PA_AI_QUESTIONS = [
+  /* الخطوة 0 — الهدف */
+  {
+    title: '🎯 أخبرني هدفك — الذكاء يُصمّم مشروعك',
+    fields: [
+      { id:'ai_name',    label:'اسم مشروعك المستقبلي',          type:'text',   placeholder:'مثال: مطعم الشاورما السوري', required:true },
+      { id:'ai_type',    label:'نوع النشاط',                     type:'select', options:['مطعم / مقهى','كافيه','صالون حلاقة / تجميل','محل ملابس / أزياء','محل إلكترونيات','بقالة / سوبرماركت','مركز لياقة / جيم','خدمات مهنية','تقنية / تطبيقات','تجارة إلكترونية','أخرى'], required:true },
+      { id:'ai_city',    label:'المدينة',                        type:'select', options:['الرياض','جدة','الدمام','مكة المكرمة','المدينة المنورة','الخبر','أبها','تبوك','مدينة أخرى'], required:true },
+      { id:'ai_goal',    label:'الإيراد الشهري الذي تريد تحقيقه (ريال)', type:'number', placeholder:'مثال: 80000 — الذكاء سيُصمم المشروع لتحقيق هذا الرقم', required:true, minVal:1 },
+      { id:'ai_capital', label:'رأس المال المتاح للاستثمار (ريال)',      type:'number', placeholder:'مثال: 300000 — للمقارنة مع التكاليف المطلوبة', required:true, minVal:1 },
+    ]
+  },
+  /* الخطوة 1 — وضعك الحالي */
+  {
+    title: '📋 وضعك الحالي — يساعدنا في تخصيص الخطة',
+    fields: [
+      { id:'ai_exp',        label:'خبرتك في هذا المجال',                    type:'select', options:['أكثر من 5 سنوات','3-5 سنوات','1-3 سنوات','أقل من سنة — مبتدئ تماماً'], required:true },
+      { id:'ai_has_space',  label:'هل لديك موقع / مساحة محجوزة مسبقاً؟',  type:'select', options:['نعم — عندي موقع محدد','لا — أبحث عن موقع مناسب'], required:true },
+      { id:'ai_space_size', label:'إذا نعم — ما مساحتها؟ (م²) — اتركه فارغاً إن لا يوجد', type:'number', placeholder:'مثال: 120', required:false },
+      { id:'ai_has_staff',  label:'هل لديك موظفون جاهزون؟',               type:'select', options:['نعم — لدي فريق أو شريك','لا — سأوظف من الصفر'], required:false },
+      { id:'ai_constraint', label:'أكبر تحدٍّ أمامك الآن',                 type:'select', options:['رأس المال محدود','لا أعرف الموقع المناسب','قلة الخبرة في الإدارة','الوقت ضيق','لا يوجد تحدٍّ كبير'], required:true },
+    ]
+  },
+];
+
+/** يُعيد مجموعة الأسئلة المناسبة حسب tier */
+function _paQ() { return paState.tier === 'premium' ? PA_AI_QUESTIONS : PA_QUESTIONS; }
+
 // ── دوال الأمان والمساعدة ──────────────────────────────────────────────
 /** يُعقِّم النص قبل إدراجه في innerHTML لمنع XSS */
 function escHtml(s) {
@@ -7344,7 +7388,7 @@ function updatePaProgressBadge() {
   var bar    = document.getElementById('pa-prog-bar');
   var cta    = document.getElementById('pa-prog-cta');
   if (!strip) return;
-  var total  = PA_QUESTIONS.length;
+  var total  = _paQ().length;
   if (!paState.started && !Object.keys(paState.answers).length) {
     strip.style.display = 'none';
     return;
@@ -7363,7 +7407,7 @@ function updatePaProgressBadge() {
     cta.style.background = 'rgba(34,197,94,.2)';
     cta.style.borderColor = 'rgba(34,197,94,.4)';
   } else {
-    var stepTitles = ['المشروع','دراسة السوق','الإيرادات','التكاليف الثابتة','التكاليف المتغيرة','التشغيل','الخبرة'];
+    var stepTitles = _paQ().map(g => g.title.replace(/^[^\u0600-\u06FF]+/,'').slice(0,12));
     var pctVal     = Math.round((step / total) * 100);
     var tier       = paState.tier === 'premium' ? 'premium' : 'free';
     label.textContent = '● المرحلة ' + (step + 1) + ' من ' + total + ' — ' + (stepTitles[step] || '');
@@ -7378,7 +7422,8 @@ function updatePaProgressBadge() {
 }
 
 function renderPaStepsBar() {
-  const total = PA_QUESTIONS.length;
+  const qs    = _paQ();
+  const total = qs.length;
   const cur   = paState.currentGroup;
   let html = '';
   for (let i = total - 1; i >= 0; i--) {
@@ -7390,7 +7435,7 @@ function renderPaStepsBar() {
   document.getElementById('pa-steps-bar').innerHTML = html;
   document.getElementById('pa-step-label').textContent = `الخطوة ${cur+1} من ${total}`;
   document.getElementById('pa-step-pct').textContent   = Math.round((cur+1)/total*100) + '%';
-  document.getElementById('pa-wizard-title').textContent = PA_QUESTIONS[cur].title;
+  document.getElementById('pa-wizard-title').textContent = qs[cur].title;
   updatePaProgressBadge();
 }
 
@@ -7423,7 +7468,7 @@ const PA_STEP_PROCESS_MSGS = [
 ];
 
 function renderPaGroup() {
-  const group = PA_QUESTIONS[paState.currentGroup];
+  const group = _paQ()[paState.currentGroup];
   const container = document.getElementById('pa-questions-container');
   container.innerHTML = group.fields.map(q => {
     const rawVal = paState.answers[q.id] || '';
@@ -7436,17 +7481,19 @@ function renderPaGroup() {
       const opts = q.options.map(o => `<option value="${escHtml(o)}"${rawVal===o?' selected':''}>${escHtml(o)}</option>`).join('');
       return `<div class="f-field"><label>${q.label}${optLabel}</label><select id="${q.id}" onchange="_paUpdateHint(this,'${q.id}')"><option value="">اختر...</option>${opts}</select>${hintHtml}</div>`;
     } else if (q.type === 'textarea') {
-      return `<div class="f-field" style="grid-column:1/-1"><label>${q.label}${optLabel}</label><textarea id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" rows="3" style="resize:vertical">${val}</textarea>${hintHtml}</div>`;
+      return `<div class="f-field" style="grid-column:1/-1"><label>${q.label}${optLabel}</label><textarea id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" rows="2" style="resize:none">${val}</textarea>${hintHtml}</div>`;
     } else {
       return `<div class="f-field"><label>${q.label}${optLabel}</label><input type="${q.type}" id="${q.id}" placeholder="${escHtml(q.placeholder||'')}" value="${val}" oninput="_paUpdateHint(this,'${q.id}')"/>${hintHtml}</div>`;
     }
   }).join('');
 
   const isFirst = paState.currentGroup === 0;
-  const isLast  = paState.currentGroup === PA_QUESTIONS.length - 1;
+  const isLast  = paState.currentGroup === _paQ().length - 1;
   document.getElementById('pa-prev-btn').style.display = isFirst ? 'none' : 'inline-flex';
   document.getElementById('pa-next-btn').innerHTML = isLast
-    ? '<i class="fa-solid fa-lock-open"></i> إصدار التقرير المالي'
+    ? (paState.tier === 'premium'
+      ? '<i class="fa-solid fa-brain"></i> أنشئ خطة مشروعي <i class="fa-solid fa-arrow-left"></i>'
+      : '<i class="fa-solid fa-lock-open"></i> إصدار التقرير المالي')
     : 'التالي <i class="fa-solid fa-arrow-left"></i>';
 }
 
@@ -7462,7 +7509,7 @@ function _paUpdateHint(el, fieldId) {
 }
 
 function paNavNext() {
-  const group = PA_QUESTIONS[paState.currentGroup];
+  const group = _paQ()[paState.currentGroup];
   for (const q of group.fields) {
     const el = document.getElementById(q.id);
     if (!el) continue;
@@ -7496,11 +7543,14 @@ function paNavNext() {
     paState.answers[q.id] = val;
   }
   savePaSession();
-  if (paState.currentGroup < PA_QUESTIONS.length - 1) {
+  if (paState.currentGroup < _paQ().length - 1) {
     // ── Loading Spinner between steps ──
     const btn = document.getElementById('pa-next-btn');
     const prevBtn = document.getElementById('pa-prev-btn');
-    const msg = PA_STEP_PROCESS_MSGS[paState.currentGroup] || 'جاري معالجة البيانات...';
+    const aiMsgs = ['جاري رسم مخطط مشروعك...','الذكاء يحسب الموقع الأمثل...','جاري تصميم هيكل الفريق...'];
+    const freeMsgs = PA_STEP_PROCESS_MSGS;
+    const msgs = paState.tier === 'premium' ? aiMsgs : freeMsgs;
+    const msg = msgs[paState.currentGroup] || 'جاري معالجة البيانات...';
     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${msg}`;
     btn.disabled = true; if(prevBtn) prevBtn.disabled = true;
     const container = document.getElementById('pa-questions-container');
@@ -7519,7 +7569,7 @@ function paNavNext() {
 }
 
 function paNavPrev() {
-  const group = PA_QUESTIONS[paState.currentGroup];
+  const group = _paQ()[paState.currentGroup];
   group.fields.forEach(q => { const el = document.getElementById(q.id); if (el) paState.answers[q.id] = el.value.trim(); });
   savePaSession();
   if (paState.currentGroup > 0) {
@@ -7550,33 +7600,313 @@ function generateProjectAnalysisReport() {
     btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${processMsgs[msgIdx]}`;
   }, 600);
   const delay = isPremium ? 3200 : 2800;
+  const aiProcessMsgs = [
+    'الذكاء يحلل السوق والمنافسة...',
+    'جاري حساب المساحة والفريق المطلوبين...',
+    'جاري رسم خارطة الطريق التأسيسية...',
+    'جاري بناء توقعات النمو 3 سنوات...',
+    'جاري تحديد الأحياء الأمثل وعوامل النجاح...',
+  ];
+  if (isPremium) {
+    let aiIdx = 0;
+    const aiInterval = setInterval(() => {
+      aiIdx = (aiIdx+1) % aiProcessMsgs.length;
+      btn.innerHTML = `<i class="fa-solid fa-brain fa-spin"></i> ${aiProcessMsgs[aiIdx]}`;
+    }, 650);
+    setTimeout(() => {
+      clearInterval(aiInterval);
+      clearInterval(interval);
+      container.style.opacity = ''; container.style.pointerEvents = '';
+      btn.innerHTML = '<i class="fa-solid fa-brain"></i> خطة مشروعك جاهزة';
+      btn.disabled = false;
+      // ── AI path: recommendation report ──
+      document.getElementById('pa-report-container').innerHTML = buildAIRecommendationReport();
+      const pdfBtn = document.getElementById('pa-pdf-btn');
+      if (pdfBtn) pdfBtn.style.display = 'none'; // AI report has its own layout
+      showPaStep(2);
+      const s2 = document.getElementById('pa-step-2'); if(s2) s2.scrollTop = 0;
+      const el = document.getElementById('sc-chats');
+      if (el) el.textContent = parseInt(el.textContent||0)+1;
+    }, delay + 1200);
+    return;
+  }
   setTimeout(() => {
     clearInterval(interval);
     container.style.opacity = ''; container.style.pointerEvents = '';
     btn.innerHTML = '<i class="fa-solid fa-lock-open"></i> إصدار التقرير المالي';
     btn.disabled = false;
-    // ── Investment-First: free tier → paywall before report ──
-    if (!isPremium) {
-      _showPaPaywall();
-      return;
-    }
-    // premium: show full report immediately
-    document.getElementById('pa-report-container').innerHTML = buildProjectAnalysisReport();
-    const pdfBtn = document.getElementById('pa-pdf-btn');
-    if (pdfBtn) pdfBtn.style.display = 'inline-flex';
-    showPaStep(2);
-    const s2 = document.getElementById('pa-step-2'); if(s2) s2.scrollTop = 0;
-    const el = document.getElementById('sc-chats');
-    if (el) el.textContent = parseInt(el.textContent||0)+1;
-    setTimeout(() => {
-      const aiSection = document.getElementById('pa-ai-section');
-      if (aiSection) aiSection.scrollIntoView({ behavior:'smooth', block:'start' });
-      setTimeout(() => runProjectAI(), 600);
-    }, 900);
+    // ── Free tier → paywall before report ──
+    _showPaPaywall();
   }, delay);
 }
 
-function _showPaPaywall() {
+/* ══════════════════════════════════════════════════════════════════════
+   AI RECOMMENDATION REPORT — خطة مشروع كاملة من هدف الإيراد
+   المدخل: هدف إيراد شهري + نوع النشاط + المدينة + رأس المال
+   المخرج: مستشار يقول "إليك ما تحتاجه لتحقيق X"
+══════════════════════════════════════════════════════════════════════ */
+function buildAIRecommendationReport() {
+  const a = paState.answers;
+  const name       = a.ai_name    || 'مشروعك';
+  const type       = a.ai_type    || 'مطعم / مقهى';
+  const cityKey    = a.ai_city    || 'جدة';
+  const goalRev    = parseFloat(a.ai_goal)    || 0;
+  const capital    = parseFloat(a.ai_capital) || 0;
+  const exp        = a.ai_exp     || 'أقل من سنة';
+  const hasSpace   = a.ai_has_space || '';
+  const spaceSize  = parseFloat(a.ai_space_size) || 0;
+  const constraint = a.ai_constraint || '';
+
+  const fmt = (n,d=0) => Math.round(n).toLocaleString('ar-SA',{maximumFractionDigits:d});
+
+  /* ── بيانات المدينة من KSA ── */
+  const cityData = (typeof KSA !== 'undefined' && KSA.cities[cityKey]) ? KSA.cities[cityKey] : {rentFactor:1, laborFactor:1, growthPct:10, districts:['وسط المدينة','الحي التجاري','الحي السكني']};
+  const rf = cityData.rentFactor;
+  const lf = cityData.laborFactor;
+
+  /* ── بيانات القطاع ── */
+  const sectorMap = {
+    'مطعم / مقهى':       { cogsR:0.34, rentR:0.12, salR:0.27, mktR:0.07, sizePerM:450, staffPerM:8000,  avgBill:180, setupMin:200000, setupMax:450000, icon:'🍽️' },
+    'كافيه':             { cogsR:0.30, rentR:0.13, salR:0.25, mktR:0.08, sizePerM:400, staffPerM:10000, avgBill:120, setupMin:150000, setupMax:350000, icon:'☕' },
+    'صالون حلاقة / تجميل':{ cogsR:0.20, rentR:0.14, salR:0.35, mktR:0.06, sizePerM:700, staffPerM:6000,  avgBill:150, setupMin:80000,  setupMax:200000, icon:'💈' },
+    'محل ملابس / أزياء': { cogsR:0.45, rentR:0.15, salR:0.18, mktR:0.06, sizePerM:300, staffPerM:12000, avgBill:250, setupMin:120000, setupMax:300000, icon:'👗' },
+    'محل إلكترونيات':    { cogsR:0.70, rentR:0.08, salR:0.10, mktR:0.04, sizePerM:500, staffPerM:20000, avgBill:400, setupMin:150000, setupMax:350000, icon:'📱' },
+    'بقالة / سوبرماركت': { cogsR:0.65, rentR:0.08, salR:0.12, mktR:0.03, sizePerM:350, staffPerM:15000, avgBill:100, setupMin:180000, setupMax:400000, icon:'🛒' },
+    'مركز لياقة / جيم':  { cogsR:0.08, rentR:0.15, salR:0.30, mktR:0.08, sizePerM:150, staffPerM:5000,  avgBill:300, setupMin:250000, setupMax:700000, icon:'🏋️' },
+    'خدمات مهنية':       { cogsR:0.10, rentR:0.10, salR:0.45, mktR:0.08, sizePerM:800, staffPerM:8000,  avgBill:500, setupMin:50000,  setupMax:150000, icon:'💼' },
+    'تقنية / تطبيقات':  { cogsR:0.12, rentR:0.08, salR:0.50, mktR:0.10, sizePerM:900, staffPerM:6000,  avgBill:0,   setupMin:30000,  setupMax:120000, icon:'💻' },
+    'تجارة إلكترونية':   { cogsR:0.55, rentR:0.02, salR:0.15, mktR:0.12, sizePerM:0,   staffPerM:18000, avgBill:220, setupMin:20000,  setupMax:80000,  icon:'🛍️' },
+  };
+  const sd = sectorMap[type] || sectorMap['مطعم / مقهى'];
+
+  /* ── حساب هيكل التكاليف الأمثل بناءً على الهدف ── */
+  const cogs       = Math.round(goalRev * sd.cogsR);
+  const rentIdeal  = Math.round(goalRev * sd.rentR * rf);
+  const salaries   = Math.round(goalRev * sd.salR  * lf);
+  const marketing  = Math.round(goalRev * sd.mktR);
+  const utilities  = Math.round(goalRev * 0.04);
+  const reserve    = Math.round(goalRev * 0.03);
+  const totalCosts = cogs + rentIdeal + salaries + marketing + utilities + reserve;
+  const netProfit  = goalRev - totalCosts;
+  const netMargin  = ((netProfit / goalRev) * 100).toFixed(1);
+
+  /* ── حجم المساحة المطلوبة ── */
+  const recSize = sd.sizePerM > 0 ? Math.round(goalRev / sd.sizePerM) : 0;
+  const sizeDisplay = recSize > 0
+    ? (hasSpace.includes('نعم') && spaceSize > 0
+        ? (spaceSize >= recSize * 0.8
+            ? `✅ مساحتك ${spaceSize} م² كافية (مطلوب ${recSize}-${Math.round(recSize*1.3)} م²)`
+            : `⚠️ مساحتك ${spaceSize} م² أصغر من المطلوب (${recSize}-${Math.round(recSize*1.3)} م²) — قد تحدّ من الإيراد`)
+        : `${recSize}–${Math.round(recSize*1.3)} م²`)
+    : 'لا تحتاج مساحة فيزيائية';
+
+  /* ── عدد الموظفين المطلوبين ── */
+  const recStaff = sd.staffPerM > 0 ? Math.max(1, Math.round(goalRev / sd.staffPerM)) : 0;
+
+  /* ── عدد الفواتير المطلوبة يومياً ── */
+  const dailyBills  = sd.avgBill > 0 ? Math.ceil(goalRev / 26 / sd.avgBill) : 0;
+  const monthBills  = sd.avgBill > 0 ? Math.ceil(goalRev / sd.avgBill) : 0;
+
+  /* ── تقدير تكاليف التأسيس ── */
+  const setupMin = Math.round(sd.setupMin * rf);
+  const setupMax = Math.round(sd.setupMax * rf);
+  const oper3m   = totalCosts * 3;
+  const totalMin = setupMin + oper3m;
+  const totalMax = setupMax + oper3m;
+  const capGap   = capital < totalMin ? totalMin - capital : 0;
+
+  /* ── أفضل 3 أحياء في المدينة ── */
+  const districts = cityData.districts.slice(0, 3);
+
+  /* ── تقدير وقت الوصول للهدف ── */
+  const expMonths = exp.includes('أكثر') ? 3 : exp.includes('3-5') ? 4 : exp.includes('1-3') ? 6 : 9;
+
+  /* ── قراءة القيود ── */
+  const constraintAdvice =
+    constraint.includes('رأس المال') ? '💡 نصيحة: ابدأ بنموذج أصغر (50% من الهدف) وراكم الأرباح للتوسع.' :
+    constraint.includes('الموقع')   ? '💡 نصيحة: استعن بمكتب عقارات متخصص بالتجاري، وتحقق من حركة المشاة في 3 أوقات مختلفة.' :
+    constraint.includes('الخبرة')   ? '💡 نصيحة: اشترك في تدريب إدارة أعمال 3 أشهر أو شارك مَن لديه خبرة كشريك.' :
+    constraint.includes('الوقت')    ? '💡 نصيحة: وظّف مدير عمليات كمرحلة أولى، وركّز على القرارات الاستراتيجية فقط.' : '';
+
+  /* ═══════════════ بناء HTML التقرير ═══════════════ */
+  return `
+  <div style="font-family:'Tajawal',sans-serif;direction:rtl;color:#e8eaf6">
+
+    <!-- عنوان التقرير -->
+    <div style="background:linear-gradient(135deg,#0d1f42,#111828);border:1px solid rgba(78,115,194,.35);border-radius:18px;padding:1.5rem 1.75rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem">
+        <span style="font-size:1.8rem">${sd.icon}</span>
+        <div>
+          <div style="font-size:1.1rem;font-weight:900;color:#fff">${escHtml(name)}</div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5)">${type} · ${cityKey}</div>
+        </div>
+        <div style="margin-right:auto;text-align:center">
+          <div style="font-size:.65rem;color:rgba(255,255,255,.4);margin-bottom:.2rem">هدف الإيراد الشهري</div>
+          <div style="font-size:1.5rem;font-weight:900;color:#4ade80">${fmt(goalRev)} ر</div>
+        </div>
+      </div>
+      <div style="background:rgba(78,115,194,.12);border-radius:10px;padding:.6rem .9rem;font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.7">
+        📋 <strong style="color:#fff">قرأ الذكاء الاصطناعي هدفك</strong> وصمّم هذه الخطة لتحقيق <strong style="color:#4ade80">${fmt(goalRev)} ريال/شهر</strong> في ${cityKey} — بناءً على بيانات السوق السعودي 2026.
+      </div>
+    </div>
+
+    <!-- الموقع والمساحة -->
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.9rem">📍 الموقع والمساحة الأمثل</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.85rem">
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem">
+          <div style="font-size:.67rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">المساحة المطلوبة</div>
+          <div style="font-size:1rem;font-weight:800;color:#fff">${sizeDisplay}</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem">
+          <div style="font-size:.67rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">الإيجار الموصى به</div>
+          <div style="font-size:1rem;font-weight:800;color:#fff">${fmt(rentIdeal)} ر/شهر</div>
+        </div>
+      </div>
+      <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:.5rem">أفضل 3 أحياء في ${cityKey} لهذا النشاط:</div>
+      ${districts.map((d,i) => `<div style="display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:.3rem;font-size:.8rem">
+        <span style="background:rgba(78,115,194,.2);color:#7B9ED4;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">${i+1}</span>
+        <span style="color:#e8eaf6">${d}</span>
+      </div>`).join('')}
+    </div>
+
+    <!-- هيكل الفريق المطلوب -->
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.85rem">👥 هيكل الفريق المقترح لتحقيق الهدف</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem;text-align:center">
+          <div style="font-size:1.8rem;font-weight:900;color:#4ade80">${recStaff}</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.5)">موظفين تقريباً</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem;text-align:center">
+          <div style="font-size:1.4rem;font-weight:900;color:#fff">${fmt(salaries)} ر</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.5)">رواتب شهرية مقترحة</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- هيكل التكاليف المثالي -->
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.9rem">💰 هيكل التكاليف المثالي لـ ${fmt(goalRev)} ريال/شهر</div>
+      ${[
+        { label:'تكلفة البضاعة/الخدمة', val:cogs,      pct:Math.round(sd.cogsR*100), ok:true },
+        { label:'رواتب الموظفين',        val:salaries,  pct:Math.round(sd.salR*100),  ok:true },
+        { label:'الإيجار',               val:rentIdeal, pct:Math.round(sd.rentR*rf*100), ok:true },
+        { label:'التسويق',               val:marketing, pct:Math.round(sd.mktR*100),  ok:true },
+        { label:'الكهرباء والمرافق',      val:utilities, pct:4,                        ok:true },
+        { label:'احتياطي طوارئ',         val:reserve,   pct:3,                        ok:true },
+      ].map(r => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.82rem">
+          <span style="color:rgba(255,255,255,.7)">${r.label}</span>
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="width:80px;height:5px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden">
+              <div style="height:100%;width:${Math.min(r.pct*2.5,100)}%;background:#4E73C2;border-radius:3px"></div>
+            </div>
+            <span style="color:#7B9ED4;font-weight:700;width:30px;text-align:left">${r.pct}%</span>
+            <span style="color:#fff;font-weight:800;width:80px;text-align:left">${fmt(r.val)} ر</span>
+          </div>
+        </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;padding:.6rem .5rem;background:${netProfit>0?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border-radius:10px;border:1px solid ${netProfit>0?'rgba(34,197,94,.2)':'rgba(239,68,68,.2)'}">
+        <span style="font-size:.88rem;font-weight:800;color:${netProfit>0?'#4ade80':'#f87171'}">صافي الربح المستهدف (${netMargin}%)</span>
+        <span style="font-size:1.05rem;font-weight:900;color:${netProfit>0?'#4ade80':'#f87171'}">${fmt(netProfit)} ر/شهر</span>
+      </div>
+    </div>
+
+    <!-- كيف تصل للهدف -->
+    ${sd.avgBill > 0 ? `
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.85rem">🎯 كيف تصل لـ ${fmt(goalRev)} ريال/شهر؟</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.85rem">
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem">
+          <div style="font-size:.65rem;color:rgba(255,255,255,.4)">متوسط الفاتورة المتوقعة</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#fff">${fmt(sd.avgBill)} ر</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem">
+          <div style="font-size:.65rem;color:rgba(255,255,255,.4)">فواتير يومية مطلوبة</div>
+          <div style="font-size:1.2rem;font-weight:900;color:#fff">${dailyBills} فاتورة/يوم</div>
+        </div>
+      </div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.9">
+        • الشهر 1-3: توقع <strong style="color:#fff">40-50% من الهدف</strong> (${fmt(goalRev*0.45)} ر) — مرحلة بناء قاعدة عملاء<br>
+        • الشهر 4-6: توقع <strong style="color:#fff">65-75% من الهدف</strong> (${fmt(goalRev*0.70)} ر) — نمو بالتوصيات والتسويق<br>
+        • الشهر 7+: تحقيق الهدف الكامل <strong style="color:#4ade80">${fmt(goalRev)} ر</strong> (متوسط ${expMonths}-${expMonths+3} أشهر من الافتتاح)
+      </div>
+    </div>` : ''}
+
+    <!-- رأس المال والتأسيس -->
+    <div style="background:#111828;border:1px solid ${capGap>0?'rgba(239,68,68,.3)':'rgba(34,197,94,.2)'};border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.85rem">💼 رأس المال المطلوب للتأسيس</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem;margin-bottom:.85rem">
+        <div style="background:rgba(255,255,255,.04);border-radius:9px;padding:.65rem;text-align:center">
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4)">تجهيزات وديكور</div>
+          <div style="font-size:.9rem;font-weight:800;color:#fff">${fmt(setupMin)}-${fmt(setupMax)} ر</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:9px;padding:.65rem;text-align:center">
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4)">احتياطي 3 أشهر</div>
+          <div style="font-size:.9rem;font-weight:800;color:#fff">${fmt(oper3m)} ر</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-radius:9px;padding:.65rem;text-align:center">
+          <div style="font-size:.62rem;color:rgba(255,255,255,.4)">إجمالي مطلوب</div>
+          <div style="font-size:.9rem;font-weight:800;color:${capGap>0?'#f87171':'#4ade80'}">${fmt(totalMin)}-${fmt(totalMax)} ر</div>
+        </div>
+      </div>
+      ${capGap > 0 ? `
+      <div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:.7rem .9rem;font-size:.8rem;color:rgba(255,255,255,.7)">
+        ⚠️ رأس مالك المتاح (${fmt(capital)} ر) أقل من المطلوب بـ <strong style="color:#f87171">${fmt(capGap)} ر</strong>.
+        الحل: ابدأ بنموذج أصغر أو ابحث عن شريك تمويلي.
+      </div>` : `
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:.7rem .9rem;font-size:.8rem;color:rgba(255,255,255,.7)">
+        ✅ رأس مالك (${fmt(capital)} ر) كافٍ للبدء! تبقى لديك احتياطي إضافي للطوارئ.
+      </div>`}
+    </div>
+
+    <!-- خارطة الطريق التأسيسية -->
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.85rem">⚡ خارطة طريق التأسيس (الـ 90 يوم الأولى)</div>
+      ${[
+        { week:'الأسبوع 1-2',  task:'اختيار الموقع المثالي + مفاوضة عقد الإيجار' },
+        { week:'الأسبوع 3-5',  task:'التجهيزات والتشطيب واستخراج التراخيص' },
+        { week:'الأسبوع 6-7',  task:'تعيين الفريق الأساسي (${recStaff} موظف) وتدريبهم' },
+        { week:'الأسبوع 8-9',  task:'اختبار ناعم (Soft Launch) مع 20% من الطاقة الاستيعابية' },
+        { week:'الأسبوع 10-12',task:'افتتاح رسمي + حملة تسويق (${fmt(marketing)} ر/شهر)' },
+      ].map(r => `<div style="display:flex;gap:.75rem;align-items:flex-start;margin-bottom:.55rem;font-size:.8rem">
+        <span style="background:rgba(78,115,194,.15);color:#7B9ED4;border-radius:8px;padding:.2rem .6rem;font-size:.68rem;font-weight:800;white-space:nowrap;flex-shrink:0">${r.week}</span>
+        <span style="color:rgba(255,255,255,.8);line-height:1.5">${r.task}</span>
+      </div>`).join('')}
+    </div>
+
+    <!-- نصيحة الذكاء للقيود -->
+    ${constraintAdvice ? `
+    <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.7">
+      ${constraintAdvice}
+    </div>` : ''}
+
+    <!-- توقعات 3 سنوات -->
+    <div style="background:#111828;border:1px solid rgba(78,115,194,.2);border-radius:14px;padding:1.25rem;margin-bottom:1rem">
+      <div style="font-size:.9rem;font-weight:800;color:#7B9ED4;margin-bottom:.85rem">📈 توقعات النمو 3 سنوات — بمعدل نمو ${cityData.growthPct}% سنوياً في ${cityKey}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.65rem">
+        ${[1,2,3].map(y => {
+          const rev = goalRev * 12 * Math.pow(1 + cityData.growthPct/100, y);
+          return `<div style="background:rgba(255,255,255,.04);border-radius:10px;padding:.75rem;text-align:center">
+            <div style="font-size:.65rem;color:rgba(255,255,255,.4)">السنة ${y}</div>
+            <div style="font-size:1rem;font-weight:800;color:#4ade80">${fmt(rev)} ر</div>
+            <div style="font-size:.6rem;color:rgba(255,255,255,.35)">سنوياً</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- زر البداية -->
+    <div style="text-align:center;padding:1rem 0 .5rem">
+      <button onclick="resetProjectAnalysis()" style="background:linear-gradient(135deg,#4E73C2,#7B9ED4);border:none;padding:.75rem 2.5rem;border-radius:14px;color:#fff;font-family:'Tajawal',sans-serif;font-size:.92rem;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(78,115,194,.3)">
+        <i class="fa-solid fa-arrow-right" style="margin-left:.4rem"></i> خطة مشروع جديدة
+      </button>
+    </div>
+
+  </div>`;
+}
+
+
   const a = paState.answers;
   const projectName = escHtml(a.pa_name) || 'مشروعك';
   const revenue    = parseFloat(a.pa_revenue) || 0;
