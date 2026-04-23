@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+﻿# -*- coding: utf-8 -*-
+HTML = r"""<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8"/>
@@ -452,4 +453,9 @@ function showToast(msg){
 }
 </script>
 </body>
-</html>
+</html>"""
+
+with open(r'c:\Users\JEN21\OneDrive\سطح المكتب\بايثون\jenan-biz\auth.html','w',encoding='utf-8') as f:
+    f.write(HTML)
+print('Done. Length:', len(HTML))
+
