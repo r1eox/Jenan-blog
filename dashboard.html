@@ -1290,8 +1290,8 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .an-bar-fill{height:7px;border-radius:4px;background:linear-gradient(90deg,#4E73C2,#7B9ED4);flex-shrink:0}
 .an-city-item{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
 .an-city-dot{width:10px;height:10px;border-radius:50%;background:#4E73C2;flex-shrink:0}
-.an-dev-tip{background:rgba(78,115,194,.07);border:1px solid rgba(78,115,194,.15);border-radius:10px;padding:.75rem 1rem;margin-bottom:.6rem;font-size:.82rem}
-.an-dev-tip-title{font-weight:800;color:#7B9ED4;margin-bottom:.25rem}
+.an-dev-tip{background:rgba(78,115,194,.08);border:1px solid rgba(78,115,194,.22);border-radius:10px;padding:.75rem 1rem;margin-bottom:.6rem;font-size:.82rem;color:var(--text)}
+.an-dev-tip-title{font-weight:800;color:#3b63b5;margin-bottom:.25rem}
 
 /* ══ NAV GROUP (قائمة منسدلة) ══ */
 .nav-group{}
@@ -13255,7 +13255,7 @@ function _renderCitiesList(sortedCities, total, profiles) {
     if (!sortedDist.length) {
       elD.innerHTML = '<div style="font-size:.75rem;color:var(--muted);text-align:center;padding:.5rem">لا توجد بيانات أحياء بعد</div>';
     } else {
-      elD.innerHTML = `<div style="font-size:.72rem;font-weight:800;color:rgba(255,255,255,.45);margin-bottom:.4rem;letter-spacing:.03em">📍 الأحياء</div>` +
+      elD.innerHTML = `<div style="font-size:.72rem;font-weight:800;color:var(--muted);margin-bottom:.4rem;letter-spacing:.03em">📍 الأحياء</div>` +
         sortedDist.slice(0,5).map(([dist,cnt],i) => {
           const pct = Math.round((cnt/Math.max(total,1))*100);
           return `<div class="an-city-item">
@@ -13290,7 +13290,7 @@ function _renderGenderChart(profiles) {
     <div style="display:flex;gap:.5rem;height:22px;border-radius:8px;overflow:hidden;margin-bottom:.85rem">
       ${malePct   > 0 ? `<div style="width:${malePct}%;background:#4E73C2;transition:width .5s"></div>` : ''}
       ${femalePct > 0 ? `<div style="width:${femalePct}%;background:#ec4899;transition:width .5s"></div>` : ''}
-      ${unknPct   > 0 ? `<div style="flex:1;background:rgba(255,255,255,.08)"></div>` : ''}
+      ${unknPct   > 0 ? `<div style="flex:1;background:var(--border)"></div>` : ''}
     </div>
     <div style="display:flex;flex-direction:column;gap:.45rem;font-size:.82rem">
       <div style="display:flex;align-items:center;gap:.5rem">
@@ -13306,7 +13306,7 @@ function _renderGenderChart(profiles) {
         <span style="color:var(--muted);min-width:32px;text-align:left">${femalePct}%</span>
       </div>
       ${unknPct > 0 ? `<div style="display:flex;align-items:center;gap:.5rem">
-        <div style="width:10px;height:10px;border-radius:2px;background:rgba(255,255,255,.2);flex-shrink:0"></div>
+        <div style="width:10px;height:10px;border-radius:2px;background:var(--border);flex-shrink:0"></div>
         <span style="flex:1;color:var(--muted)">غير محدد</span>
         <strong style="color:var(--muted)">${counts.unknown}</strong>
         <span style="color:var(--muted);min-width:32px;text-align:left">${unknPct}%</span>
@@ -13327,7 +13327,7 @@ function _renderAgeChart(profiles) {
     else if (a < 55) buckets['45-54']++;
     else buckets['55+']++;
   });
-  const bucketColors = { '18-24':'#22c55e','25-34':'#4E73C2','35-44':'#f59e0b','45-54':'#a78bfa','55+':'#ef4444','غير محدد':'rgba(255,255,255,.2)' };
+  const bucketColors = { '18-24':'#22c55e','25-34':'#4E73C2','35-44':'#f59e0b','45-54':'#a78bfa','55+':'#ef4444','غير محدد':'var(--muted)' };
   const total = profiles.length || 1;
   const hasData = Object.entries(buckets).some(([k,v]) => k !== 'غير محدد' && v > 0);
   if (!hasData) {
@@ -13342,7 +13342,7 @@ function _renderAgeChart(profiles) {
       const barW = Math.round(cnt / maxBucket * 100);
       return `<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font-size:.8rem">
         <span style="min-width:52px;font-weight:700;color:${bucketColors[label]}">${label}</span>
-        <div style="flex:1;background:rgba(255,255,255,.07);border-radius:3px;height:7px;overflow:hidden">
+        <div style="flex:1;background:var(--border);border-radius:3px;height:7px;overflow:hidden">
           <div style="height:100%;width:${barW}%;background:${bucketColors[label]};border-radius:3px"></div>
         </div>
         <strong style="color:${bucketColors[label]};min-width:18px;text-align:left">${cnt}</strong>
@@ -13454,13 +13454,13 @@ function _renderBoostPlan(visits) {
     if (!plan) {
       return `<div class="an-dev-tip">
         <div class="an-dev-tip-title">${meta.icon} ${meta.label} — ${vCnt} زيارة (الفجوة: ${gap} زيارة)</div>
-        <div style="color:rgba(255,255,255,.65)">أضف محتوى مميزاً وروّج للقسم في الرئيسية وقنوات التواصل</div>
+        <div style="color:var(--text);opacity:.8">أضف محتوى مميزاً وروّج للقسم في الرئيسية وقنوات التواصل</div>
       </div>`;
     }
     return `<div class="an-dev-tip" style="margin-bottom:.85rem">
       <div class="an-dev-tip-title">${plan.icon} ${plan.title} — ${vCnt} زيارة &nbsp;|&nbsp; <span style="color:#f87171">فجوة ${gap} زيارة عن الأعلى</span></div>
       <div style="margin-top:.5rem;display:flex;flex-direction:column;gap:.3rem">
-        ${plan.steps.map(s => `<div style="font-size:.78rem;color:rgba(255,255,255,.75);display:flex;gap:.4rem;align-items:flex-start"><span style="flex-shrink:0">→</span><span>${s}</span></div>`).join('')}
+        ${plan.steps.map(s => `<div style="font-size:.78rem;color:var(--text);opacity:.85;display:flex;gap:.4rem;align-items:flex-start"><span style="flex-shrink:0">→</span><span>${s}</span></div>`).join('')}
       </div>
     </div>`;
   }).join('');
@@ -13493,14 +13493,14 @@ function _renderTopVisitsRevenue() {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
       <!-- الأكثر زيارة -->
       <div>
-        <div style="font-size:.78rem;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">🔥 الأكثر زيارة</div>
+        <div style="font-size:.78rem;font-weight:800;color:var(--muted);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">🔥 الأكثر زيارة</div>
         ${byVisits.map((item, i) => {
           const barW = maxV > 0 ? Math.round((item.visits / maxV) * 100) : 0;
           const c = tierColors[i] || '#4E73C2';
           return `<div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;font-size:.8rem">
             <span style="font-size:.95rem;flex-shrink:0">${item.meta.icon}</span>
             <span style="flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.meta.label}</span>
-            <div style="background:rgba(255,255,255,.07);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
+            <div style="background:var(--border);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
               <div style="height:100%;width:${barW}%;background:${c};border-radius:3px"></div>
             </div>
             <strong style="color:${c};min-width:22px;text-align:left">${item.visits}</strong>
@@ -13510,14 +13510,14 @@ function _renderTopVisitsRevenue() {
       </div>
       <!-- الأعلى إيراداً -->
       <div>
-        <div style="font-size:.78rem;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">💰 الأعلى إيراداً</div>
+        <div style="font-size:.78rem;font-weight:800;color:var(--muted);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">💰 الأعلى إيراداً</div>
         ${byRev.map((item, i) => {
           const barW = maxR > 0 ? Math.round((item.rev / maxR) * 100) : 0;
           const c = tierColors[i] || '#4E73C2';
           return `<div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;font-size:.8rem">
             <span style="font-size:.95rem;flex-shrink:0">${item.meta.icon}</span>
             <span style="flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.meta.label}</span>
-            <div style="background:rgba(255,255,255,.07);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
+            <div style="background:var(--border);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
               <div style="height:100%;width:${barW}%;background:${c};border-radius:3px"></div>
             </div>
             <strong style="color:${c};min-width:40px;text-align:left;font-size:.75rem">${item.rev > 0 ? item.rev.toLocaleString() + 'ر' : '—'}</strong>
