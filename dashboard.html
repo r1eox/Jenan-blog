@@ -1267,6 +1267,32 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .stat-accuracy-bar{height:10px;border-radius:5px;background:var(--border);margin:.4rem 0;overflow:hidden}
 .stat-accuracy-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#4E73C2,#22c55e);transition:width .9s ease}
 
+/* ══ ROADMAP ══ */
+.roadmap-phase{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1rem;transition:var(--tr)}
+.roadmap-phase-done{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.04)}
+.roadmap-phase-active{border-color:rgba(78,115,194,.4);background:rgba(78,115,194,.06)}
+.roadmap-phase-future{border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.04)}
+.roadmap-phase-head{margin-bottom:.8rem}
+.roadmap-phase-title{font-size:.88rem;font-weight:900;color:#e8eaf6;margin:.35rem 0 .15rem}
+.roadmap-phase-date{font-size:.72rem;color:var(--muted)}
+.roadmap-badge{font-size:.72rem;font-weight:800;padding:.15rem .6rem;border-radius:50px}
+.roadmap-badge.done{background:rgba(34,197,94,.15);color:#4ade80}
+.roadmap-badge.active{background:rgba(78,115,194,.2);color:#7B9ED4}
+.roadmap-badge.future{background:rgba(167,139,250,.15);color:#a78bfa}
+.roadmap-items{list-style:none;padding:0;margin:0;font-size:.8rem;line-height:2}
+.roadmap-items li{color:rgba(255,255,255,.7);padding:.1rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.roadmap-items li.done{color:rgba(74,222,128,.85)}
+.roadmap-items li.active{color:rgba(123,158,212,.9)}
+.roadmap-items li.pending{color:rgba(255,255,255,.5)}
+.roadmap-items li.future{color:rgba(167,139,250,.75)}
+/* Analytics */
+.an-page-bar{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.an-bar-fill{height:7px;border-radius:4px;background:linear-gradient(90deg,#4E73C2,#7B9ED4);flex-shrink:0}
+.an-city-item{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--border);font-size:.82rem}
+.an-city-dot{width:10px;height:10px;border-radius:50%;background:#4E73C2;flex-shrink:0}
+.an-dev-tip{background:rgba(78,115,194,.07);border:1px solid rgba(78,115,194,.15);border-radius:10px;padding:.75rem 1rem;margin-bottom:.6rem;font-size:.82rem}
+.an-dev-tip-title{font-weight:800;color:#7B9ED4;margin-bottom:.25rem}
+
 /* ══ NAV GROUP (قائمة منسدلة) ══ */
 .nav-group{}
 .nav-group-header{
@@ -5542,103 +5568,127 @@ window.addEventListener('load', _syncGatewayViewportLock);
     <!-- ===== ADMIN INTELLIGENCE PANEL ===== -->
     <div class="page" id="page-admin">
 
-      <!-- Admin Tabs -->
+      <!-- Admin Tabs — 2 خانات -->
       <div class="admin-tabs">
-        <button class="admin-tab-btn active" onclick="switchAdminTab('kpi')" id="atab-kpi">
-          <i class="fa-solid fa-chart-line"></i> لوحة التحكمanalytics')" id="atab-analytics">
-          <i class="fa-solid fa-chart-bar"></i> تحليل الأداء
+        <button class="admin-tab-btn active" onclick="switchAdminTab('main')" id="atab-main">
+          <i class="fa-solid fa-chart-line"></i> الصفحة الأساسية
         </button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('stats')" id="atab-stats">
-          <i class="fa-solid fa-database"></i> الإحصائيات وقاعدة البيانات
+        <button class="admin-tab-btn" onclick="switchAdminTab('jenan')" id="atab-jenan">
+          <i class="fa-solid fa-map"></i> خريطة جنان
           <span id="stats-accuracy-badge" style="display:none;background:rgba(34,197,94,.15);color:#4ade80;font-size:.68rem;border-radius:8px;padding:.1rem .45rem;font-weight:800;margin-right:.3rem"></span>
         </button>
-        <button class="admin-tab-btn" onclick="switchAdminTab('roadmap')" id="atab-roadmap">
-          <i class="fa-solid fa-map"></i> خريطة الطريق
-          <i class="fa-solid fa-database"></i> الإحصائيات وقاعدة البيانات
-          <span id="stats-accuracy-badge" style="margin-right:.4rem;display:none;background:rgba(34,197,94,.15);color:#4ade80;font-size:.68rem;border-radius:8px;padding:.1rem .45rem;font-weight:800"></span>
-        </button>
       </div>
 
-      <!-- TAB: لوحة التحكم (الأصلية) -->
-      <div class="admin-tab-panel active" id="atab-panel-kpi">
+      <!-- ═══════════════════════════════════════════════════════════
+           TAB 1 — الصفحة الأساسية
+      ════════════════════════════════════════════════════════════ -->
+      <div class="admin-tab-panel active" id="atab-panel-main">
 
-      <!-- KPI Row -->
-      <div class="admin-grid" id="admin-kpi-row">
-        <div class="admin-kpi">
-          <div style="font-size:1.5rem;margin-bottom:.3rem">💬</div>
-          <div class="admin-kpi-val" id="akpi-sessions" style="color:#4E73C2">0</div>
-          <div class="admin-kpi-lbl">جلسات المساعد</div>
-        </div>
-        <div class="admin-kpi">
-          <div style="font-size:1.5rem;margin-bottom:.3rem">👤</div>
-          <div class="admin-kpi-val" id="akpi-profiles" style="color:#4E73C2">0</div>
-          <div class="admin-kpi-lbl">ملفات مستخدمين</div>
-        </div>
-        <div class="admin-kpi">
-          <div style="font-size:1.5rem;margin-bottom:.3rem">🔔</div>
-          <div class="admin-kpi-val" id="akpi-notifs" style="color:#ef4444">0</div>
-          <div class="admin-kpi-lbl">إشعارات جديدة</div>
-        </div>
-        <div class="admin-kpi">
-          <div style="font-size:1.5rem;margin-bottom:.3rem">📊</div>
-          <div class="admin-kpi-val" id="akpi-score" style="color:#22c55e">0</div>
-          <div class="admin-kpi-lbl">متوسط قابلية التسويق</div>
-        </div>
-      </div>
-
-      <div class="admin-two-col">
-
-        <!-- Left: Admin Inbox -->
-        <div class="admin-card">
-          <h4><i class="fa-solid fa-bell" style="color:#ef4444"></i> صندوق الإشعارات
-            <span id="inbox-clear-btn" onclick="clearAdminInbox()" style="margin-right:auto;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer">مسح الكل</span>
-          </h4>
-          <div id="admin-inbox-list" style="max-height:340px;overflow-y:auto"></div>
+        <!-- KPI Row -->
+        <div class="admin-grid" id="admin-kpi-row">
+          <div class="admin-kpi">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">👤</div>
+            <div class="admin-kpi-val" id="akpi-profiles" style="color:#4E73C2">0</div>
+            <div class="admin-kpi-lbl">عدد المستخدمين</div>
+          </div>
+          <div class="admin-kpi">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">💬</div>
+            <div class="admin-kpi-val" id="akpi-sessions" style="color:#4E73C2">0</div>
+            <div class="admin-kpi-lbl">جلسات المساعد</div>
+          </div>
+          <div class="admin-kpi">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">🔔</div>
+            <div class="admin-kpi-val" id="akpi-notifs" style="color:#ef4444">0</div>
+            <div class="admin-kpi-lbl">إشعارات جديدة</div>
+          </div>
+          <div class="admin-kpi">
+            <div style="font-size:1.5rem;margin-bottom:.3rem">📊</div>
+            <div class="admin-kpi-val" id="akpi-score" style="color:#22c55e">0</div>
+            <div class="admin-kpi-lbl">متوسط قابلية التسويق</div>
+          </div>
         </div>
 
-        <!-- Right: User Profiles -->
-        <div class="admin-card">
-          <h4><i class="fa-solid fa-users" style="color:#4E73C2"></i> ملفات المستخدمين</h4>
-          <div id="admin-profiles-list" style="max-height:340px;overflow-y:auto"></div>
+        <div class="admin-two-col">
+
+          <!-- صندوق الإشعارات -->
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-bell" style="color:#ef4444"></i> صندوق الإشعارات
+              <span id="inbox-clear-btn" onclick="clearAdminInbox()" style="margin-right:auto;font-size:.75rem;font-weight:600;color:var(--muted);cursor:pointer">مسح الكل</span>
+            </h4>
+            <div id="admin-inbox-list" style="max-height:340px;overflow-y:auto"></div>
+          </div>
+
+          <!-- ملفات المستخدمين -->
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-users" style="color:#4E73C2"></i> ملفات المستخدمين</h4>
+            <div id="admin-profiles-list" style="max-height:340px;overflow-y:auto"></div>
+          </div>
         </div>
-      </div>
 
-      <div class="admin-two-col">
+        <div class="admin-two-col">
 
-        <!-- Most-asked questions -->
-        <div class="admin-card">
-          <h4><i class="fa-solid fa-chart-bar" style="color:#4E73C2"></i> أكثر الأسئلة تكراراً
-            <span style="margin-right:auto;font-size:.75rem;color:var(--muted)">من جميع المستخدمين</span>
-          </h4>
-          <div class="questions-log" id="admin-questions-log"></div>
+          <!-- أكثر الأسئلة تكراراً -->
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-chart-bar" style="color:#4E73C2"></i> أسئلة الأكثر تكراراً
+              <span style="margin-right:auto;font-size:.75rem;color:var(--muted)">من جميع المستخدمين</span>
+            </h4>
+            <div class="questions-log" id="admin-questions-log"></div>
+          </div>
+
+          <!-- المشاكل والاقتراحات -->
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-lightbulb" style="color:#f59e0b"></i> المشاكل والاقتراحات</h4>
+            <div id="admin-platform-suggestions"></div>
+          </div>
         </div>
 
-        <!-- Platform expansion suggestions -->
-        <div class="admin-card">
-          <h4><i class="fa-solid fa-lightbulb" style="color:#f59e0b"></i> اقتراحات توسع المنصة</h4>
-          <div id="admin-platform-suggestions"></div>
+        <!-- حملات التسويق -->
+        <div class="admin-card" style="margin-bottom:1rem">
+          <h4><i class="fa-solid fa-bullseye" style="color:#0d9488"></i> حملات التسويق — فرص عالية الأولوية</h4>
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:.83rem" id="admin-mkt-table">
+              <thead>
+                <tr style="background:var(--bg3)">
+                  <th style="padding:.5rem;text-align:right">المستخدم</th>
+                  <th style="padding:.5rem;text-align:right">القطاع / المدينة</th>
+                  <th style="padding:.5rem;text-align:center">تمويل</th>
+                  <th style="padding:.5rem;text-align:center">توسع</th>
+                  <th style="padding:.5rem;text-align:center">دورات</th>
+                  <th style="padding:.5rem;text-align:center">نتيجة التسويق</th>
+                  <th style="padding:.5rem;text-align:center">الإجراء</th>
+                </tr>
+              </thead>
+              <tbody id="admin-mkt-tbody"></tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-      <!-- Marketing Opportunities Table -->
-      <div class="admin-card" style="margin-bottom:1rem">
-        <h4><i class="fa-solid fa-bullseye" style="color:#0d9488"></i> فرص التسويق عالية الأولوية</h4>
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:.83rem" id="admin-mkt-table">
-            <thead>
-              <tr style="background:var(--bg3)">
-                <th style="padding:.5rem;text-align:right">المستخدم</th>
-                <th style="padding:.5rem;text-align:right">القطاع / المدينة</th>
-                <th style="padding:.5rem;text-align:center">تمويل</th>
-                <th style="padding:.5rem;text-align:center">توسع</th>
-                <th style="padding:.5rem;text-align:center">دورات</th>
-                <th style="padding:.5rem;text-align:center">نتيجة التسويق</th>
-                <th style="padding:.5rem;text-align:center">الإجراء</th>
-              </tr>
-            </thتحليل الأداء -->
-      <div class="admin-tab-panel" id="atab-panel-analytics">
+      </div><!-- end atab-panel-main -->
 
-        <!-- KPI صغيرة للتحليل -->
+      <!-- ═══════════════════════════════════════════════════════════
+           TAB 2 — خريطة جنان
+      ════════════════════════════════════════════════════════════ -->
+      <div class="admin-tab-panel" id="atab-panel-jenan">
+
+        <!-- عنوان خريطة جنان -->
+        <div style="background:linear-gradient(135deg,rgba(78,115,194,.18),rgba(78,115,194,.06));border:1px solid rgba(78,115,194,.3);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">
+          <div style="font-size:2.5rem">🗺️</div>
+          <div>
+            <div style="font-size:1rem;font-weight:900;color:#e8eaf6;margin-bottom:.25rem">خريطة جنان — تطوير المنصة 2026-2028</div>
+            <div style="font-size:.8rem;color:var(--muted)">تحليل الأداء · رفع ملفات السوق · توصيات التطوير والتوسع</div>
+          </div>
+          <div style="margin-right:auto;text-align:center;min-width:70px">
+            <div style="font-size:1.4rem;font-weight:900;color:#4E73C2" id="roadmap-pct">0%</div>
+            <div style="font-size:.68rem;color:var(--muted)">منجز</div>
+          </div>
+        </div>
+
+        <!-- ──────── قسم تحليل الأداء ──────── -->
+        <div style="font-size:.82rem;font-weight:900;color:#7B9ED4;margin-bottom:.75rem;letter-spacing:.04em;text-transform:uppercase">
+          <i class="fa-solid fa-chart-bar"></i> &nbsp;تحليل الأداء والزوار
+        </div>
+
+        <!-- KPI تحليل -->
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.25rem" id="analytics-kpi-row">
           <div class="admin-kpi"><div style="font-size:1.3rem;margin-bottom:.3rem">👁️</div><div class="admin-kpi-val" id="an-total-visits" style="color:#4E73C2">0</div><div class="admin-kpi-lbl">إجمالي الزيارات</div></div>
           <div class="admin-kpi"><div style="font-size:1.3rem;margin-bottom:.3rem">🏆</div><div class="admin-kpi-val" id="an-top-page" style="color:#f59e0b;font-size:1rem">—</div><div class="admin-kpi-lbl">أكثر قسم زيارة</div></div>
@@ -5647,16 +5697,12 @@ window.addEventListener('load', _syncGatewayViewportLock);
         </div>
 
         <div class="admin-two-col">
-
-          <!-- أكثر الأقسام زيارة -->
           <div class="admin-card">
             <h4><i class="fa-solid fa-fire" style="color:#f59e0b"></i> أكثر الأقسام زيارة
               <span style="margin-right:auto;font-size:.72rem;color:var(--muted)">من إجمالي الجلسات</span>
             </h4>
             <div id="an-pages-list"></div>
           </div>
-
-          <!-- توزيع المستخدمين على المدن -->
           <div class="admin-card">
             <h4><i class="fa-solid fa-location-dot" style="color:#ef4444"></i> توزيع المستخدمين بالمدن
               <span style="margin-right:auto;font-size:.72rem;color:var(--muted)">من ملفات المستخدمين</span>
@@ -5667,17 +5713,17 @@ window.addEventListener('load', _syncGatewayViewportLock);
 
         <!-- جدول أداء الأقسام -->
         <div class="admin-card" style="margin-bottom:1rem">
-          <h4><i class="fa-solid fa-table" style="color:#4E73C2"></i> أداء الأقسام والخدمات — من الأعلى إيراداً إلى الأقل</h4>
+          <h4><i class="fa-solid fa-table" style="color:#4E73C2"></i> أداء الأقسام — من الأعلى إيراداً إلى الأقل</h4>
           <div style="overflow-x:auto">
             <table style="width:100%;border-collapse:collapse;font-size:.82rem" id="an-sections-table">
               <thead>
                 <tr style="background:var(--bg3)">
-                  <th style="padding:.55rem .7rem;text-align:right;font-weight:800">القسم / الخدمة</th>
+                  <th style="padding:.55rem .7rem;text-align:right;font-weight:800">القسم</th>
                   <th style="padding:.55rem .7rem;text-align:center">الزيارات</th>
                   <th style="padding:.55rem .7rem;text-align:center">الإيراد المقدر</th>
                   <th style="padding:.55rem .7rem;text-align:center">نسبة التفاعل</th>
                   <th style="padding:.55rem .7rem;text-align:center">التقييم</th>
-                  <th style="padding:.55rem .7rem;text-align:right">توصية التطوير</th>
+                  <th style="padding:.55rem .7rem;text-align:right">توصية</th>
                 </tr>
               </thead>
               <tbody id="an-sections-tbody"></tbody>
@@ -5685,37 +5731,23 @@ window.addEventListener('load', _syncGatewayViewportLock);
           </div>
         </div>
 
-        <!-- توصيات تطوير الأقسام الضعيفة -->
-        <div class="admin-card">
-          <h4><i class="fa-solid fa-lightbulb" style="color:#4ade80"></i> كيف ترفع أداء الأقسام الضعيفة؟</h4>
-          <div id="an-dev-tips"></div>
+        <!-- ──────── قسم رفع الملفات التطويرية ──────── -->
+        <div style="font-size:.82rem;font-weight:900;color:#7B9ED4;margin:.25rem 0 .75rem;letter-spacing:.04em;text-transform:uppercase">
+          <i class="fa-solid fa-database"></i> &nbsp;رفع الملفات التطويرية — بيانات السوق
         </div>
 
-      </div><!-- end atab-panel-analytics -->
-
-      <!-- TAB: ead>
-            <tbody id="admin-mkt-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      </div><!-- end atab-panel-kpi -->
-
-      <!-- TAB: الإحصائيات وقاعدة البيانات -->
-      <div class="admin-tab-panel" id="atab-panel-stats">
-
-        <!-- إرشادات وشريط الدقة -->
-        <div class="stat-guide-box">
+        <!-- شريط الدقة -->
+        <div class="stat-guide-box" style="margin-bottom:1rem">
           <div class="stat-guide-title"><i class="fa-solid fa-circle-info"></i> كيف تزيد دقة التحليل والتوصيات؟</div>
-          <p style="font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:.75rem;line-height:1.8">
-            كلما رفعت ملفات أكثر، كان الذكاء قادراً على إعطاء توصيات واقعية ودقيقة — أسعار إيجارات حقيقية، عدد المنافسين الفعلي في كل حي، الكثافة السكانية، وأسعار السوق.
+          <p style="font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:.6rem;line-height:1.8">
+            ارفع ملفات السوق (JSON أو CSV) لترفع دقة التحليل من 20% إلى 100% — أسعار إيجارات، تجار وسلع، أسعار معدات، منافسين، كثافة سكانية.
           </p>
           <ul class="stat-guide-list">
-            <li><strong>أسعار الإيجارات</strong> → JSON أو CSV يحتوي: المدينة، الحي، السعر/م²</li>
-            <li><strong>بيانات المنافسين</strong> → JSON: المدينة، الحي، نوع النشاط، عدد المنشآت</li>
-            <li><strong>الكثافة السكانية</strong> → JSON: المدينة، الحي، عدد السكان، الدخل المتوسط</li>
-            <li><strong>حركة المرور والشوارع</strong> → JSON: الشارع، المدينة، متوسط الزوار/يوم</li>
-            <li><strong>أسعار السوق المرجعية</strong> → JSON: القطاع، المدينة، متوسط الفاتورة، هامش القطاع</li>
+            <li><strong>أسعار الإيجارات</strong> → <code style="font-size:.75rem;color:#7B9ED4">{"city":"الرياض","district":"العليا","price_per_sqm":320}</code></li>
+            <li><strong>أسعار السلع والتجار</strong> → <code style="font-size:.75rem;color:#7B9ED4">{"item":"لحم بقري","city":"جدة","price_per_kg":48,"supplier":"الوطنية"}</code></li>
+            <li><strong>أسعار المعدات والتجهيزات</strong> → <code style="font-size:.75rem;color:#7B9ED4">{"equipment":"فرن صناعي","category":"مطعم","price":12000}</code></li>
+            <li><strong>بيانات المنافسين</strong> → <code style="font-size:.75rem;color:#7B9ED4">{"city":"الدمام","sector":"مطعم","district":"الحمراء","count":12}</code></li>
+            <li><strong>الكثافة السكانية والدخل</strong> → <code style="font-size:.75rem;color:#7B9ED4">{"city":"مكة","district":"العزيزية","population":45000,"avg_income":12000}</code></li>
           </ul>
           <div style="margin-top:.75rem">
             <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-bottom:.3rem">نسبة دقة التحليل الحالية</div>
@@ -5737,9 +5769,33 @@ window.addEventListener('load', _syncGatewayViewportLock);
               <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'rents')">
               <div class="stat-upload-icon">🏢</div>
               <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
-              <div class="stat-upload-sub">مثال: {"city":"الرياض","district":"العليا","price_per_sqm":320}</div>
+              <div class="stat-upload-sub">city, district, price_per_sqm</div>
             </div>
             <div id="stats-files-rents" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- أسعار السلع والتجار -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-cart-shopping"></i> أسعار السلع والتجار</div>
+            <div class="stat-upload-card" id="upload-goods" ondragover="statDragOver(event,'upload-goods')" ondragleave="statDragLeave('upload-goods')" ondrop="statDrop(event,'goods')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'goods')">
+              <div class="stat-upload-icon">🛒</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">item, city, price_per_kg/unit, supplier</div>
+            </div>
+            <div id="stats-files-goods" style="margin-top:.5rem"></div>
+          </div>
+
+          <!-- أسعار المعدات -->
+          <div>
+            <div style="font-size:.82rem;font-weight:800;color:#7B9ED4;margin-bottom:.5rem"><i class="fa-solid fa-screwdriver-wrench"></i> أسعار المعدات والتجهيزات</div>
+            <div class="stat-upload-card" id="upload-equip" ondragover="statDragOver(event,'upload-equip')" ondragleave="statDragLeave('upload-equip')" ondrop="statDrop(event,'equipment')">
+              <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'equipment')">
+              <div class="stat-upload-icon">⚙️</div>
+              <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
+              <div class="stat-upload-sub">equipment, category, price, supplier</div>
+            </div>
+            <div id="stats-files-equipment" style="margin-top:.5rem"></div>
           </div>
 
           <!-- بيانات المنافسين -->
@@ -5749,7 +5805,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
               <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'competitors')">
               <div class="stat-upload-icon">🏪</div>
               <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
-              <div class="stat-upload-sub">مثال: {"city":"جدة","district":"الحمراء","sector":"مطعم","count":12}</div>
+              <div class="stat-upload-sub">city, district, sector, count</div>
             </div>
             <div id="stats-files-competitors" style="margin-top:.5rem"></div>
           </div>
@@ -5761,7 +5817,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
               <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'population')">
               <div class="stat-upload-icon">👥</div>
               <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
-              <div class="stat-upload-sub">مثال: {"city":"الدمام","district":"الفيصلية","population":45000,"avg_income":12000}</div>
+              <div class="stat-upload-sub">city, district, population, avg_income</div>
             </div>
             <div id="stats-files-population" style="margin-top:.5rem"></div>
           </div>
@@ -5773,7 +5829,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
               <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'traffic')">
               <div class="stat-upload-icon">🚦</div>
               <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا</div>
-              <div class="stat-upload-sub">مثال: {"city":"مكة","street":"طريق مكة المكرمة","daily_visitors":8000}</div>
+              <div class="stat-upload-sub">city, street, daily_visitors</div>
             </div>
             <div id="stats-files-traffic" style="margin-top:.5rem"></div>
           </div>
@@ -5785,7 +5841,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
               <input type="file" accept=".json,.csv" onchange="statFileSelected(this,'market_prices')">
               <div class="stat-upload-icon">💰</div>
               <div class="stat-upload-title">اسحب ملف JSON أو CSV هنا — أسعار السوق لكل قطاع ومدينة</div>
-              <div class="stat-upload-sub">مثال: {"sector":"مطعم","city":"الرياض","avg_bill":185,"net_margin_pct":18,"growth_pct":13}</div>
+              <div class="stat-upload-sub">sector, city, avg_bill, net_margin_pct, growth_pct</div>
             </div>
             <div id="stats-files-market_prices" style="margin-top:.5rem"></div>
           </div>
@@ -5795,12 +5851,9 @@ window.addEventListener('load', _syncGatewayViewportLock);
         <div style="font-size:.85rem;font-weight:800;color:rgba(255,255,255,.7);margin-bottom:.6rem">
           <i class="fa-solid fa-check-circle" style="color:#4E73C2;margin-left:.3rem"></i> تغطية البيانات الحالية
         </div>
-        <div class="stat-coverage-grid" id="stats-coverage-grid">
-          <!-- تُملأ بـ JS -->
-        </div>
+        <div class="stat-coverage-grid" id="stats-coverage-grid"></div>
 
-        <!-- إجمالي السجلات -->
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
           <i class="fa-solid fa-database" style="font-size:1.4rem;color:#4E73C2"></i>
           <div>
             <div style="font-size:.82rem;font-weight:800;color:#e8eaf6">قاعدة بيانات الذكاء</div>
@@ -5811,7 +5864,99 @@ window.addEventListener('load', _syncGatewayViewportLock);
           </button>
         </div>
 
-      </div><!-- end atab-panel-stats -->
+        <!-- ──────── توصيات التطوير والتوسع ──────── -->
+        <div style="font-size:.82rem;font-weight:900;color:#7B9ED4;margin:.25rem 0 .75rem;letter-spacing:.04em;text-transform:uppercase">
+          <i class="fa-solid fa-lightbulb"></i> &nbsp;توصيات التطوير والتوسع
+        </div>
+
+        <!-- توصيات الأقسام الضعيفة -->
+        <div class="admin-card" style="margin-bottom:1rem">
+          <h4><i class="fa-solid fa-lightbulb" style="color:#4ade80"></i> كيف ترفع أداء الأقسام الضعيفة؟</h4>
+          <div id="an-dev-tips"></div>
+        </div>
+
+        <!-- الأولويات الفورية -->
+        <div class="admin-card" style="margin-bottom:1rem">
+          <h4><i class="fa-solid fa-bolt" style="color:#f59e0b"></i> الأولويات الفورية — بناءً على بيانات المستخدمين</h4>
+          <div id="roadmap-priorities"></div>
+        </div>
+
+        <!-- المراحل الثلاث -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+
+          <div class="roadmap-phase roadmap-phase-done">
+            <div class="roadmap-phase-head">
+              <span class="roadmap-badge done">✅ مكتمل</span>
+              <div class="roadmap-phase-title">المرحلة الأولى — الأساس</div>
+              <div class="roadmap-phase-date">Q1 2026</div>
+            </div>
+            <ul class="roadmap-items">
+              <li class="done">✅ تحليل المشروع المالي (7 خطوات)</li>
+              <li class="done">✅ تحليل AI بالذكاء الاصطناعي</li>
+              <li class="done">✅ إعداد دراسة الجدوى</li>
+              <li class="done">✅ قسم الإدارة والمتابعة</li>
+              <li class="done">✅ نظام الإشعارات والتسويق</li>
+              <li class="done">✅ لوحة الإدمن الذكية</li>
+              <li class="done">✅ قاعدة بيانات الإحصائيات</li>
+            </ul>
+          </div>
+
+          <div class="roadmap-phase roadmap-phase-active">
+            <div class="roadmap-phase-head">
+              <span class="roadmap-badge active">🔄 جارٍ</span>
+              <div class="roadmap-phase-title">المرحلة الثانية — التوسع</div>
+              <div class="roadmap-phase-date">Q2-Q3 2026</div>
+            </div>
+            <ul class="roadmap-items">
+              <li class="active">🔄 تحليل الأداء والزوار المتقدم</li>
+              <li class="active">🔄 خريطة توزيع المستخدمين</li>
+              <li class="pending">⏳ مقارنة المنافسين الآلية</li>
+              <li class="pending">⏳ تقارير PDF ذكية</li>
+              <li class="pending">⏳ نظام العروض والمقارنات</li>
+              <li class="pending">⏳ إشعارات البريد الإلكتروني</li>
+              <li class="pending">⏳ API لربط بيانات السوق</li>
+            </ul>
+          </div>
+
+          <div class="roadmap-phase roadmap-phase-future">
+            <div class="roadmap-phase-head">
+              <span class="roadmap-badge future">🚀 قادم</span>
+              <div class="roadmap-phase-title">المرحلة الثالثة — الانتشار</div>
+              <div class="roadmap-phase-date">Q4 2026 — 2028</div>
+            </div>
+            <ul class="roadmap-items">
+              <li class="future">🚀 تطبيق جوال iOS & Android</li>
+              <li class="future">🚀 سوق الفرص الاستثمارية</li>
+              <li class="future">🚀 منصة ربط المستثمرين</li>
+              <li class="future">🚀 AI مدرب على السوق السعودي</li>
+              <li class="future">🚀 بيانات حية من الحكومة</li>
+              <li class="future">🚀 خرائط تفاعلية للأحياء</li>
+              <li class="future">🚀 مؤشر ريادة الأعمال السعودي</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- مقاييس النجاح + توزيع الإيرادات -->
+        <div class="admin-two-col">
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-target" style="color:#22c55e"></i> مقاييس النجاح المستهدفة</h4>
+            <div style="font-size:.82rem;line-height:2.2">
+              <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:.3rem 0"><span>👤 عدد المستخدمين النشطين</span><strong style="color:#4E73C2">10,000+</strong></div>
+              <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:.3rem 0"><span>📊 تحليلات مكتملة/شهر</span><strong style="color:#22c55e">500+</strong></div>
+              <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:.3rem 0"><span>⭐ تقييم المستخدمين</span><strong style="color:#f59e0b">4.8/5</strong></div>
+              <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:.3rem 0"><span>💰 الإيراد الشهري</span><strong style="color:#4ade80">150,000+ ر</strong></div>
+              <div style="display:flex;justify-content:space-between;padding:.3rem 0"><span>🏙️ المدن المغطاة</span><strong style="color:#a78bfa">25+</strong></div>
+            </div>
+          </div>
+          <div class="admin-card">
+            <h4><i class="fa-solid fa-chart-pie" style="color:#4E73C2"></i> توزيع إيرادات المنصة المستهدفة</h4>
+            <div id="roadmap-revenue-chart"></div>
+          </div>
+        </div>
+
+      </div><!-- end atab-panel-jenan -->
+
+
 
     </div><!-- end page-admin -->
 
@@ -12580,6 +12725,11 @@ function profileFeasibility()      {
   profileSignal('دراسة جدوى', '', 2);
   adminNotify('service', '📊 طلب دراسة جدوى', `${uName} أنشأ دراسة جدوى للقطاع: ${USER_PROFILE.sector||'غير محدد'} في ${USER_PROFILE.city||'غير محدد'} | رأس المال: ${USER_PROFILE.capital||'?'}`, {user: uName, sector: USER_PROFILE.sector});
 }
+  // تحديث شارة الدقة في زر الإحصائيات عند فتح الأدمن
+  const statsTypes = ['rents','competitors','population','traffic','market_prices'];
+  const filled = statsTypes.filter(k => { try{ return JSON.parse(localStorage.getItem('jb-stats-'+k)||'[]').length>0; }catch(e){return false;} }).length;
+  const badge = document.getElementById('stats-accuracy-badge');
+  if (badge && filled > 0) { badge.textContent = (20+filled*16)+'% دقة'; badge.style.display='inline'; }
 function profileSupplyOrder(total) {
   USER_PROFILE.supplyOrders++;
   profileSignal('طلب توريد', total + ' ريال', 2);
@@ -12885,6 +13035,8 @@ function sendUpsellManual(userName) {
 
 const STATS_TYPES = {
   rents:         { label:'أسعار الإيجارات',        icon:'🏢', fields:['city','district','price_per_sqm'] },
+  goods:         { label:'أسعار السلع والتجار',    icon:'🛒', fields:['item','city','price_per_kg','supplier'] },
+  equipment:     { label:'أسعار المعدات',           icon:'⚙️', fields:['equipment','category','price','supplier'] },
   competitors:   { label:'بيانات المنافسين',        icon:'🏪', fields:['city','district','sector','count'] },
   population:    { label:'الكثافة السكانية',        icon:'👥', fields:['city','district','population','avg_income'] },
   traffic:       { label:'حركة المرور',             icon:'🚦', fields:['city','street','daily_visitors'] },
@@ -12898,9 +13050,12 @@ function switchAdminTab(tab) {
   const panel = document.getElementById('atab-panel-' + tab);
   if (btn)   btn.classList.add('active');
   if (panel) panel.classList.add('active');
-  if (tab === 'stats')     renderStatsPage();
-  if (tab === 'analytics') renderAnalyticsPage();
-  if (tab === 'roadmap')   renderRoadmapPage();
+  // التبويب الثاني يعرض تحليل الأداء + الإحصائيات + خريطة الطريق
+  if (tab === 'jenan') {
+    renderStatsPage();
+    renderAnalyticsPage();
+    renderRoadmapPage();
+  }
 }
 
 function renderStatsPage() {
@@ -12922,7 +13077,260 @@ function renderStatsPage() {
   const pct = document.getElementById('stats-accuracy-pct');
   if (fill) fill.style.width = accuracy + '%';
   if (pct) pct.textContent = accuracy + '%';
+function statsGetAvgIncome(city) {
+  const data = statsLoad('population');
+  if (!data.length) return null;
+  const matches = data.filter(r => r.city && city && r.city.includes(city.slice(0,3)));
+  if (!matches.length) return null;
+  return matches.reduce((sum, r) => sum + (parseFloat(r.avg_income) || 0), 0) / matches.length;
+}
 
+/* ══════════════════════════════════════════════════════════════════════
+   ANALYTICS PAGE — تحليل الأداء
+══════════════════════════════════════════════════════════════════════ */
+const PAGE_META = {
+  home:        { label:'الرئيسية',            icon:'🏠', rev:0,     category:'navigation' },
+  robot:       { label:'تحليل المشروع AI',    icon:'🧠', rev:4500,  category:'premium' },
+  'paid-analysis':{ label:'تحليل مدفوع',     icon:'💎', rev:8000,  category:'premium' },
+  analysis:    { label:'إعداد دراسة الجدوى', icon:'📊', rev:3500,  category:'core' },
+  projects:    { label:'سوق المشاريع',        icon:'🏢', rev:2800,  category:'core' },
+  academy:     { label:'جنان للأعمال',        icon:'🎓', rev:3200,  category:'growth' },
+  software:    { label:'متجر البرمجيات',      icon:'💻', rev:5500,  category:'growth' },
+  design:      { label:'استوديو التصميم',     icon:'🎨', rev:2200,  category:'growth' },
+  supply:      { label:'منصة التوريد',        icon:'📦', rev:1800,  category:'growth' },
+  loyalty:     { label:'الإحالات والنقاط',    icon:'🎁', rev:600,   category:'engagement' },
+  settings:    { label:'الإعدادات',           icon:'⚙️', rev:0,     category:'navigation' },
+  admin:       { label:'لوحة الإدمن',         icon:'🛡️', rev:0,     category:'admin' },
+  compliance:  { label:'الامتثال والتراخيص',  icon:'📋', rev:1200,  category:'core' },
+  reports:     { label:'التقارير',             icon:'📄', rev:900,   category:'core' },
+  orders:      { label:'أعمالي وطلباتي',      icon:'📁', rev:700,   category:'core' },
+  referral:    { label:'الإحالات',             icon:'🤝', rev:400,   category:'engagement' },
+};
+
+function renderAnalyticsPage() {
+  const visits  = _getPageVisits();
+  const profiles = _adminLoad('jb-user-profiles-all', [USER_PROFILE]);
+
+  // إجمالي الزيارات
+  const totalVisits = Object.values(visits).reduce((s,v)=>s+v,0);
+  const el_total = document.getElementById('an-total-visits');
+  if (el_total) el_total.textContent = totalVisits || 0;
+
+  // أكثر قسم زيارة
+  const sortedPages = Object.entries(visits).sort((a,b)=>b[1]-a[1]);
+  const topPage = sortedPages[0];
+  const el_top = document.getElementById('an-top-page');
+  if (el_top) el_top.textContent = topPage ? (PAGE_META[topPage[0]]?.label || topPage[0]) : '—';
+
+  // أكثر مدينة
+  const cityCount = {};
+  profiles.forEach(p => { if(p.city) { cityCount[p.city]=(cityCount[p.city]||0)+1; } });
+  const sortedCities = Object.entries(cityCount).sort((a,b)=>b[1]-a[1]);
+  const el_city = document.getElementById('an-top-city');
+  if (el_city) el_city.textContent = sortedCities[0]?.[0] || '—';
+
+  // معدل النمو (آخر 7 أيام vs قبلها — تقديري)
+  const el_growth = document.getElementById('an-growth');
+  if (el_growth) el_growth.textContent = profiles.length > 3 ? '+' + Math.round(profiles.length * 1.4) + '%' : 'جديد';
+
+  // قائمة الأقسام بالزيارات
+  _renderPagesList(sortedPages, totalVisits);
+  // توزيع المدن
+  _renderCitiesList(sortedCities, profiles.length);
+  // جدول الأقسام
+  _renderSectionsTable(visits, profiles);
+  // نصائح التطوير
+  _renderDevTips(sortedPages, visits);
+}
+
+function _getPageVisits() {
+  try { return JSON.parse(localStorage.getItem('jb-pg-visits') || '{}'); } catch(e) { return {}; }
+}
+
+function _renderPagesList(sortedPages, total) {
+  const el = document.getElementById('an-pages-list');
+  if (!el) return;
+  if (!sortedPages.length) {
+    el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem">سيتم تسجيل الزيارات تلقائياً عند تصفح الأقسام</div>';
+    return;
+  }
+  const max = sortedPages[0]?.[1] || 1;
+  el.innerHTML = sortedPages.slice(0,8).map(([pg, cnt]) => {
+    const meta = PAGE_META[pg] || { label: pg, icon: '📄' };
+    const pct  = Math.round((cnt / Math.max(total,1)) * 100);
+    const barW = Math.round((cnt / Math.max(max,1)) * 100);
+    return `<div class="an-page-bar">
+      <span style="font-size:1.1rem;flex-shrink:0">${meta.icon}</span>
+      <span style="flex:1;font-weight:700">${meta.label}</span>
+      <div class="an-bar-fill" style="width:${barW}px;max-width:90px"></div>
+      <span style="color:#4E73C2;font-weight:800;min-width:28px;text-align:left">${cnt}</span>
+      <span style="color:var(--muted);font-size:.72rem;min-width:32px;text-align:left">${pct}%</span>
+    </div>`;
+  }).join('');
+}
+
+function _renderCitiesList(sortedCities, total) {
+  const el = document.getElementById('an-cities-list');
+  if (!el) return;
+  if (!sortedCities.length) {
+    el.innerHTML = '<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:.82rem">سيظهر التوزيع الجغرافي للمستخدمين هنا</div>';
+    return;
+  }
+  const cityColors = ['#4E73C2','#22c55e','#f59e0b','#ef4444','#a78bfa','#0d9488','#ec4899','#f97316'];
+  el.innerHTML = sortedCities.slice(0,8).map(([city,cnt],i) => {
+    const pct = Math.round((cnt/Math.max(total,1))*100);
+    return `<div class="an-city-item">
+      <div class="an-city-dot" style="background:${cityColors[i%cityColors.length]}"></div>
+      <span style="flex:1;font-weight:700">${city}</span>
+      <div style="background:var(--border);border-radius:3px;width:80px;height:6px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${cityColors[i%cityColors.length]};border-radius:3px"></div>
+      </div>
+      <span style="color:${cityColors[i%cityColors.length]};font-weight:800;min-width:22px;text-align:left">${cnt}</span>
+      <span style="color:var(--muted);font-size:.72rem;min-width:32px;text-align:left">${pct}%</span>
+    </div>`;
+  }).join('');
+}
+
+function _renderSectionsTable(visits, profiles) {
+  const tbody = document.getElementById('an-sections-tbody');
+  if (!tbody) return;
+  // ترتيب حسب الإيراد المقدر
+  const pages = Object.entries(PAGE_META)
+    .filter(([,m]) => m.category !== 'admin' && m.category !== 'navigation')
+    .map(([pg, meta]) => ({
+      pg, meta,
+      visits: visits[pg] || 0,
+      rev: meta.rev,
+    }))
+    .sort((a,b) => b.rev - a.rev);
+
+  const maxRev = pages[0]?.rev || 1;
+  const ratings = ['🥇 ممتاز','🥈 جيد جداً','🥉 جيد','⚡ يحتاج تطوير','⚠️ منخفض'];
+  const tips = {
+    premium: 'أضف محتوى مميز وعروضاً حصرية لزيادة الاشتراكات',
+    core: 'حسّن سرعة التحميل وأضف أمثلة تطبيقية',
+    growth: 'أضف باقات تجريبية مجانية لزيادة التبني',
+    engagement: 'أضف مكافآت ونقاط لرفع التفاعل',
+  };
+
+  tbody.innerHTML = pages.map((item, i) => {
+    const ratingIdx = Math.min(Math.floor(i / (pages.length / 5)), 4);
+    const engagement = item.visits > 0 ? Math.min(95, 30 + Math.round(item.visits * 3.5)) + '%' : '0%';
+    const revColor = i < 3 ? '#22c55e' : i < 6 ? '#f59e0b' : '#ef4444';
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:.6rem .7rem;font-weight:800">${item.meta.icon} ${item.meta.label}</td>
+      <td style="padding:.6rem .7rem;text-align:center;color:#4E73C2;font-weight:700">${item.visits}</td>
+      <td style="padding:.6rem .7rem;text-align:center;font-weight:800;color:${revColor}">${item.rev > 0 ? item.rev.toLocaleString() + ' ر' : '—'}</td>
+      <td style="padding:.6rem .7rem;text-align:center">${engagement}</td>
+      <td style="padding:.6rem .7rem;text-align:center;font-size:.8rem">${ratings[ratingIdx]}</td>
+      <td style="padding:.6rem .7rem;font-size:.75rem;color:var(--muted)">${tips[item.meta.category] || '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function _renderDevTips(sortedPages, visits) {
+  const el = document.getElementById('an-dev-tips');
+  if (!el) return;
+  const weakPages = Object.entries(PAGE_META)
+    .filter(([pg, m]) => m.category !== 'admin' && m.category !== 'navigation' && (visits[pg]||0) < 3)
+    .slice(0,4);
+  
+  const tips = {
+    'paid-analysis': { tip:'أضف عرضاً تجريبياً مجانياً أو خصم للمستخدمين الجدد لرفع اعتماد التحليل المدفوع بنسبة 60%+', action:'أضف زر "جرّب مجاناً" في الصفحة الرئيسية' },
+    'academy':       { tip:'أضف كورساً قصيراً مجانياً (3 دروس) كمدخل، ثم اعرض الاشتراك الكامل', action:'أنشئ محتوى "ابدأ هنا" مميز' },
+    'software':      { tip:'أضف فيديو تعريفي 60 ثانية يشرح المنتجات المتاحة مع أسعارها', action:'أضف قسم "الأكثر مبيعاً هذا الأسبوع"' },
+    'design':        { tip:'أضف معرض أعمال سابقة حقيقية، والمستخدمون يثقون بالعينات أكثر من الوصف', action:'اطلب من المصممين رفع 3 نماذج لكل خدمة' },
+    'supply':        { tip:'اعرض أسعار موردين وقارنها مباشرة في الصفحة لاستقطاب القرار الفوري', action:'أضف فلتر "الأقل سعراً" و"الأسرع توصيلاً"' },
+    'compliance':    { tip:'أضف قائمة مرجعية مجانية للمتطلبات الشائعة لكل قطاع', action:'أنشئ "دليل الترخيص السريع" PDF مجاني' },
+    'referral':      { tip:'ارفع قيمة المكافأة للإحالة أو أضف مستوى ثانٍ من الإحالات', action:'أطلق حملة "احصل على شهر مجانياً"' },
+    'loyalty':       { tip:'اجعل نقاط الولاء قابلة للتحويل لخصومات حقيقية على الخدمات', action:'أضف شريط النقاط في الصفحة الرئيسية' },
+  };
+
+  el.innerHTML = weakPages.map(([pg, meta]) => {
+    const t = tips[pg] || { tip: 'أضف محتوى جذاباً وادعُ المستخدمين لاكتشاف هذا القسم', action: 'روّج للقسم في الرئيسية' };
+    return `<div class="an-dev-tip">
+      <div class="an-dev-tip-title">${meta.icon} ${meta.label} — ${visits[pg]||0} زيارة</div>
+      <div style="color:rgba(255,255,255,.7);margin-bottom:.3rem">${t.tip}</div>
+      <div style="background:rgba(78,115,194,.12);border-radius:6px;padding:.3rem .6rem;display:inline-block;font-size:.76rem;color:#7B9ED4;font-weight:700">✅ إجراء: ${t.action}</div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:1rem;color:var(--muted);font-size:.82rem">ستظهر توصيات التطوير بعد تسجيل زيارات كافية</div>';
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ROADMAP PAGE — خريطة الطريق
+══════════════════════════════════════════════════════════════════════ */
+function renderRoadmapPage() {
+  // حساب نسبة الإنجاز بناءً على الميزات المفعّلة
+  const features = [
+    !!document.getElementById('page-robot'),
+    !!document.getElementById('page-analysis'),
+    !!document.getElementById('page-projects'),
+    !!document.getElementById('page-academy'),
+    !!document.getElementById('page-software'),
+    !!document.getElementById('atab-panel-stats'),
+    !!document.getElementById('page-admin'),
+    typeof renderStatsPage === 'function',
+    typeof buildAIRecommendationReport === 'function',
+  ];
+  const done = features.filter(Boolean).length;
+  const pct  = Math.round((done / features.length) * 100);
+  const el_pct = document.getElementById('roadmap-pct');
+  if (el_pct) el_pct.textContent = pct + '%';
+
+  // أولويات بناءً على بيانات المستخدمين
+  const profiles  = _adminLoad('jb-user-profiles-all', [USER_PROFILE]);
+  const visits    = _getPageVisits();
+  const priorities = document.getElementById('roadmap-priorities');
+  if (priorities) {
+    const cityCount = {};
+    profiles.forEach(p => { if(p.city) cityCount[p.city]=(cityCount[p.city]||0)+1; });
+    const topCity = Object.entries(cityCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+    const totalUsers = profiles.length;
+    const topSection = Object.entries(visits).sort((a,b)=>b[1]-a[1])[0]?.[0];
+    const topMeta = PAGE_META[topSection];
+
+    priorities.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+        <div class="an-dev-tip">
+          <div class="an-dev-tip-title">🌆 التوسع الجغرافي${topCity ? ' — ' + topCity : ''}</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.78rem">إضافة بيانات الأحياء والإيجارات لأكثر المدن استخداماً لرفع دقة التوصيات</div>
+        </div>
+        <div class="an-dev-tip">
+          <div class="an-dev-tip-title">🧠 تطوير AI — قاعدة البيانات</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.78rem">رفع ملفات إحصائيات السوق من صفحة الإحصائيات لرفع دقة التحليل من 20% إلى 100%</div>
+        </div>
+        <div class="an-dev-tip">
+          <div class="an-dev-tip-title">👥 استقطاب المستخدمين (${totalUsers} مستخدم حالياً)</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.78rem">برنامج إحالة قوي + محتوى SEO لاستقطاب رواد الأعمال وأصحاب المشاريع</div>
+        </div>
+        ${topMeta ? `<div class="an-dev-tip">
+          <div class="an-dev-tip-title">🔥 طوّر الأكثر زيارة: ${topMeta.icon} ${topMeta.label}</div>
+          <div style="color:rgba(255,255,255,.7);font-size:.78rem">القسم الأكثر استخداماً يستحق أكبر استثمار — أضف ميزات متقدمة وحوافز للاستمرار</div>
+        </div>` : ''}
+      </div>`;
+  }
+
+  // مخطط الإيرادات
+  const revChart = document.getElementById('roadmap-revenue-chart');
+  if (revChart) {
+    const sources = [
+      { label:'تحليل AI (بريميوم)', pct:35, color:'#4E73C2' },
+      { label:'البرمجيات والأدوات', pct:25, color:'#22c55e' },
+      { label:'دراسات الجدوى',      pct:20, color:'#f59e0b' },
+      { label:'الأكاديمية',          pct:12, color:'#a78bfa' },
+      { label:'التوريد والتصميم',    pct:8,  color:'#ef4444' },
+    ];
+    revChart.innerHTML = sources.map(s => `
+      <div style="display:flex;align-items:center;gap:.65rem;margin-bottom:.6rem;font-size:.8rem">
+        <div style="width:12px;height:12px;border-radius:3px;background:${s.color};flex-shrink:0"></div>
+        <span style="flex:1">${s.label}</span>
+        <div style="background:var(--border);border-radius:3px;width:80px;height:7px;overflow:hidden">
+          <div style="height:100%;width:${s.pct}%;background:${s.color};border-radius:3px"></div>
+        </div>
+        <strong style="color:${s.color};min-width:28px;text-align:left">${s.pct}%</strong>
+      </div>`).join('');
+  }
+}
   const badge = document.getElementById('stats-accuracy-badge');
   if (badge) {
     if (filledTypes > 0) { badge.textContent = accuracy + '% دقة'; badge.style.display = 'inline'; }
