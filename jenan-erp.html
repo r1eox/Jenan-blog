@@ -1065,17 +1065,14 @@ body {
     <div class="field-group">
       <label class="field-label">الباركود (اختياري)</label>
       <input class="field-input" type="text" id="mp-barcode" placeholder="اتركه فارغاً للتوليد التلقائي">
-    </purchases: 'فواتير المشتريات',
-      store: 'متجر البرمجيات',
-      settings: 'الإعدادات',
-    },
-    nav: [
-      { id: 'pos',       icon: 'fa-cash-register', label: 'كاشير / نقطة البيع' },
-      { id: 'products',  icon: 'fa-barcode',        label: 'إدارة المنتجات'     },
-      { id: 'reports',   icon: 'fa-chart-line',     label: 'التقارير'           },
-      { id: 'purchases', icon: 'fa-file-invoice',   label: 'المشتريات'          },
-      { id: 'store',     icon: 'fa-store',          label: 'متجر البرمجيات'     },
-      { id: 'settings', ═════ -->
+    </div>
+    <div style="display:flex;gap:.65rem;margin-top:1rem">
+      <button class="btn btn-secondary" onclick="closeModal('modal-product')" style="flex:1;margin:0">إغلاق</button>
+      <button class="btn btn-primary" onclick="saveProduct()" style="flex:1;margin:0">حفظ</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast-container"></div>
 
 <script>
@@ -1968,8 +1965,31 @@ function erpRenderReports() {
       <div class="kpi-value">${avgSale.toFixed(2)} <span style="font-size:.88rem">ر</span></div>
       <div class="kpi-sub">لكل عملية بيع</div>
     </div>
+    <div class="kpi-card">
+      <div class="kpi-label">عدد المنتجات / الخدمات</div>
+      <div class="kpi-value">${erpState.products.length}</div>
+      <div class="kpi-sub">في قاعدة البيانات</div>
     </div>
   `;
+
+  const list = document.getElementById('report-sales-list');
+  if (sales.length === 0) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:.83rem;text-align:center;padding:2rem">لا توجد مبيعات بعد — ابدأ بتسجيل أول عملية بيع</div>';
+    return;
+  }
+  list.innerHTML = sales.slice(0, 30).map(s => {
+    const d = new Date(s.createdAt).toLocaleDateString('ar-SA');
+    const t = new Date(s.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+    const preview = s.items.slice(0, 2).map(i => i.name).join('، ') + (s.items.length > 2 ? ' ...' : '');
+    return `<div class="sale-row">
+      <div>
+        <div style="font-weight:700;font-size:.8rem">${preview}</div>
+        <div class="sale-id">${s.id} · ${d} ${t}</div>
+      </div>
+      <div class="sale-amount">${s.total.toFixed(2)} ر</div>
+      <div class="sale-method">${s.method}</div>
+    </div>`;
+  }).join('');
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -2116,33 +2136,6 @@ function erpRenderPurchases() {
           <span style="font-weight:800;color:var(--accent)">${p.total.toFixed(2)} ر</span>
         </div>
       </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════════════════════════════════
-      <div class="kpi-label">عدد المنتجات / الخدمات</div>
-      <div class="kpi-value">${erpState.products.length}</div>
-      <div class="kpi-sub">في قاعدة البيانات</div>
-    </div>
-  `;
-
-  const list = document.getElementById('report-sales-list');
-  if (sales.length === 0) {
-    list.innerHTML = '<div style="color:var(--muted);font-size:.83rem;text-align:center;padding:2rem">لا توجد مبيعات بعد — ابدأ بتسجيل أول عملية بيع</div>';
-    return;
-  }
-  list.innerHTML = sales.slice(0, 30).map(s => {
-    const d = new Date(s.createdAt).toLocaleDateString('ar-SA');
-    const t = new Date(s.createdAt).toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-    const preview = s.items.slice(0, 2).map(i => i.name).join('، ') + (s.items.length > 2 ? ' ...' : '');
-    return `<div class="sale-row">
-      <div>
-        <div style="font-weight:700;font-size:.8rem">${preview}</div>
-        <div class="sale-id">${s.id} · ${d} ${t}</div>
-      </div>
-      <div class="sale-amount">${s.total.toFixed(2)} ر</div>
-      <div class="sale-method">${s.method}</div>
-    </div>`;
   }).join('');
 }
 
