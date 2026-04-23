@@ -1200,7 +1200,8 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 
 /* ── Admin Intelligence Panel ─────────────────────────── */
 .admin-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem}
-.admin-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;text-align:center}
+.admin-kpi{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.25rem 1rem;text-align:center;transition:var(--tr);cursor:default}
+.admin-kpi:hover{border-color:#4E73C2;transform:translateY(-2px);box-shadow:0 6px 20px rgba(78,115,194,.12)}
 .admin-kpi-val{font-size:1.8rem;font-weight:900;line-height:1}
 .admin-kpi-lbl{font-size:.82rem;color:var(--text);opacity:.85;font-weight:600;margin-top:.3rem}
 .admin-two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
@@ -1236,8 +1237,8 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .admin-tab-btn{background:none;border:1px solid var(--border);color:var(--muted);border-radius:10px;padding:.5rem 1.1rem;font-family:'Tajawal',sans-serif;font-size:.84rem;font-weight:700;cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:.4rem}
 .admin-tab-btn:hover{border-color:#4E73C2;color:#7B9ED4;background:rgba(78,115,194,.06)}
 .admin-tab-btn.active{background:rgba(78,115,194,.18);border-color:#4E73C2;color:#7B9ED4;box-shadow:0 2px 12px rgba(78,115,194,.15)}
-.admin-tab-panel{display:none}
-.admin-tab-panel.active{display:block;animation:fadeUp .25s ease}
+.admin-tab-panel{display:none!important}
+.admin-tab-panel.active{display:block!important;animation:fadeUp .25s ease}
 
 /* ══ STATS PAGE — قسم الإحصائيات ══ */
 .stat-upload-card{background:var(--bg2);border:2px dashed var(--border);border-radius:16px;padding:1.75rem 1rem;text-align:center;cursor:pointer;transition:var(--tr);position:relative;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -5551,7 +5552,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
       </div>
 
       <!-- TAB: لوحة التحكم (الأصلية) -->
-      <div class="admin-tab-panel active" id="atab-panel-kpi">
+      <div class="admin-tab-panel active" id="atab-panel-kpi" style="display:block">
 
       <!-- KPI Row -->
       <div class="admin-grid" id="admin-kpi-row">
@@ -12825,12 +12826,16 @@ const STATS_TYPES = {
 };
 
 function switchAdminTab(tab) {
+  // إزالة active من كل الأزرار والـ panels
   document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
-  const btn = document.getElementById('atab-' + tab);
+  document.querySelectorAll('.admin-tab-panel').forEach(p => {
+    p.classList.remove('active');
+    p.style.display = 'none';
+  });
+  const btn   = document.getElementById('atab-' + tab);
   const panel = document.getElementById('atab-panel-' + tab);
-  if (btn) btn.classList.add('active');
-  if (panel) panel.classList.add('active');
+  if (btn)   btn.classList.add('active');
+  if (panel) { panel.classList.add('active'); panel.style.display = 'block'; }
   if (tab === 'stats') renderStatsPage();
 }
 
