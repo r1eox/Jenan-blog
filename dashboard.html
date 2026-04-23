@@ -8313,7 +8313,7 @@ function buildAIRecommendationReport() {
   </div>`;
 }
 
-
+function _showPaPaywall() {
   const a = paState.answers;
   const projectName = escHtml(a.pa_name) || 'مشروعك';
   const revenue    = parseFloat(a.pa_revenue) || 0;
@@ -13051,14 +13051,11 @@ const STATS_TYPES = {
 
 function switchAdminTab(tab) {
   document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.admin-tab-panel').forEach(p => {
-    p.classList.remove('active');
-    p.style.display = '';
-  });
+  document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.remove('active'));
   const btn   = document.getElementById('atab-' + tab);
   const panel = document.getElementById('atab-panel-' + tab);
   if (btn)   btn.classList.add('active');
-  if (panel) { panel.classList.add('active'); panel.style.display = 'block'; }
+  if (panel) panel.classList.add('active');
   if (tab === 'jenan') {
     try { renderStatsPage(); }     catch(e) { console.warn('renderStatsPage:', e); }
     try { renderAnalyticsPage(); } catch(e) { console.warn('renderAnalyticsPage:', e); }
