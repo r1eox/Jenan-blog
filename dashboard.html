@@ -1935,6 +1935,96 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
   flex-shrink:0;
 }
 
+/* ══ بطاقتا التحليل — تصميم موحد أبيض ══ */
+.anlys-unified{
+  display:grid;
+  grid-template-columns:1fr 1px 1fr;
+  gap:0;
+  background:#fff;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 2px 18px rgba(0,0,0,.08),0 6px 32px rgba(0,0,0,.04);
+}
+.anlys-sep{
+  background:linear-gradient(to bottom,transparent 6%,rgba(0,0,0,.06) 18%,rgba(0,0,0,.06) 82%,transparent 94%);
+}
+.anlys-col{
+  padding:1.55rem 1.45rem 1.25rem;
+  display:flex;
+  flex-direction:column;
+  gap:.82rem;
+  position:relative;
+  cursor:pointer;
+  transition:background .2s;
+}
+.anlys-col:hover{background:rgba(0,0,0,.013)}
+.anlys-top-bar{
+  position:absolute;top:0;left:0;right:0;height:4px;
+}
+.anlys-bar-blue{background:linear-gradient(90deg,#1E40AF,#3b82f6,#60a5fa)}
+.anlys-bar-gold{background:linear-gradient(90deg,#92400e,#d97706,#fbbf24)}
+.anlys-head{display:flex;align-items:center;gap:.82rem;margin-top:.35rem}
+.anlys-icon{
+  width:70px;height:70px;border-radius:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:1.45rem;color:#fff;gap:.16rem;flex-shrink:0;
+  cursor:pointer;transition:transform .25s,box-shadow .25s;
+  position:relative;
+}
+.anlys-icon::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(ellipse at 50% 8%,rgba(255,255,255,.28),transparent 52%);
+  pointer-events:none;
+}
+.anlys-icon:hover{transform:scale(1.09) translateY(-3px)}
+.anlys-icon-blue{background:linear-gradient(140deg,#1E3A8A,#3b82f6);box-shadow:0 5px 18px rgba(59,130,246,.42)}
+.anlys-icon-blue:hover{box-shadow:0 10px 28px rgba(59,130,246,.62)}
+.anlys-icon-gold{background:linear-gradient(140deg,#78350f,#d97706);box-shadow:0 5px 18px rgba(217,119,6,.42)}
+.anlys-icon-gold:hover{box-shadow:0 10px 28px rgba(217,119,6,.62)}
+.anlys-icon span{font-size:.63rem;font-weight:900;color:rgba(255,255,255,.9);line-height:1}
+.anlys-txt{display:flex;flex-direction:column;gap:.2rem}
+.anlys-pill{
+  display:inline-flex;align-items:center;gap:.3rem;
+  border-radius:20px;padding:.17rem .68rem;
+  font-size:.6rem;font-weight:800;width:fit-content;
+}
+.anlys-pill-blue{background:rgba(59,130,246,.08);color:#1d4ed8;border:1px solid rgba(59,130,246,.2)}
+.anlys-pill-gold{background:rgba(217,119,6,.08);color:#b45309;border:1px solid rgba(217,119,6,.2)}
+.anlys-h3{font-size:1.05rem;font-weight:900;color:#111827;margin:0;line-height:1.25}
+.anlys-sub{font-size:.71rem;color:#6b7280;margin:0}
+/* قائمة المزايا */
+.anlys-feats{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.anlys-feats li{
+  display:flex;align-items:flex-start;gap:.55rem;
+  opacity:0;transform:translateX(14px);
+}
+.anlys-feats.go li{
+  animation:anlysIn .38s ease both;
+  animation-delay:calc(var(--i) * .08s);
+}
+@keyframes anlysIn{to{opacity:1;transform:translateX(0)}}
+.anlys-feats li span:last-child{font-size:.79rem;color:#374151;line-height:1.45}
+.anlys-feats li b{color:#111827;font-weight:800}
+.anlys-ck{
+  width:17px;height:17px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.57rem;font-weight:900;flex-shrink:0;margin-top:.13rem;
+}
+.anlys-ck-blue{background:rgba(59,130,246,.1);color:#2563eb;border:1.5px solid rgba(59,130,246,.25)}
+.anlys-ck-gold{background:rgba(217,119,6,.1);color:#d97706;border:1.5px solid rgba(217,119,6,.25)}
+/* زر الاستدعاء */
+.anlys-btn{
+  width:100%;padding:.72rem 1rem;border:none;border-radius:12px;
+  font-family:'Tajawal',sans-serif;font-size:.84rem;font-weight:800;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  display:flex;align-items:center;justify-content:center;gap:.45rem;
+}
+.anlys-btn:hover{transform:translateY(-2px)}
+.anlys-btn-blue{background:linear-gradient(135deg,#1d4ed8,#3b82f6);color:#fff;box-shadow:0 3px 14px rgba(59,130,246,.3)}
+.anlys-btn-blue:hover{box-shadow:0 7px 22px rgba(59,130,246,.52)}
+.anlys-btn-gold{background:linear-gradient(135deg,#92400e,#d97706);color:#fff;box-shadow:0 3px 14px rgba(217,119,6,.3)}
+.anlys-btn-gold:hover{box-shadow:0 7px 22px rgba(217,119,6,.52)}
+
 /* ══ إعداد دراسة الجدوى — الخطوة 0 ══ */
 #page-analysis.active{
   display:flex !important;
@@ -2895,143 +2985,68 @@ window.addEventListener('load', _syncGatewayViewportLock);
         </div>
 
         <!-- ══ Tier Cards ══ -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.5rem;align-items:stretch">
+        <!-- ══ بطاقتا التحليل الموحدتان ══ -->
+        <div class="anlys-unified" id="anlys-unified">
 
-          <!-- ─────────────────────────────────────────
-               الباقة المجانية
-          ───────────────────────────────────────── -->
-          <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(78,115,194,.3);display:flex;flex-direction:column;background:linear-gradient(160deg,#091630 0%,#0d1f42 60%,#091630 100%);position:relative;box-shadow:0 8px 32px rgba(0,0,0,.35),0 0 0 1px rgba(78,115,194,.08) inset">
-            <!-- top accent line -->
-            <div style="height:3px;background:linear-gradient(90deg,transparent,#4E73C2,#7eb8ff,transparent)"></div>
-
-            <!-- header -->
-            <div style="padding:1.6rem 1.75rem 1.1rem;position:relative">
-              <!-- basic tier pill -->
-              <div style="display:inline-flex;align-items:center;gap:.4rem;background:rgba(78,115,194,.14);border:1px solid rgba(78,115,194,.32);color:#a5c8ff;border-radius:20px;padding:.22rem .85rem;font-size:.65rem;font-weight:800;margin-bottom:1rem">
-                <i class="fa-solid fa-calculator"></i> تحليل مالي ذاتي · حسابات فورية
+          <!-- ─── تحليل المشروع ─── -->
+          <div class="anlys-col anlys-col-blue" onclick="startProjectAnalysisWizard()">
+            <div class="anlys-top-bar anlys-bar-blue"></div>
+            <div class="anlys-head">
+              <div class="anlys-icon anlys-icon-blue" onmouseenter="anlysAnimate('feats-blue')" onclick="event.stopPropagation();startProjectAnalysisWizard()">
+                <i class="fa-solid fa-calculator"></i>
+                <span>ابدأ التحليل</span>
               </div>
-              <!-- icon + title row -->
-              <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem">
-                <div onclick="startProjectAnalysisWizard()" style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#1E3A8A,#4E73C2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.7rem;color:#fff;box-shadow:0 8px 24px rgba(78,115,194,.5);flex-shrink:0;cursor:pointer;gap:.25rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 14px 36px rgba(78,115,194,.7)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(78,115,194,.5)'">
-                  <i class="fa-solid fa-calculator"></i>
-                  <span style="font-size:.72rem;font-weight:900;letter-spacing:.02em;color:#fff;line-height:1">ابدأ التحليل</span>
-                </div>
-                <div>
-                  <div style="font-size:1.2rem;font-weight:900;color:#fff;line-height:1.2">تحليل المشروع</div>
-                  <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.2rem">حسابات مالية دقيقة · نتائج فورية</div>
-                </div>
+              <div class="anlys-txt">
+                <div class="anlys-pill anlys-pill-blue"><i class="fa-solid fa-calculator"></i> تحليل مالي ذاتي</div>
+                <div class="anlys-h3">تحليل المشروع</div>
+                <div class="anlys-sub">حسابات مالية دقيقة · نتائج فورية</div>
               </div>
-
             </div>
-
-            <!-- divider -->
-            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(78,115,194,.2),transparent);margin:0 1.75rem"></div>
-
-            <!-- features -->
-            <div style="padding:1.2rem 1.75rem;flex:1;display:flex;flex-direction:column;gap:0">
-              <div style="display:flex;flex-direction:column;gap:.65rem;margin-bottom:1.4rem;flex:1">
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">هامش الربح</strong> الصافي والإجمالي</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">نقطة التعادل</strong> وتوزيع التكاليف بالنسب</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">توقعات نمو</strong> 3 سنوات بمعدل ذكي</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">تحليل التكاليف</strong> والنسب المعيارية</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">الأدوات الحكومية</strong> ‏(ZATCA · نطاقات · تراخيص)</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.7rem">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7.5" fill="rgba(34,197,94,.12)" stroke="rgba(34,197,94,.3)"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span style="font-size:.82rem;color:rgba(255,255,255,.85)"><strong style="color:#fff">مقارنة بمعايير قطاعك</strong> في السوق السعودي 2026</span>
-                </div>
-              </div>
-
-
-            </div>
+            <ul class="anlys-feats" id="feats-blue">
+              <li style="--i:0"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>هامش الربح</b> الصافي والإجمالي</span></li>
+              <li style="--i:1"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>نقطة التعادل</b> وتوزيع التكاليف بالنسب</span></li>
+              <li style="--i:2"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>توقعات نمو</b> 3 سنوات بمعدل ذكي</span></li>
+              <li style="--i:3"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>تحليل التكاليف</b> والنسب المعيارية</span></li>
+              <li style="--i:4"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>الأدوات الحكومية</b> (ZATCA · نطاقات · تراخيص)</span></li>
+              <li style="--i:5"><span class="anlys-ck anlys-ck-blue">✓</span><span><b>مقارنة بمعايير قطاعك</b> في السوق السعودي 2026</span></li>
+            </ul>
+            <button class="anlys-btn anlys-btn-blue" onclick="event.stopPropagation();startProjectAnalysisWizard()">ابدأ التحليل الآن <i class="fa-solid fa-arrow-left"></i></button>
           </div>
 
-          <!-- ─────────────────────────────────────────
-               الباقة المميزة
-          ───────────────────────────────────────── -->
-          <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(245,158,11,.35);display:flex;flex-direction:column;background:linear-gradient(160deg,#120800 0%,#2a1200 45%,#1a0a00 75%,#0e0600 100%);position:relative;box-shadow:0 8px 40px rgba(0,0,0,.5),0 0 60px rgba(245,158,11,.06),0 0 0 1px rgba(245,158,11,.07) inset">
-            <!-- top accent line — gold -->
-            <div style="height:3px;background:linear-gradient(90deg,transparent,#b45309,#f59e0b,#fcd34d,#f59e0b,transparent)"></div>
+          <!-- ─── الفاصل ─── -->
+          <div class="anlys-sep"></div>
 
-            <!-- header -->
-            <div style="padding:1rem 1.75rem 1rem;position:relative;overflow:hidden">
-              <!-- glow orbs -->
-              <div style="position:absolute;top:-30px;left:20px;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,.18),transparent 65%);pointer-events:none"></div>
-              <div style="position:absolute;bottom:-20px;right:30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,rgba(252,211,77,.1),transparent 65%);pointer-events:none"></div>
-
-              <!-- icon + title -->
-              <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:.5rem;position:relative">
-                <div onclick="startProjectAnalysisWizard('premium')" style="width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,#78350f,#d97706);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.7rem;color:#fff;box-shadow:0 8px 24px rgba(245,158,11,.5);flex-shrink:0;cursor:pointer;gap:.25rem;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='scale(1.06)';this.style.boxShadow='0 14px 36px rgba(245,158,11,.7)'" onmouseout="this.style.transform='';this.style.boxShadow='0 8px 24px rgba(245,158,11,.5)'">
-                  <i class="fa-solid fa-brain"></i>
-                  <span style="font-size:.72rem;font-weight:900;letter-spacing:.02em;color:#fff;line-height:1">ابدأ تحليل AI</span>
-                </div>
-                <div>
-                  <div style="font-size:1.2rem;font-weight:900;color:#fff;line-height:1.2">حلّل مشروعك بالذكاء</div>
-                  <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.2rem">تقرير AI معمّق · مخصص لمشروعك</div>
-                </div>
+          <!-- ─── تحليل بالذكاء ─── -->
+          <div class="anlys-col anlys-col-gold" onclick="startProjectAnalysisWizard('premium')">
+            <div class="anlys-top-bar anlys-bar-gold"></div>
+            <div class="anlys-head">
+              <div class="anlys-icon anlys-icon-gold" onmouseenter="anlysAnimate('feats-gold')" onclick="event.stopPropagation();startProjectAnalysisWizard('premium')">
+                <i class="fa-solid fa-brain"></i>
+                <span>ابدأ تحليل AI</span>
               </div>
-
+              <div class="anlys-txt">
+                <div class="anlys-pill anlys-pill-gold"><i class="fa-solid fa-brain"></i> ذكاء اصطناعي</div>
+                <div class="anlys-h3">حلّل مشروعك بالذكاء</div>
+                <div class="anlys-sub">تقرير AI معمّق · مخصص لمشروعك</div>
+              </div>
             </div>
-
-            <!-- divider -->
-            <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.2),transparent);margin:0 1.75rem"></div>
-
-            <!-- features -->
-            <div style="padding:1.1rem 1.75rem;flex:1;display:flex;flex-direction:column;gap:.38rem">
-
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">هامش الربح</strong> الصافي · نسب التكاليف · نقطة التعادل</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">توقعات نمو</strong> 3 سنوات · مقارنة بمعايير السوق 2026</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">تقييم AI</strong> لحجم السوق والطلب المتوقع</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">تحليل المنافسين</strong> ونقاط القوة والضعف</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">خطة عمل</strong> تنفيذية 12 شهراً خطوة بخطوة</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">توصيات AI</strong> صريحة: هل تبدأ أم تُعدّل؟</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">تقرير PDF</strong> احترافي قابل للطباعة والمشاركة</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:.55rem">
-                <i class="fa-solid fa-circle-check" style="color:#fbbf24;font-size:.72rem;flex-shrink:0"></i>
-                <span style="font-size:.82rem;color:rgba(255,255,255,.92)"><strong style="color:#fcd34d">ملخص تنفيذي</strong> جاهز للعرض على المستثمرين</span>
-              </div>
-
-            </div>
+            <ul class="anlys-feats" id="feats-gold">
+              <li style="--i:0"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>هامش الربح</b> الصافي · نسب التكاليف · نقطة التعادل</span></li>
+              <li style="--i:1"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>توقعات نمو</b> 3 سنوات · مقارنة بمعايير السوق 2026</span></li>
+              <li style="--i:2"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>تقييم AI</b> لحجم السوق والطلب المتوقع</span></li>
+              <li style="--i:3"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>تحليل المنافسين</b> ونقاط القوة والضعف</span></li>
+              <li style="--i:4"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>خطة عمل</b> تنفيذية 12 شهراً خطوة بخطوة</span></li>
+              <li style="--i:5"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>توصيات AI</b> صريحة: هل تبدأ أم تُعدّل؟</span></li>
+              <li style="--i:6"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>تقرير PDF</b> احترافي قابل للطباعة والمشاركة</span></li>
+              <li style="--i:7"><span class="anlys-ck anlys-ck-gold">✓</span><span><b>ملخص تنفيذي</b> جاهز للعرض على المستثمرين</span></li>
+            </ul>
+            <button class="anlys-btn anlys-btn-gold" onclick="event.stopPropagation();startProjectAnalysisWizard('premium')">ابدأ تحليل AI الآن <i class="fa-solid fa-arrow-left"></i></button>
           </div>
-        </div>
 
-        <p style="font-size:.73rem;color:var(--muted);text-align:center">
-          <i class="fa-solid fa-clock" style="margin-left:.3rem;color:rgba(255,255,255,.3)"></i>التحليل يستغرق ~5 دقائق · بياناتك لا تُحفظ ولا تُشارك مع أي طرف
+        </div><!-- /anlys-unified -->
+
+        <p style="font-size:.72rem;color:var(--muted);text-align:center;margin:0">
+          <i class="fa-solid fa-clock" style="margin-left:.3rem;color:var(--muted)"></i>التحليل يستغرق ~5 دقائق · بياناتك لا تُحفظ ولا تُشارك مع أي طرف
         </p>
       </div>
 
@@ -7276,7 +7291,21 @@ function loadPaSession() {
 }
 // ──────────────────────────────────────────────────────────────────────
 
+/* ══ أنيميشن مزايا بطاقتي التحليل ══ */
+function anlysAnimate(listId) {
+  const ul = document.getElementById(listId);
+  if (!ul) return;
+  ul.classList.remove('go');
+  void ul.offsetWidth; /* reflow لإعادة تشغيل الأنيميشن */
+  ul.classList.add('go');
+}
+function anlysAnimateBoth() {
+  setTimeout(() => { anlysAnimate('feats-blue'); }, 80);
+  setTimeout(() => { anlysAnimate('feats-gold'); }, 140);
+}
+
 function initProjectAnalysis() {
+  anlysAnimateBoth();
   if (!paState.started) {
     showPaStep(0);
   }
