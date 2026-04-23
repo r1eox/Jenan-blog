@@ -2228,20 +2228,28 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
    ________________________________________________________________
    كل وحدة تحتوي على:
      id, name, icon, color, color2, badge, badgeColor,
-     price, priceNote, desc, features[], phone
+     price, priceNote, desc, features[], activities[]
+   activities: ['supermarket','restaurant','salon'] = مشترك للكل
+   activities: ['supermarket'] = خاص بالسوبرماركت ... إلخ
    ══════════════════════════════════════════════════════════════════ */
 
 const STORE_MODULES = [
+
+  /* ══════════════════════════════════════════
+     ── وحدات مشتركة لجميع الأنشطة ──
+  ══════════════════════════════════════════ */
   {
-    id: 'accounting', name: 'محاسبة بلا تعقيد',
+    id: 'accounting', activities: ['supermarket','restaurant','salon'],
+    name: 'محاسبة بلا تعقيد',
     icon: 'fa-calculator', color: '#6366f1', color2: '#4f46e5',
     badge: '✓ مُثبَّت', badgeColor: 'rgba(34,197,94,.2)',
-    price: 0,   priceNote: 'مجاني ومدمج',
+    price: 0, priceNote: 'مجاني ومدمج',
     desc: 'محاسبة متكاملة مصممة خصيصاً لمستخدمي جنان برو — فواتير ZATCA، تقارير P&L، ميزانية تجارية آنية.',
     features: ['فاتورة إلكترونية متوافقة ZATCA', 'تقرير الأرباح والخسائر شهرياً', 'ميزانية تجارية وتدفقات نقدية', 'مصاريف + مصادر دخل مصنفة', 'ربط مباشر مع عمليات الكاشير'],
   },
   {
-    id: 'hr', name: 'إدارة الموارد البشرية',
+    id: 'hr', activities: ['supermarket','restaurant','salon'],
+    name: 'إدارة الموارد البشرية',
     icon: 'fa-users', color: '#14b8a6', color2: '#0d9488',
     badge: 'جديد', badgeColor: 'rgba(20,184,166,.2)',
     price: 199, priceNote: 'شهرياً',
@@ -2249,64 +2257,186 @@ const STORE_MODULES = [
     features: ['سجل حضور وغياب بصمة الإصبع', 'مسير الرواتب والاستقطاعات', 'طلبات الإجازة والموافقة إلكترونياً', 'ملف الموظف مع الوثائق', 'تقييم أداء ربعي'],
   },
   {
-    id: 'inventory', name: 'مخزون ومشتريات متقدم',
-    icon: 'fa-boxes-stacked', color: '#f97316', color2: '#ea580c',
-    badge: 'شائع', badgeColor: 'rgba(249,115,22,.2)',
-    price: 249, priceNote: 'شهرياً',
-    desc: 'تحكم كامل بمخزونك — تنبيهات نفاد المخزون، طلبيات شراء آلية، تتبع الموردين.',
-    features: ['تنبيه نفاد مخزون فوري', 'طلبيات شراء آلية للموردين', 'تقرير منتجات بطيئة الحركة', 'ربط مؤتمت بالكاشير والمخزون', 'دعم أكثر من فرع ومستودع'],
-  },
-  {
-    id: 'delivery', name: 'إدارة التوصيل',
-    icon: 'fa-motorcycle', color: '#a855f7', color2: '#7c3aed',
-    badge: 'متقدم', badgeColor: 'rgba(168,85,247,.2)',
-    price: 179, priceNote: 'شهرياً',
-    desc: 'برنامج توصيل متكامل — تتبع السائقين، خرائط حية، إشعارات SMS للعميل.',
-    features: ['تتبع السائقين على الخريطة لحظياً', 'توزيع طلبات آلي على أقرب سائق', 'إشعار العميل عند كل مرحلة', 'تقرير أداء سائقين يومي', 'دعم تكامل خرائط Google'],
-  },
-  {
-    id: 'loyalty', name: 'ولاء العملاء ونقاط',
+    id: 'loyalty', activities: ['supermarket','restaurant','salon'],
+    name: 'ولاء العملاء ونقاط',
     icon: 'fa-star', color: '#eab308', color2: '#ca8a04',
-    badge: 'جديد', badgeColor: 'rgba(234,179,8,.2)',
+    badge: 'شائع', badgeColor: 'rgba(234,179,8,.2)',
     price: 149, priceNote: 'شهرياً',
-    desc: 'برنامج نقاط ومكافآت يشجع عودة عميلك — درجات وخصومات مخصصة.',
+    desc: 'برنامج نقاط ومكافآت يشجع عودة عميلك — درجات وخصومات مخصصة لكل نشاط.',
     features: ['بطاقة ولاء رقمية لكل عميل', 'نقاط على كل عملية شراء', 'خصومات تلقائية عند التحصيل', 'إشعارات عروض وتخفيضات', 'تقرير أكثر العملاء ولاءً'],
   },
   {
-    id: 'booking', name: 'حجوزات ومواعيد',
-    icon: 'fa-calendar-check', color: '#f43f5e', color2: '#e11d48',
-    badge: 'مناسب للصالونات', badgeColor: 'rgba(244,63,94,.2)',
-    price: 129, priceNote: 'شهرياً',
-    desc: 'نظام حجوزات أونلاين متكامل — عميلك يحجز من واتساب أو الرابط.',
-    features: ['صفحة حجز خاصة بمنشأتك', 'تذكير تلقائي قبل الموعد', 'إدارة جدول موظفين وخدمات', 'رسائل تأكيد + إلغاء آلي', 'تقرير مشغولية وأوقات ذروة الطلب'],
-  },
-  {
-    id: 'crm', name: 'إدارة العملاء CRM',
+    id: 'crm', activities: ['supermarket','restaurant','salon'],
+    name: 'إدارة العملاء CRM',
     icon: 'fa-address-card', color: '#06b6d4', color2: '#0891b2',
     badge: 'جديد 2026', badgeColor: 'rgba(6,182,212,.2)',
     price: 169, priceNote: 'شهرياً',
     desc: 'سجّل عملاءك وابنِ علاقات تجارية قوية — تاريخ الشراء، الملاحظات، والتذكيرات التلقائية.',
     features: ['سجل كامل لكل عميل (اسم، جوال، ملاحظات)', 'تاريخ المشتريات لكل عميل', 'تنبيهات عيد ميلاد وتواصل دوري', 'تصدير قائمة العملاء CSV', 'تقرير أكثر العملاء شراءً'],
   },
+
+  /* ══════════════════════════════════════════
+     ── وحدات السوبرماركت والتموين 🛒 ──
+  ══════════════════════════════════════════ */
+  {
+    id: 'inventory', activities: ['supermarket'],
+    name: 'مخزون ومشتريات متقدم',
+    icon: 'fa-boxes-stacked', color: '#10b981', color2: '#059669',
+    badge: 'للسوبرماركت', badgeColor: 'rgba(16,185,129,.2)',
+    price: 249, priceNote: 'شهرياً',
+    desc: 'تحكم كامل بمخزون البضاعة — تنبيهات نفاد المخزون، طلبيات شراء آلية، تتبع الموردين.',
+    features: ['تنبيه نفاد مخزون فوري', 'طلبيات شراء آلية للموردين', 'تقرير منتجات بطيئة الحركة', 'ربط مؤتمت بالكاشير والمخزون', 'دعم أكثر من فرع ومستودع'],
+  },
+  {
+    id: 'barcode', activities: ['supermarket'],
+    name: 'ماسح الباركود المتقدم',
+    icon: 'fa-barcode', color: '#22d3ee', color2: '#0891b2',
+    badge: 'للسوبرماركت', badgeColor: 'rgba(34,211,238,.2)',
+    price: 99, priceNote: 'شهرياً',
+    desc: 'تكامل ماسح الباركود مع الكاشير — استقبل المنتجات وجرّد المخزون بضغطة واحدة.',
+    features: ['ربط ماسح USB وBluetooth', 'بحث فوري عند مسح الباركود', 'تحديث المخزون تلقائياً عند البيع', 'طباعة ملصقات أسعار بالباركود', 'دعم الباركود السعودي GS1'],
+  },
+  {
+    id: 'delivery_market', activities: ['supermarket'],
+    name: 'توصيل للمنازل',
+    icon: 'fa-motorcycle', color: '#a855f7', color2: '#7c3aed',
+    badge: 'للسوبرماركت', badgeColor: 'rgba(168,85,247,.2)',
+    price: 179, priceNote: 'شهرياً',
+    desc: 'خدمة توصيل منازل مدمجة مع الكاشير — طلب العميل، توزيع الطلبات، وتتبع السائق.',
+    features: ['استقبال طلبات التوصيل من واتساب', 'تعيين سائق للطلب فوراً', 'تتبع السائق على الخريطة', 'إشعار العميل عند الوصول', 'تقرير إيرادات التوصيل اليومي'],
+  },
+  {
+    id: 'multi_branch', activities: ['supermarket'],
+    name: 'إدارة متعددة الفروع',
+    icon: 'fa-code-branch', color: '#f97316', color2: '#ea580c',
+    badge: 'متقدم', badgeColor: 'rgba(249,115,22,.2)',
+    price: 299, priceNote: 'شهرياً',
+    desc: 'أدر جميع فروع سوبرماركتك من لوحة تحكم واحدة — مبيعات ومخزون لكل فرع على حدة.',
+    features: ['لوحة تحكم موحدة لكل الفروع', 'نقل بضاعة بين الفروع', 'تقارير مقارنة الفروع', 'صلاحيات مخصصة لمدير كل فرع', 'تزامن فوري للأسعار والمنتجات'],
+  },
+
+  /* ══════════════════════════════════════════
+     ── وحدات المطاعم والكافيهات 🍽️ ──
+  ══════════════════════════════════════════ */
+  {
+    id: 'table_management', activities: ['restaurant'],
+    name: 'إدارة الطاولات والصالة',
+    icon: 'fa-utensils', color: '#f97316', color2: '#ea580c',
+    badge: 'للمطاعم', badgeColor: 'rgba(249,115,22,.2)',
+    price: 149, priceNote: 'شهرياً',
+    desc: 'خريطة تفاعلية للطاولات — اعرف الشاغل والمشغول وابعث الطلبات للمطبخ بسهولة.',
+    features: ['خريطة طاولات تفاعلية لصالتك', 'ربط الطلب بالطاولة مباشرة', 'مؤقت مدة جلوس العميل', 'دمج الطاولات للمجموعات', 'تقرير أكثر الطاولات إيراداً'],
+  },
+  {
+    id: 'kitchen_display', activities: ['restaurant'],
+    name: 'شاشة المطبخ KDS',
+    icon: 'fa-display', color: '#ef4444', color2: '#dc2626',
+    badge: 'للمطاعم', badgeColor: 'rgba(239,68,68,.2)',
+    price: 129, priceNote: 'شهرياً',
+    desc: 'أرسل الطلبات مباشرة لشاشة المطبخ — توقف عن الطباعة الورقية وسرّع الخدمة.',
+    features: ['عرض الطلبات لحظياً للطاهي', 'ترتيب الطلبات بالأولوية', 'تنبيه صوتي عند وصول طلب جديد', 'تتبع وقت إعداد كل طبق', 'أرشيف طلبات اليوم الكامل'],
+  },
+  {
+    id: 'online_ordering', activities: ['restaurant'],
+    name: 'طلبات أونلاين',
+    icon: 'fa-globe', color: '#8b5cf6', color2: '#7c3aed',
+    badge: 'للمطاعم', badgeColor: 'rgba(139,92,246,.2)',
+    price: 199, priceNote: 'شهرياً',
+    desc: 'موقع طلبات خاص بمطعمك — العميل يطلب من جواله ويصله التأكيد فوراً.',
+    features: ['صفحة طلب أونلاين بتصميمك', 'قائمة طعام رقمية محدّثة آنياً', 'دفع إلكتروني آمن', 'تتبع الطلب حتى الاستلام', 'تقارير الطلبات الأونلاين يومياً'],
+  },
+  {
+    id: 'delivery_rest', activities: ['restaurant'],
+    name: 'إدارة توصيل الطلبات',
+    icon: 'fa-motorcycle', color: '#a855f7', color2: '#7c3aed',
+    badge: 'للمطاعم', badgeColor: 'rgba(168,85,247,.2)',
+    price: 179, priceNote: 'شهرياً',
+    desc: 'نظام توصيل مدمج مع قائمة طعامك — سائق مخصص لكل طلب مع إشعار للعميل.',
+    features: ['استقبال طلبات التوصيل أونلاين', 'توزيع آلي على أقرب سائق', 'تتبع السائق على الخريطة', 'إشعار العميل عند كل مرحلة', 'تقرير أداء سائقين يومي'],
+  },
+  {
+    id: 'booking_rest', activities: ['restaurant'],
+    name: 'حجز الطاولات أونلاين',
+    icon: 'fa-calendar-check', color: '#f43f5e', color2: '#e11d48',
+    badge: 'للمطاعم', badgeColor: 'rgba(244,63,94,.2)',
+    price: 119, priceNote: 'شهرياً',
+    desc: 'عميلك يحجز طاولته مسبقاً من جواله — تأكيد فوري، تذكير آلي، ولا إلغاء مفاجئ.',
+    features: ['صفحة حجز طاولة أونلاين', 'تأكيد وتذكير تلقائي قبل الموعد', 'إدارة عدد الضيوف والمناسبات', 'قائمة انتظار ذكية', 'تقرير نسبة الإلغاء والحضور'],
+  },
+
+  /* ══════════════════════════════════════════
+     ── وحدات الصالون النسائي والتجميل 💄 ──
+  ══════════════════════════════════════════ */
+  {
+    id: 'booking', activities: ['salon'],
+    name: 'حجوزات ومواعيد العميلات',
+    icon: 'fa-calendar-check', color: '#f43f5e', color2: '#e11d48',
+    badge: 'للصالونات', badgeColor: 'rgba(244,63,94,.2)',
+    price: 129, priceNote: 'شهرياً',
+    desc: 'عميلتك تحجز موعدها من واتساب بسهولة — تأكيد آلي، تذكير قبل الجلسة، ولا فوضى.',
+    features: ['صفحة حجز خاصة بصالونك', 'تذكير تلقائي قبل الموعد', 'إدارة جدول كل موظفة', 'رسائل تأكيد + إلغاء آلي', 'تقرير مشغولية الصالون يومياً'],
+  },
+  {
+    id: 'package_deals', activities: ['salon'],
+    name: 'باقات وعروض التجميل',
+    icon: 'fa-gift', color: '#ec4899', color2: '#db2777',
+    badge: 'للصالونات', badgeColor: 'rgba(236,72,153,.2)',
+    price: 119, priceNote: 'شهرياً',
+    desc: 'صمّمي باقات خدمات جذابة وبيعيها مباشرة — باقة العروس، جلسة رمضان، عروض الأعياد.',
+    features: ['إنشاء باقات مخصصة بأسعار خاصة', 'تتبع استخدام الباقة لكل عميلة', 'عرض الباقات في صفحة الحجز', 'إشعار انتهاء صلاحية الباقة', 'تقرير أكثر الباقات مبيعاً'],
+  },
+  {
+    id: 'gift_cards', activities: ['salon'],
+    name: 'بطاقات الهدايا الرقمية',
+    icon: 'fa-envelope-open-text', color: '#d946ef', color2: '#c026d3',
+    badge: 'للصالونات', badgeColor: 'rgba(217,70,239,.2)',
+    price: 89, priceNote: 'شهرياً',
+    desc: 'بطاقات هدايا رقمية ترسلينها عبر واتساب — هدية مميزة تجذب عملاء جدداً لصالونك.',
+    features: ['إصدار بطاقة هدية رقمية بضغطة', 'تحديد القيمة وتاريخ الانتهاء', 'استرداد فوري عند الكاشير', 'مشاركة جاهزة عبر واتساب', 'تقرير البطاقات الصادرة والمستردة'],
+  },
+  {
+    id: 'staff_performance', activities: ['salon'],
+    name: 'أداء الموظفات والعمولات',
+    icon: 'fa-chart-bar', color: '#a855f7', color2: '#9333ea',
+    badge: 'للصالونات', badgeColor: 'rgba(168,85,247,.2)',
+    price: 109, priceNote: 'شهرياً',
+    desc: 'تابعي أداء كل موظفة بدقة — المبيعات وعدد العملاء والعمولات في لوحة واحدة.',
+    features: ['تقرير مبيعات لكل موظفة', 'عدد العملاء المخدومين يومياً', 'تقييم العميلة للخدمة بعد الجلسة', 'حساب عمولات وحوافز آلياً', 'مقارنة أداء الموظفات شهرياً'],
+  },
+  {
+    id: 'before_after', activities: ['salon'],
+    name: 'معرض قبل وبعد',
+    icon: 'fa-images', color: '#f43f5e', color2: '#be185d',
+    badge: 'للصالونات', badgeColor: 'rgba(244,63,94,.15)',
+    price: 79, priceNote: 'شهرياً',
+    desc: 'معرض صور احترافي لأعمال صالونك — الصور تُقنع العميلة قبل أي كلام.',
+    features: ['رفع صور قبل وبعد لكل خدمة', 'عرض المعرض في صفحة الحجز', 'مشاركة الصور على إنستغرام', 'تصنيف الصور بالخدمة والموظفة', 'إحصاء أكثر الأعمال تفاعلاً'],
+  },
 ];
 
-/** عرض بطاقات وحدات المتجر */
+/** عرض بطاقات وحدات المتجر — مصنّفة حسب النشاط */
 function erpRenderStore() {
   const grid = document.getElementById('store-grid');
   if (!grid) return;
-  grid.innerHTML = STORE_MODULES.map(m => {
+
+  const act = erpState.session?.activity || 'supermarket';
+  const cfg = ACTIVITY_CONFIG[act];
+
+  // تصنيف الوحدات: مخصصة للنشاط الحالي / مشتركة للكل
+  const specificMods = STORE_MODULES.filter(m =>
+    m.activities.includes(act) && m.activities.length < 3
+  );
+  const commonMods = STORE_MODULES.filter(m => m.activities.length === 3);
+
+  function renderCard(m) {
     const priceStr = m.price > 0
       ? `<span style="font-size:1.1rem;font-weight:900;color:${m.color}">${m.price.toLocaleString('ar-SA')} ر</span><span style="font-size:.71rem;color:var(--muted);margin-right:.3rem">${m.priceNote}</span>`
-      : `<span style="font-size:1rem;font-weight:900;color:${m.color}">حسب المتطلبات</span>`;
-    const bizName = (erpState.session && erpState.session.bizName) || '';
-    const waMsg   = encodeURIComponent('مرحباً، أرغب في تفعيل وحدة "' + m.name + '" لنظام جنان برو — المنشأة: ' + bizName);
-    // تحديد الإجراء والنص المناسب عند بناء HTML (ليس عند النقر)
-    const btnOnclick = m.id === 'accounting'
-      ? "showView('accounting')"
-      : `window.open('https://wa.me/966500000000?text=${waMsg}','_blank')`;
-    const btnIcon = m.id === 'accounting' ? 'fa-calculator' : 'fa-whatsapp fa-brands';
-    const btnLabel = m.id === 'accounting' ? 'فتح وحدة المحاسبة' : 'اطلب تفعيل الوحدة';
+      : `<span style="font-size:1rem;font-weight:900;color:${m.color}">مجاني ومدمج</span>`;
+    const bizName      = (erpState.session && erpState.session.bizName) || '';
+    const waMsg        = encodeURIComponent('مرحباً، أرغب في تفعيل وحدة "' + m.name + '" لنظام جنان برو — المنشأة: ' + bizName);
+    const btnOnclick   = m.id === 'accounting' ? "showView('accounting')" : `window.open('https://wa.me/966500000000?text=${waMsg}','_blank')`;
     const btnIconClass = m.id === 'accounting' ? 'fa-solid fa-calculator' : 'fa-brands fa-whatsapp';
+    const btnLabel     = m.id === 'accounting' ? 'فتح وحدة المحاسبة' : 'اطلب تفعيل الوحدة';
     return `
       <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.35rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s" onmouseenter="this.style.transform='translateY(-3px)';this.style.borderColor='${m.color}'" onmouseleave="this.style.transform='';this.style.borderColor=''">
         <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,${m.color},${m.color2});border-radius:16px 16px 0 0"></div>
@@ -2327,7 +2457,31 @@ function erpRenderStore() {
           <i class="${btnIconClass}"></i> ${btnLabel}
         </button>
       </div>`;
-  }).join('');
+  }
+
+  // فاصل قسم
+  const sep = (label, color) => `
+    <div style="grid-column:1/-1;display:flex;align-items:center;gap:.65rem;padding:.25rem 0;margin-top:.4rem">
+      <div style="flex:1;height:1.5px;background:var(--border)"></div>
+      <span style="font-size:.79rem;font-weight:900;color:${color || 'var(--muted)'};white-space:nowrap;background:var(--bg3);padding:.2rem .75rem;border-radius:20px;border:1px solid var(--border)">${label}</span>
+      <div style="flex:1;height:1.5px;background:var(--border)"></div>
+    </div>`;
+
+  let html = '';
+
+  // ── الوحدات المخصصة لهذا النشاط ──
+  if (specificMods.length > 0) {
+    html += sep(`${cfg.icon} وحدات مخصصة لـ ${cfg.label}`, cfg.color);
+    html += specificMods.map(renderCard).join('');
+  }
+
+  // ── الوحدات المشتركة لجميع الأنشطة ──
+  if (commonMods.length > 0) {
+    html += sep('⚙️ وحدات مشتركة لجميع الأنشطة');
+    html += commonMods.map(renderCard).join('');
+  }
+
+  grid.innerHTML = html;
 }
 
 /* ══════════════════════════════════════════════════════════════════
