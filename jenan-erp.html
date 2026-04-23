@@ -1108,31 +1108,85 @@ body[data-activity="supermarket"] .barcode-scan-zone { display: flex; }
 
 <!-- ════════ Modal: إضافة/تعديل منتج ════════ -->
 <div class="modal-overlay" id="modal-product">
-  <div class="modal-box">
-    <div class="modal-title" id="modal-product-title">إضافة منتج جديد</div>
+  <div class="modal-box" style="max-width:560px">
+    <div class="modal-title" id="modal-product-title">إضافة منتج / خدمة جديدة</div>
     <input type="hidden" id="edit-product-id">
+
+    <!-- ── الباركود + SKU ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+      <div class="field-group">
+        <label class="field-label">الباركود (اختياري)</label>
+        <input class="field-input" type="text" id="mp-barcode" placeholder="امسح أو أدخل يدوياً" oninput="mpOnBarcodeInput()">
+      </div>
+      <div class="field-group">
+        <label class="field-label">الرقم التسلسلي (SKU)</label>
+        <input class="field-input" type="text" id="mp-sku" placeholder="تلقائي" style="opacity:.72;cursor:default" readonly>
+      </div>
+    </div>
+
+    <!-- ── الاسم ── -->
     <div class="field-group">
       <label class="field-label">الاسم *</label>
       <input class="field-input" type="text" id="mp-name" placeholder="اسم المنتج أو الخدمة">
     </div>
+
+    <!-- ── الفئة ── -->
     <div class="field-group">
       <label class="field-label">الفئة *</label>
       <input class="field-input" type="text" id="mp-cat" placeholder="مثال: خضروات · مشروبات · مشويات">
     </div>
+
+    <!-- ── سعر الشراء ── -->
+    <div class="field-group">
+      <label class="field-label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>سعر الشراء (ريال)</span>
+        <label style="display:flex;align-items:center;gap:.35rem;font-weight:400;font-size:.75rem;cursor:pointer">
+          <input type="checkbox" id="mp-buy-vat" onchange="mpRecalcPrices()"> شامل ضريبة 15٪
+        </label>
+      </label>
+      <input class="field-input" type="number" id="mp-buy-price" placeholder="0.00" min="0" step="0.01" oninput="mpRecalcPrices()">
+    </div>
+
+    <!-- ── سعر البيع ── -->
+    <div class="field-group">
+      <label class="field-label" style="display:flex;justify-content:space-between;align-items:center">
+        <span>سعر البيع (ريال) *</span>
+        <label style="display:flex;align-items:center;gap:.35rem;font-weight:400;font-size:.75rem;cursor:pointer">
+          <input type="checkbox" id="mp-sell-vat" onchange="mpRecalcPrices()"> شامل ضريبة 15٪
+        </label>
+      </label>
+      <input class="field-input" type="number" id="mp-price" placeholder="0.00" min="0" step="0.01" oninput="mpRecalcPrices()">
+    </div>
+
+    <!-- ── هامش الربح ── -->
+    <div id="mp-margin-info" style="display:none;font-size:.75rem;color:var(--muted);padding:.4rem .75rem;background:var(--bg3);border-radius:10px;margin-bottom:.5rem">
+      <span id="mp-margin-txt"></span>
+    </div>
+
+    <!-- ── وحدة القياس + الأيقونة ── -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
       <div class="field-group">
-        <label class="field-label">السعر (ريال) *</label>
-        <input class="field-input" type="number" id="mp-price" placeholder="0.00" min="0" step="0.01">
+        <label class="field-label">وحدة القياس</label>
+        <select class="field-input" id="mp-unit" style="cursor:pointer">
+          <option value="حبة">حبة</option>
+          <option value="كرتون">كرتون</option>
+          <option value="كيلوجرام">كيلوجرام (كجم)</option>
+          <option value="جرام">جرام (جم)</option>
+          <option value="لتر">لتر</option>
+          <option value="مللتر">مللتر (مل)</option>
+          <option value="علبة">علبة</option>
+          <option value="كيس">كيس</option>
+          <option value="زجاجة">زجاجة</option>
+          <option value="متر">متر</option>
+          <option value="خدمة">خدمة</option>
+        </select>
       </div>
       <div class="field-group">
         <label class="field-label">الأيقونة</label>
         <input class="field-input" type="text" id="mp-icon" placeholder="📦" maxlength="4">
       </div>
     </div>
-    <div class="field-group">
-      <label class="field-label">الباركود (اختياري)</label>
-      <input class="field-input" type="text" id="mp-barcode" placeholder="اتركه فارغاً للتوليد التلقائي">
-    </div>
+
     <div style="display:flex;gap:.65rem;margin-top:1rem">
       <button class="btn btn-secondary" onclick="closeModal('modal-product')" style="flex:1;margin:0">إغلاق</button>
       <button class="btn btn-primary" onclick="saveProduct()" style="flex:1;margin:0">حفظ</button>
@@ -1998,11 +2052,51 @@ function erpRenderProductsTable() {
   ).join('');
 }
 
+/* ══ مولّد SKU ══ */
+function mpGenSKU() {
+  return 'SKU-' + Date.now().toString().slice(-8);
+}
+
+/* ══ تحديث SKU تلقائياً عند إدخال باركود ══ */
+function mpOnBarcodeInput() {
+  const bc  = document.getElementById('mp-barcode').value.trim();
+  const sku = document.getElementById('mp-sku');
+  if (!sku.dataset.manual) {
+    sku.value = bc ? 'SKU-' + bc.slice(-8) : mpGenSKU();
+  }
+}
+
+/* ══ حساب هامش الربح ══ */
+function mpRecalcPrices() {
+  const buy  = parseFloat(document.getElementById('mp-buy-price').value) || 0;
+  const sell = parseFloat(document.getElementById('mp-price').value)     || 0;
+  const VAT  = 0.15;
+  const buyNet  = document.getElementById('mp-buy-vat').checked  ? buy  / (1 + VAT) : buy;
+  const sellNet = document.getElementById('mp-sell-vat').checked ? sell / (1 + VAT) : sell;
+  const info = document.getElementById('mp-margin-info');
+  const txt  = document.getElementById('mp-margin-txt');
+  if (buy > 0 && sell > 0) {
+    const profit = sellNet - buyNet;
+    const pct    = buyNet > 0 ? (profit / buyNet * 100) : 0;
+    const color  = profit >= 0 ? 'var(--accent)' : '#ef4444';
+    txt.innerHTML = `هامش الربح: <b style="color:${color}">${profit.toFixed(2)} ر (${pct.toFixed(1)}٪)</b>`;
+    info.style.display = 'block';
+  } else {
+    info.style.display = 'none';
+  }
+}
+
 function openAddProductModal() {
   document.getElementById('modal-product-title').textContent = 'إضافة منتج / خدمة جديدة';
   document.getElementById('edit-product-id').value = '';
-  ['mp-name','mp-cat','mp-price','mp-barcode'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('mp-icon').value = '📦';
+  ['mp-name','mp-cat','mp-price','mp-barcode','mp-buy-price'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('mp-icon').value  = '📦';
+  document.getElementById('mp-unit').value  = 'حبة';
+  document.getElementById('mp-buy-vat').checked  = false;
+  document.getElementById('mp-sell-vat').checked = false;
+  document.getElementById('mp-margin-info').style.display = 'none';
+  document.getElementById('mp-sku').value       = mpGenSKU();
+  document.getElementById('mp-sku').dataset.manual = '';
   openModal('modal-product');
 }
 
@@ -2010,12 +2104,19 @@ function openEditProductModal(productId) {
   const p = erpState.products.find(x => x.id === productId);
   if (!p) return;
   document.getElementById('modal-product-title').textContent = 'تعديل: ' + p.name;
-  document.getElementById('edit-product-id').value = productId;
-  document.getElementById('mp-name').value    = p.name;
-  document.getElementById('mp-cat').value     = p.category;
-  document.getElementById('mp-price').value   = p.price;
-  document.getElementById('mp-barcode').value = p.barcode || '';
-  document.getElementById('mp-icon').value    = p.icon || '📦';
+  document.getElementById('edit-product-id').value  = productId;
+  document.getElementById('mp-name').value          = p.name;
+  document.getElementById('mp-cat').value           = p.category;
+  document.getElementById('mp-price').value         = p.price;
+  document.getElementById('mp-barcode').value       = p.barcode || '';
+  document.getElementById('mp-icon').value          = p.icon || '📦';
+  document.getElementById('mp-sku').value           = p.sku || 'SKU-' + p.id.slice(-8);
+  document.getElementById('mp-buy-price').value     = p.buyPrice || '';
+  document.getElementById('mp-buy-vat').checked     = !!p.buyPriceVat;
+  document.getElementById('mp-sell-vat').checked    = !!p.sellPriceVat;
+  document.getElementById('mp-unit').value          = p.unit || 'حبة';
+  document.getElementById('mp-sku').dataset.manual  = '1';
+  mpRecalcPrices();
   openModal('modal-product');
 }
 
@@ -2023,19 +2124,26 @@ function saveProduct() {
   const name  = document.getElementById('mp-name').value.trim();
   const cat   = document.getElementById('mp-cat').value.trim();
   const price = parseFloat(document.getElementById('mp-price').value);
-  if (!name)              { showToast('⚠️ أدخل اسم المنتج أو الخدمة'); return; }
-  if (!cat)               { showToast('⚠️ أدخل الفئة'); return; }
-  if (isNaN(price) || price < 0) { showToast('⚠️ أدخل سعراً صحيحاً'); return; }
+  if (!name)                    { showToast('⚠️ أدخل اسم المنتج أو الخدمة'); return; }
+  if (!cat)                     { showToast('⚠️ أدخل الفئة'); return; }
+  if (isNaN(price) || price < 0){ showToast('⚠️ أدخل سعر البيع'); return; }
 
-  const editId  = document.getElementById('edit-product-id').value;
-  const barcode = document.getElementById('mp-barcode').value.trim();
-  const icon    = document.getElementById('mp-icon').value.trim() || '📦';
+  const editId       = document.getElementById('edit-product-id').value;
+  const barcode      = document.getElementById('mp-barcode').value.trim();
+  const icon         = document.getElementById('mp-icon').value.trim() || '📦';
+  const sku          = document.getElementById('mp-sku').value.trim()  || mpGenSKU();
+  const buyPrice     = parseFloat(document.getElementById('mp-buy-price').value) || 0;
+  const buyPriceVat  = document.getElementById('mp-buy-vat').checked;
+  const sellPriceVat = document.getElementById('mp-sell-vat').checked;
+  const unit         = document.getElementById('mp-unit').value;
+
+  const fields = { name, category: cat, price, barcode, icon, sku, buyPrice, buyPriceVat, sellPriceVat, unit };
 
   if (editId) {
     const idx = erpState.products.findIndex(p => p.id === editId);
-    if (idx !== -1) erpState.products[idx] = { ...erpState.products[idx], name, category: cat, price, barcode, icon };
+    if (idx !== -1) erpState.products[idx] = { ...erpState.products[idx], ...fields };
   } else {
-    erpState.products.push({ id: 'usr-' + Date.now(), name, category: cat, price, barcode, icon });
+    erpState.products.push({ id: 'usr-' + Date.now(), ...fields });
   }
 
   erpSave();
