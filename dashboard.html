@@ -6289,7 +6289,8 @@ function submitDesignOrder() {
    SOFTWARE STORE ENGINE — متجر البرامج المميزة
 ====================================================== */
 const SW_ITEMS = [
-  {cat:'accounting', logo:'💼', name:'QuickBooks Online', desc:'برنامج محاسبة سحابي شامل للفواتير والمصاريف والضرائب', rating:4.8, reviews:12400, price:'من 85 ر.س/شهر', free:false},
+  {cat:'accounting', logo:'�', name:'جنان برو — محاسبة', desc:'برنامج المحاسبة المدمج في جنان برو — فواتير ZATCA، تقارير P&L، تدفقات نقدية، مدمج مع الكاشير', rating:5.0, reviews:0, price:'مجاني ومدمج', free:true, jenan:true},
+  {cat:'accounting', logo:'�💼', name:'QuickBooks Online', desc:'برنامج محاسبة سحابي شامل للفواتير والمصاريف والضرائب', rating:4.8, reviews:12400, price:'من 85 ر.س/شهر', free:false},
   {cat:'accounting', logo:'📊', name:'Zoho Books', desc:'حلول محاسبية ذكية مع دعم ضريبة القيمة المضافة السعودية', rating:4.6, reviews:8200, price:'مجاني حتى 1000 فاتورة', free:true},
   {cat:'crm',        logo:'🤝', name:'Salesforce CRM', desc:'منصة إدارة علاقات العملاء الأولى عالمياً لفرق المبيعات', rating:4.7, reviews:31000, price:'من 150 ر.س/مستخدم/شهر', free:false},
   {cat:'crm',        logo:'🧲', name:'HubSpot CRM', desc:'إدارة العملاء والمبيعات والتسويق في منصة واحدة مجانية', rating:4.5, reviews:19500, price:'مجاني', free:true},
@@ -6308,8 +6309,12 @@ function renderSoftwarePage(cat) {
   const items = cat === 'all' ? SW_ITEMS : cat === 'free' ? SW_ITEMS.filter(s=>s.free) : SW_ITEMS.filter(s=>s.cat===cat);
   const grid = document.getElementById('software-grid');
   if (!grid) return;
-  grid.innerHTML = items.map(sw => `
-    <div class="sw-card">
+  grid.innerHTML = items.map(sw => {
+    const jenanBadge = sw.jenan ? `<div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#6366f1,#a855f7)"></div><span style="position:absolute;top:.65rem;left:.75rem;background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;font-size:.6rem;font-weight:800;padding:.18rem .55rem;border-radius:12px">⭐ مدمج في جنان</span>` : '';
+    const jenanBorder = sw.jenan ? 'border:1.5px solid rgba(99,102,241,.45);' : '';
+    return `
+    <div class="sw-card" style="${jenanBorder}position:relative;overflow:hidden">
+      ${jenanBadge}
       <div class="sw-header">
         <div class="sw-logo">${sw.logo}</div>
         <div><div class="sw-title">${sw.name}</div><div class="sw-cat">${{accounting:'محاسبة',crm:'CRM',design:'تصميم',hr:'موارد بشرية',marketing:'تسويق'}[sw.cat]||sw.cat}</div></div>
@@ -6317,13 +6322,13 @@ function renderSoftwarePage(cat) {
       <div class="sw-desc">${sw.desc}</div>
       <div class="sw-rating">
         <i class="fa-solid fa-star"></i> ${sw.rating}
-        <span style="color:var(--muted);font-weight:400">(${sw.reviews.toLocaleString('ar')} تقييم)</span>
+        <span style="color:var(--muted);font-weight:400">${sw.reviews > 0 ? `(${sw.reviews.toLocaleString('ar')} تقييم)` : '(جنان برو)'}</span>
       </div>
-      <div class="sw-price">${sw.free ? `<span class='sw-free'>مجاني 🎁</span>` : sw.price}</div>
-      <button class="sw-btn" onclick="showToast('سيتم توجيهك لصفحة ${sw.name}...')">
-        ${sw.free ? 'ابدأ مجاناً' : 'جرّب الآن'}
+      <div class="sw-price">${sw.free ? `<span class='sw-free'>${sw.jenan ? 'مجاني ومدمج 🟣' : 'مجاني 🎁'}</span>` : sw.price}</div>
+      <button class="sw-btn" ${sw.jenan ? `onclick="gotoSub('jenan-pro','navgrp-jenan','nav-jenan-pro')" style="background:linear-gradient(135deg,#6366f1,#a855f7);border:none;color:#fff"` : `onclick="showToast('سيتم توجيهك لصفحة ${sw.name}...')"`}>
+        ${sw.jenan ? '<i class="fa-solid fa-rocket" style="margin-left:.35rem"></i>اعرف أكثر عن جنان برو' : (sw.free ? 'ابدأ مجاناً' : 'جرّب الآن')}
       </button>
-    </div>`).join('');
+    </div>`}).join('');
   if (!items.length) grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">لا توجد برامج في هذا التصنيف</div>';
 }
 
