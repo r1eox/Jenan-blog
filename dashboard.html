@@ -5954,6 +5954,12 @@ window.addEventListener('load', _syncGatewayViewportLock);
           </div>
         </div>
 
+        <!-- الأكثر زيارة وإيرادات -->
+        <div class="admin-card" style="margin-top:1rem">
+          <h4 style="margin-bottom:.85rem"><i class="fa-solid fa-fire" style="color:#f59e0b"></i> الأكثر زيارة وإيرادات</h4>
+          <div id="top-visits-rev-list"></div>
+        </div>
+
       </div><!-- end atab-panel-jenan -->
 
 
@@ -13291,6 +13297,67 @@ function _renderDevTips(sortedPages, visits) {
   }).join('') || '<div style="text-align:center;padding:1rem;color:var(--muted);font-size:.82rem">ستظهر توصيات التطوير بعد تسجيل زيارات كافية</div>';
 }
 
+function _renderTopVisitsRevenue() {
+  const el = document.getElementById('top-visits-rev-list');
+  if (!el) return;
+  const visits = _getPageVisits();
+  const tierColors = { 0:'#fbbf24', 1:'#94a3b8', 2:'#cd7f32', 3:'#4E73C2', 4:'#22c55e' };
+  const tierLabels = { 0:'🥇 الأول', 1:'🥈 الثاني', 2:'🥉 الثالث', 3:'#4', 4:'#5' };
+
+  const pages = Object.entries(PAGE_META)
+    .filter(([, m]) => m.category !== 'admin' && m.category !== 'navigation')
+    .map(([pg, meta]) => ({
+      pg, meta,
+      visits: visits[pg] || 0,
+      rev: meta.rev || 0,
+    }));
+
+  // أكثر زيارة
+  const byVisits = [...pages].sort((a, b) => b.visits - a.visits).slice(0, 5);
+  // أعلى إيراد مقدر
+  const byRev    = [...pages].sort((a, b) => b.rev - a.rev).slice(0, 5);
+
+  const maxV = byVisits[0]?.visits || 1;
+  const maxR = byRev[0]?.rev || 1;
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <!-- الأكثر زيارة -->
+      <div>
+        <div style="font-size:.78rem;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">🔥 الأكثر زيارة</div>
+        ${byVisits.map((item, i) => {
+          const barW = maxV > 0 ? Math.round((item.visits / maxV) * 100) : 0;
+          const c = tierColors[i] || '#4E73C2';
+          return `<div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;font-size:.8rem">
+            <span style="font-size:.95rem;flex-shrink:0">${item.meta.icon}</span>
+            <span style="flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.meta.label}</span>
+            <div style="background:rgba(255,255,255,.07);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
+              <div style="height:100%;width:${barW}%;background:${c};border-radius:3px"></div>
+            </div>
+            <strong style="color:${c};min-width:22px;text-align:left">${item.visits}</strong>
+          </div>`;
+        }).join('')}
+        ${byVisits.every(p => p.visits === 0) ? '<div style="text-align:center;padding:.75rem;color:var(--muted);font-size:.78rem">ستُسجَّل الزيارات تلقائياً عند التصفح</div>' : ''}
+      </div>
+      <!-- الأعلى إيراداً -->
+      <div>
+        <div style="font-size:.78rem;font-weight:800;color:rgba(255,255,255,.5);margin-bottom:.6rem;text-transform:uppercase;letter-spacing:.5px">💰 الأعلى إيراداً</div>
+        ${byRev.map((item, i) => {
+          const barW = maxR > 0 ? Math.round((item.rev / maxR) * 100) : 0;
+          const c = tierColors[i] || '#4E73C2';
+          return `<div style="display:flex;align-items:center;gap:.55rem;margin-bottom:.55rem;font-size:.8rem">
+            <span style="font-size:.95rem;flex-shrink:0">${item.meta.icon}</span>
+            <span style="flex:1;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.meta.label}</span>
+            <div style="background:rgba(255,255,255,.07);border-radius:3px;width:60px;height:6px;overflow:hidden;flex-shrink:0">
+              <div style="height:100%;width:${barW}%;background:${c};border-radius:3px"></div>
+            </div>
+            <strong style="color:${c};min-width:40px;text-align:left;font-size:.75rem">${item.rev > 0 ? item.rev.toLocaleString() + 'ر' : '—'}</strong>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+}
+
 /* ══════════════════════════════════════════════════════════════════════
    ROADMAP PAGE — خريطة الطريق
 ══════════════════════════════════════════════════════════════════════ */
@@ -13365,6 +13432,7 @@ function renderRoadmapPage() {
         <strong style="color:${s.color};min-width:28px;text-align:left">${s.pct}%</strong>
       </div>`).join('');
   }
+  _renderTopVisitsRevenue();
 }
 function statsLoad(key) {
   try { return JSON.parse(localStorage.getItem('jb-stats-' + key) || '[]'); } catch(e) { return []; }
