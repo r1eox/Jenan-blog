@@ -27,7 +27,12 @@
   --glass:rgba(17,24,40,.88);
   --glass-border:rgba(78,115,194,.22);
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+/* شعار جنان برو — أبيض على داكن، أسود على فاتح */
+.jenan-logo-adaptive{content:url('assets/images/logo.svg')}
+body:not([data-theme="dark"]) .main-content .jenan-logo-adaptive{
+  content:url('assets/images/logo-dark.svg');
+}
+
 html{scroll-behavior:smooth;height:100%;overflow:hidden}
 body{
   font-family:'Tajawal',sans-serif;
