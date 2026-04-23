@@ -10,9 +10,9 @@
     </filter>
   </defs>
   <!-- حرف J الكبير -->
-  <text x="10" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="240" font-weight="bold" fill="#111111" filter="url(#textShadow)">J</text>
+  <text x="10" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="240" font-weight="bold" fill="#ffffff" filter="url(#textShadow)">J</text>
   <!-- enan -->
-  <text x="145" y="155" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="400" fill="#111111">enan</text>
+  <text x="145" y="155" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="400" fill="#ffffff">enan</text>
   <!-- PRO -->
   <text x="148" y="240" font-family="Georgia, 'Times New Roman', serif" font-size="74" font-style="italic" font-weight="700" fill="url(#goldGrad)">PRO</text>
 </svg>
