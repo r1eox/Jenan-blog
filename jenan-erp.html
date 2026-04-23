@@ -605,6 +605,7 @@ body {
           <div class="pay-btns">
             <button class="pay-btn pay-btn-cash" onclick="erpCheckout('نقد')"><i class="fa-solid fa-money-bill-wave"></i> نقد</button>
             <button class="pay-btn pay-btn-card" onclick="erpCheckout('بطاقة')"><i class="fa-solid fa-credit-card"></i> بطاقة</button>
+            <button class="pay-btn pay-btn-card" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)" onclick="erpCheckout('تحويل بنكي')"><i class="fa-solid fa-mobile-screen-button"></i> تحويل</button>
           </div>
         </div>
       </div>
@@ -2291,6 +2292,13 @@ function erpRenderStore() {
       : `<span style="font-size:1rem;font-weight:900;color:${m.color}">حسب المتطلبات</span>`;
     const bizName = (erpState.session && erpState.session.bizName) || '';
     const waMsg   = encodeURIComponent('مرحباً، أرغب في تفعيل وحدة "' + m.name + '" لنظام جنان برو — المنشأة: ' + bizName);
+    // تحديد الإجراء والنص المناسب عند بناء HTML (ليس عند النقر)
+    const btnOnclick = m.id === 'accounting'
+      ? "showView('accounting')"
+      : `window.open('https://wa.me/966500000000?text=${waMsg}','_blank')`;
+    const btnIcon = m.id === 'accounting' ? 'fa-calculator' : 'fa-whatsapp fa-brands';
+    const btnLabel = m.id === 'accounting' ? 'فتح وحدة المحاسبة' : 'اطلب تفعيل الوحدة';
+    const btnIconClass = m.id === 'accounting' ? 'fa-solid fa-calculator' : 'fa-brands fa-whatsapp';
     return `
       <div style="background:var(--bg3);border:1.5px solid var(--border);border-radius:16px;padding:1.35rem;display:flex;flex-direction:column;gap:.6rem;position:relative;overflow:hidden;transition:transform .2s,border-color .2s" onmouseenter="this.style.transform='translateY(-3px)';this.style.borderColor='${m.color}'" onmouseleave="this.style.transform='';this.style.borderColor=''">
         <div style="position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,${m.color},${m.color2});border-radius:16px 16px 0 0"></div>
@@ -2306,9 +2314,9 @@ function erpRenderStore() {
           ${m.features.map(f => '<li><span style="margin-left:.35rem">✔</span>' + f + '</li>').join('')}
         </ul>
         <div style="display:flex;align-items:baseline;gap:.35rem;margin-top:auto;padding-top:.55rem;border-top:1px solid var(--border)">${priceStr}</div>
-        <button onclick="m.id === 'accounting' ? showView('accounting') : window.open('https://wa.me/966500000000?text=${waMsg}','_blank')"
+        <button onclick="${btnOnclick}"
           style="width:100%;padding:.62rem;border:none;border-radius:10px;background:linear-gradient(135deg,${m.color},${m.color2});color:#fff;font-family:'Tajawal',sans-serif;font-size:.85rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.45rem" onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
-          <i class="fa-brands fa-whatsapp"></i> اطلب تفعيل الوحدة
+          <i class="${btnIconClass}"></i> ${btnLabel}
         </button>
       </div>`;
   }).join('');
