@@ -2313,6 +2313,35 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 #page-analysis button i[class*="fa-"]{
   font-size:.72em !important;
 }
+
+/* ══════════════════════════════════════════════════════
+   وضوح الخط الشامل — الوضع الفاتح (Light Mode)
+   يُغطّي جميع أجزاء الصفحة بلا استثناء
+══════════════════════════════════════════════════════ */
+body:not([data-theme="dark"]) .f-field label { color:var(--text) !important; }
+body:not([data-theme="dark"]) .roadmap-items li { color:var(--text) !important; border-bottom-color:var(--border) !important; }
+body:not([data-theme="dark"]) .roadmap-items li.pending { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .roadmap-items li.future { color:#6366f1 !important; }
+body:not([data-theme="dark"]) .lp-quiz-opt { color:var(--text) !important; border-color:var(--border) !important; }
+body:not([data-theme="dark"]) .ht-featured .ht-name { color:#fff !important; }
+body:not([data-theme="dark"]) .pa-hint { color:var(--text) !important; }
+body:not([data-theme="dark"]) .an-dev-tip { color:var(--text) !important; }
+body:not([data-theme="dark"]) .an-city-item { color:var(--text) !important; }
+body:not([data-theme="dark"]) .an-page-bar { color:var(--text) !important; }
+body:not([data-theme="dark"]) .cpm-val { color:var(--text) !important; }
+body:not([data-theme="dark"]) .cap-project-card h4 { color:var(--text) !important; }
+body:not([data-theme="dark"]) .psp-title { color:var(--text) !important; }
+body:not([data-theme="dark"]) .admin-card { color:var(--text) !important; }
+body:not([data-theme="dark"]) .admin-card h4,
+body:not([data-theme="dark"]) .admin-card h3,
+body:not([data-theme="dark"]) .admin-card p { color:var(--text) !important; }
+body:not([data-theme="dark"]) .tab-btn { color:var(--text) !important; }
+body:not([data-theme="dark"]) table td,
+body:not([data-theme="dark"]) table th { color:var(--text) !important; }
+body:not([data-theme="dark"]) .bento-cell { color:var(--text) !important; }
+body:not([data-theme="dark"]) .bento-cell .bento-cell-label,
+body:not([data-theme="dark"]) .bento-cell .bento-cell-value { color:var(--text) !important; }
+body:not([data-theme="dark"]) select option { color:var(--text);background:var(--bg3); }
 </style>
 <script>
 /* دوال الـ topbar — معرّفة مبكراً لضمان عملها دائماً */
@@ -10814,6 +10843,8 @@ function routeInput(text) {
   // Step: district
   if (AI_STEP === 'district') {
     AI_COLLECT.district = t;
+    USER_PROFILE.district = t;
+    _adminSave('jb-user-profile', USER_PROFILE);
     addBotMessage(`${t} — موقع جيد 🏘️\n\nما المبلغ الإجمالي المتاح لديك لهذا المشروع؟\n(يشمل التأسيس + رأس المال التشغيلي الأول)`, ['أقل من 50,000 ريال','50,000 - 100,000 ريال','100,000 - 250,000 ريال','250,000 - 500,000 ريال','500,000 - 1,000,000 ريال','أكثر من مليون ريال']);
     AI_STEP = 'capital';
     return;
@@ -10859,10 +10890,20 @@ function routeInput(text) {
     return;
   }
 
-  // Step: customers → generate report
+  // Step: customers → gender → generate report
   if (AI_STEP === 'customers') {
     AI_COLLECT.customers = t;
-    addBotMessage(`مثالي! استهداف "${t}" خيار ذكي لـ ${AI_COLLECT.sector} في ${AI_COLLECT.city} 🎯\n\n🔍 جاري الآن تحليل البيانات وبناء دراسة الجدوى...\n\n⏳ يرجى الانتظار — أقوم بـ:\n• مقارنة تكاليف السوق في ${AI_COLLECT.city}\n• تحليل المنافسين في ${AI_COLLECT.district||AI_COLLECT.city}\n• حساب التوقعات المالية لـ 12 شهر\n• بناء التقرير الشامل`, []);
+    addBotMessage(`مثالي! استهداف "${t}" خيار ذكي لـ ${AI_COLLECT.sector} في ${AI_COLLECT.city} 🎯\n\nسؤال أخير لتخصيص التقرير بشكل أدق — ما جنسك؟`, ['ذكر 👨','أنثى 👩','تفضل عدم الإجابة']);
+    AI_STEP = 'gender';
+    return;
+  }
+
+  // Step: gender → generate report
+  if (AI_STEP === 'gender') {
+    if (t === 'ذكر 👨' || t === 'ذكر') { USER_PROFILE.gender = 'male'; }
+    else if (t === 'أنثى 👩' || t === 'أنثى') { USER_PROFILE.gender = 'female'; }
+    _adminSave('jb-user-profile', USER_PROFILE);
+    addBotMessage(`🔍 جاري الآن تحليل البيانات وبناء دراسة الجدوى...\n\n⏳ يرجى الانتظار — أقوم بـ:\n• مقارنة تكاليف السوق في ${AI_COLLECT.city}\n• تحليل المنافسين في ${AI_COLLECT.district||AI_COLLECT.city}\n• حساب التوقعات المالية لـ 12 شهر\n• بناء التقرير الشامل`, []);
     AI_STEP = 'generating';
     setTimeout(() => renderFeasibilityReport(), 3200);
     return;
