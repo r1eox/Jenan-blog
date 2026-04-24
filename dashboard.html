@@ -2326,6 +2326,8 @@ body:not([data-theme="dark"]) .lp-quiz-opt { color:var(--text) !important; borde
 body:not([data-theme="dark"]) .ht-featured .ht-name { color:#fff !important; }
 body:not([data-theme="dark"]) .pa-hint { color:var(--text) !important; }
 body:not([data-theme="dark"]) .an-dev-tip { color:var(--text) !important; }
+body:not([data-theme="dark"]) .an-dev-tip div { color:var(--text) !important; }
+body:not([data-theme="dark"]) .an-dev-tip-title { color:var(--text) !important; font-weight:800; }
 body:not([data-theme="dark"]) .an-city-item { color:var(--text) !important; }
 body:not([data-theme="dark"]) .an-page-bar { color:var(--text) !important; }
 body:not([data-theme="dark"]) .cpm-val { color:var(--text) !important; }
@@ -2342,6 +2344,26 @@ body:not([data-theme="dark"]) .bento-cell { color:var(--text) !important; }
 body:not([data-theme="dark"]) .bento-cell .bento-cell-label,
 body:not([data-theme="dark"]) .bento-cell .bento-cell-value { color:var(--text) !important; }
 body:not([data-theme="dark"]) select option { color:var(--text);background:var(--bg3); }
+/* إصلاح كلاسات CSS ذات لون أبيض ثابت */
+body:not([data-theme="dark"]) .cpc-sub { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .cps-lbl { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .cpc-tag { color:var(--text) !important; background:var(--bg2) !important; }
+body:not([data-theme="dark"]) .hub-stat-lbl { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .hub-hero-sub { color:var(--text) !important; }
+body:not([data-theme="dark"]) .pa-hero-text p { color:var(--text) !important; }
+body:not([data-theme="dark"]) .cap-hero p { color:var(--text) !important; }
+body:not([data-theme="dark"]) .ds-hero p { color:var(--text) !important; }
+body:not([data-theme="dark"]) .ds-stat-lbl { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .ac-stat .lbl { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .ac-hero-text p { color:var(--text) !important; }
+body:not([data-theme="dark"]) .hub-stat-sep { background:var(--border) !important; }
+body:not([data-theme="dark"]) .hub-hero-stats { background:var(--bg2) !important; border-color:var(--border) !important; }
+body:not([data-theme="dark"]) .hub-stat-lbl { color:var(--muted) !important; }
+body:not([data-theme="dark"]) .pa-hero-badge { color:var(--brand) !important; }
+body:not([data-theme="dark"]) .bento-upgrade-bar-sub { color:rgba(255,255,255,.85) !important; }
+body:not([data-theme="dark"]) .supply-header p { color:rgba(255,255,255,.8) !important; }
+/* النصوص داخل عناصر JS-generated */
+body:not([data-theme="dark"]) [style*="color:rgba(255,255,255"] { color:var(--text) !important; }
 </style>
 <script>
 /* دوال الـ topbar — معرّفة مبكراً لضمان عملها دائماً */
@@ -13605,19 +13627,19 @@ function renderRoadmapPage() {
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
         <div class="an-dev-tip">
           <div class="an-dev-tip-title">🌆 التوسع الجغرافي${topCity ? ' — ' + topCity : ''}</div>
-          <div style="color:rgba(255,255,255,.7);font-size:.78rem">إضافة بيانات الأحياء والإيجارات لأكثر المدن استخداماً لرفع دقة التوصيات</div>
+          <div style="color:var(--muted);font-size:.78rem">إضافة بيانات الأحياء والإيجارات لأكثر المدن استخداماً لرفع دقة التوصيات</div>
         </div>
         <div class="an-dev-tip">
           <div class="an-dev-tip-title">🧠 تطوير AI — قاعدة البيانات</div>
-          <div style="color:rgba(255,255,255,.7);font-size:.78rem">رفع ملفات إحصائيات السوق من صفحة الإحصائيات لرفع دقة التحليل من 20% إلى 100%</div>
+          <div style="color:var(--muted);font-size:.78rem">رفع ملفات إحصائيات السوق من صفحة الإحصائيات لرفع دقة التحليل من 20% إلى 100%</div>
         </div>
         <div class="an-dev-tip">
           <div class="an-dev-tip-title">👥 استقطاب المستخدمين (${totalUsers} مستخدم حالياً)</div>
-          <div style="color:rgba(255,255,255,.7);font-size:.78rem">برنامج إحالة قوي + محتوى SEO لاستقطاب رواد الأعمال وأصحاب المشاريع</div>
+          <div style="color:var(--muted);font-size:.78rem">برنامج إحالة قوي + محتوى SEO لاستقطاب رواد الأعمال وأصحاب المشاريع</div>
         </div>
         ${topMeta ? `<div class="an-dev-tip">
           <div class="an-dev-tip-title">🔥 طوّر الأكثر زيارة: ${topMeta.icon} ${topMeta.label}</div>
-          <div style="color:rgba(255,255,255,.7);font-size:.78rem">القسم الأكثر استخداماً يستحق أكبر استثمار — أضف ميزات متقدمة وحوافز للاستمرار</div>
+          <div style="color:var(--muted);font-size:.78rem">القسم الأكثر استخداماً يستحق أكبر استثمار — أضف ميزات متقدمة وحوافز للاستمرار</div>
         </div>` : ''}
       </div>`;
   }
