@@ -1254,8 +1254,8 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .stat-file-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.2rem .4rem;border-radius:6px;transition:var(--tr)}
 .stat-file-del:hover{color:#ef4444;background:rgba(239,68,68,.1)}
 .stat-guide-box{background:linear-gradient(135deg,rgba(78,115,194,.12),rgba(78,115,194,.06));border:1px solid rgba(78,115,194,.35);border-radius:14px;padding:1.1rem 1.4rem;margin-bottom:1.25rem}
-.stat-guide-title{font-size:.92rem;font-weight:900;color:#a8c4f0;margin-bottom:.65rem;display:flex;align-items:center;gap:.45rem}
-.stat-guide-list{list-style:none;padding:0;margin:0;font-size:.82rem;color:rgba(255,255,255,.88);line-height:2.2}
+.stat-guide-title{font-size:.92rem;font-weight:900;color:var(--brand);margin-bottom:.65rem;display:flex;align-items:center;gap:.45rem}
+.stat-guide-list{list-style:none;padding:0;margin:0;font-size:.82rem;color:var(--text);line-height:2.2}
 .stat-guide-list li::before{content:'◆ ';color:#4E73C2;font-weight:800;font-size:.6rem}
 .stat-coverage-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin-bottom:1.25rem}
 .stat-cov-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:center;gap:.65rem;font-size:.8rem;transition:var(--tr)}
@@ -5758,22 +5758,22 @@ window.addEventListener('load', _syncGatewayViewportLock);
         <!-- شريط الدقة -->
         <div class="stat-guide-box" style="margin-bottom:1rem">
           <div class="stat-guide-title"><i class="fa-solid fa-circle-info"></i> كيف تزيد دقة التحليل والتوصيات؟</div>
-          <p style="font-size:.83rem;color:rgba(255,255,255,.88);margin-bottom:.6rem;line-height:1.9">
+          <p style="font-size:.83rem;color:var(--text);margin-bottom:.6rem;line-height:1.9">
             ارفع ملفات السوق (JSON أو CSV) لترفع دقة التحليل من 20% إلى 100% — أسعار إيجارات، تجار وسلع، أسعار معدات، منافسين، كثافة سكانية.
           </p>
           <ul class="stat-guide-list">
-            <li><strong style="color:#e2e8f0">أسعار الإيجارات</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"الرياض","district":"العليا","price_per_sqm":320}</code></li>
-            <li><strong style="color:#e2e8f0">أسعار السلع والتجار</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"item":"لحم بقري","city":"جدة","price_per_kg":48,"supplier":"الوطنية"}</code></li>
-            <li><strong style="color:#e2e8f0">أسعار المعدات والتجهيزات</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"equipment":"فرن صناعي","category":"مطعم","price":12000}</code></li>
-            <li><strong style="color:#e2e8f0">بيانات المنافسين</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"الدمام","sector":"مطعم","district":"الحمراء","count":12}</code></li>
-            <li><strong style="color:#e2e8f0">الكثافة السكانية والدخل</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"مكة","district":"العزيزية","population":45000,"avg_income":12000}</code></li>
+            <li><strong style="color:var(--text)">أسعار الإيجارات</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"الرياض","district":"العليا","price_per_sqm":320}</code></li>
+            <li><strong style="color:var(--text)">أسعار السلع والتجار</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"item":"لحم بقري","city":"جدة","price_per_kg":48,"supplier":"الوطنية"}</code></li>
+            <li><strong style="color:var(--text)">أسعار المعدات والتجهيزات</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"equipment":"فرن صناعي","category":"مطعم","price":12000}</code></li>
+            <li><strong style="color:var(--text)">بيانات المنافسين</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"الدمام","sector":"مطعم","district":"الحمراء","count":12}</code></li>
+            <li><strong style="color:var(--text)">الكثافة السكانية والدخل</strong> → <code style="font-size:.76rem;color:#93c5fd;background:rgba(78,115,194,.15);padding:.1rem .35rem;border-radius:4px">{"city":"مكة","district":"العزيزية","population":45000,"avg_income":12000}</code></li>
           </ul>
           <div style="margin-top:.75rem">
-            <div style="font-size:.8rem;color:rgba(255,255,255,.75);margin-bottom:.3rem;font-weight:700">نسبة دقة التحليل الحالية</div>
+            <div style="font-size:.8rem;color:var(--muted);margin-bottom:.3rem;font-weight:700">نسبة دقة التحليل الحالية</div>
             <div class="stat-accuracy-bar"><div class="stat-accuracy-fill" id="stats-accuracy-fill" style="width:20%"></div></div>
             <div style="display:flex;justify-content:space-between;font-size:.75rem;color:rgba(255,255,255,.6)">
-              <span>بيانات افتراضية (20%)</span>
-              <span id="stats-accuracy-pct">20%</span>
+              <span style="color:var(--muted)">بيانات افتراضية (20%)</span>
+              <span id="stats-accuracy-pct" style="color:var(--muted)">20%</span>
             </div>
           </div>
         </div>
