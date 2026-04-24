@@ -955,7 +955,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .form-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:2rem}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem}
 #page-settings .form-grid{grid-template-columns:1fr 1fr}
-.f-field label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem;color:#e8eaf6}
+.f-field label{display:block;font-size:.83rem;font-weight:600;margin-bottom:.4rem;color:var(--text)}
 .pa-hint{margin-top:.45rem;padding:.42rem .75rem;background:rgba(78,115,194,.1);border:1px solid rgba(78,115,194,.22);border-radius:8px;font-size:.77rem;color:rgba(255,255,255,.72);line-height:1.5}
 /* PA Wizard dark-theme overrides */
 #pa-step-1 .fs-wizard-header{background:#111828;border-color:rgba(78,115,194,.2);padding:.8rem 1.2rem}
@@ -1245,11 +1245,11 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .stat-upload-card:hover,.stat-upload-card.drag-over{border-color:#4E73C2;background:rgba(78,115,194,.07);transform:translateY(-2px)}
 .stat-upload-card input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .stat-upload-icon{font-size:2rem;margin-bottom:.45rem;line-height:1}
-.stat-upload-title{font-size:.85rem;font-weight:800;color:#e8eaf6;margin-bottom:.3rem}
+.stat-upload-title{font-size:.85rem;font-weight:800;color:var(--text);margin-bottom:.3rem}
 .stat-upload-sub{font-size:.7rem;color:var(--muted);line-height:1.6;padding:0 .5rem}
 .stat-file-item{display:flex;align-items:center;gap:.75rem;padding:.65rem .85rem;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.2);border-radius:10px;margin-bottom:.45rem;font-size:.82rem}
 .stat-file-icon{font-size:1.1rem;flex-shrink:0}
-.stat-file-name{font-weight:700;color:#e8eaf6;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stat-file-name{font-weight:700;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stat-file-size{color:var(--muted);font-size:.72rem;white-space:nowrap}
 .stat-file-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.85rem;padding:.2rem .4rem;border-radius:6px;transition:var(--tr)}
 .stat-file-del:hover{color:#ef4444;background:rgba(239,68,68,.1)}
@@ -1273,7 +1273,7 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 .roadmap-phase-active{border-color:rgba(78,115,194,.4);background:rgba(78,115,194,.06)}
 .roadmap-phase-future{border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.04)}
 .roadmap-phase-head{margin-bottom:.8rem}
-.roadmap-phase-title{font-size:.88rem;font-weight:900;color:#e8eaf6;margin:.35rem 0 .15rem}
+.roadmap-phase-title{font-size:.88rem;font-weight:900;color:var(--text);margin:.35rem 0 .15rem}
 .roadmap-phase-date{font-size:.72rem;color:var(--muted)}
 .roadmap-badge{font-size:.72rem;font-weight:800;padding:.15rem .6rem;border-radius:50px}
 .roadmap-badge.done{background:rgba(34,197,94,.15);color:#4ade80}
@@ -5725,7 +5725,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
         <div style="background:linear-gradient(135deg,rgba(78,115,194,.18),rgba(78,115,194,.06));border:1px solid rgba(78,115,194,.3);border-radius:16px;padding:1.2rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">
           <div style="font-size:2.5rem">🗺️</div>
           <div>
-            <div style="font-size:1rem;font-weight:900;color:#e8eaf6;margin-bottom:.25rem">خريطة جنان — تطوير المنصة 2026-2028</div>
+            <div style="font-size:1rem;font-weight:900;color:var(--text);margin-bottom:.25rem">خريطة جنان — تطوير المنصة 2026-2028</div>
             <div style="font-size:.8rem;color:var(--muted)">تحليل الأداء · رفع ملفات السوق · توصيات التطوير والتوسع</div>
           </div>
           <div style="margin-right:auto;text-align:center;min-width:70px">
@@ -5926,7 +5926,7 @@ window.addEventListener('load', _syncGatewayViewportLock);
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
           <i class="fa-solid fa-database" style="font-size:1.4rem;color:#4E73C2"></i>
           <div>
-            <div style="font-size:.82rem;font-weight:800;color:#e8eaf6">قاعدة بيانات الذكاء</div>
+            <div style="font-size:.82rem;font-weight:800;color:var(--text)">قاعدة بيانات الذكاء</div>
             <div style="font-size:.75rem;color:var(--muted)" id="stats-db-summary">لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي</div>
           </div>
           <button onclick="statsClearAll()" style="margin-right:auto;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:9px;padding:.35rem .85rem;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">
@@ -8204,7 +8204,7 @@ function buildAIRecommendationReport() {
 
   /* ═══════════════ بناء HTML التقرير ═══════════════ */
   return `
-  <div style="font-family:'Tajawal',sans-serif;direction:rtl;color:#e8eaf6">
+  <div style="font-family:'Tajawal',sans-serif;direction:rtl;color:var(--text)">
 
     <!-- عنوان التقرير -->
     <div style="background:linear-gradient(135deg,#0d1f42,#111828);border:1px solid rgba(78,115,194,.35);border-radius:18px;padding:1.5rem 1.75rem;margin-bottom:1.25rem">
@@ -8241,7 +8241,7 @@ function buildAIRecommendationReport() {
       <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:.5rem">أفضل 3 أحياء في ${cityKey} لهذا النشاط:</div>
       ${districts.map((d,i) => `<div style="display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;background:rgba(255,255,255,.03);border-radius:8px;margin-bottom:.3rem;font-size:.8rem">
         <span style="background:rgba(78,115,194,.2);color:#7B9ED4;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;flex-shrink:0">${i+1}</span>
-        <span style="color:#e8eaf6">${d}</span>
+        <span style="color:var(--text)">${d}</span>
       </div>`).join('')}
     </div>
 
@@ -13187,7 +13187,7 @@ function renderStatsPage() {
         <div class="stat-cov-dot ${c.count > 0 ? 'ok' : 'miss'}"></div>
         <span>${c.icon}</span>
         <div>
-          <div style="font-weight:700;color:#e8eaf6">${c.label}</div>
+          <div style="font-weight:700;color:var(--text)">${c.label}</div>
           <div style="font-size:.68rem;color:var(--muted)">${c.count > 0 ? c.count + ' سجل' : 'لا توجد بيانات'}</div>
         </div>
       </div>`).join('');
