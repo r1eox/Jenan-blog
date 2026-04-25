@@ -1815,26 +1815,29 @@ button,input,select,textarea{font-family:'Tajawal',sans-serif}
 #jenan-bot-btn .jb-pulse{position:absolute;top:-3px;left:-3px;width:64px;height:64px;border-radius:50%;border:2px solid rgba(168,85,247,.5);animation:jbPulse 2.2s infinite}
 @keyframes jbPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.5);opacity:0}}
 #jenan-bot-btn .jb-badge{position:absolute;top:0;left:0;width:16px;height:16px;border-radius:50%;background:#22c55e;border:2px solid var(--bg3);font-size:.55rem;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}
-#jenan-bot-drawer{position:fixed;bottom:0;left:0;width:390px;height:560px;background:var(--card);border:1px solid var(--border);border-radius:22px 22px 0 0;box-shadow:0 -8px 48px rgba(124,58,237,.25);z-index:960;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden}
+#jenan-bot-drawer{position:fixed;bottom:0;left:0;width:390px;height:560px;background:linear-gradient(180deg,#1a1842 0%,#121533 100%);border:1px solid rgba(139,167,255,.22);border-radius:22px 22px 0 0;box-shadow:0 -8px 48px rgba(27,22,72,.55);z-index:960;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;color:#eaf1ff}
 #jenan-bot-drawer.open{transform:translateY(0)}
-.jb-head{padding:.9rem 1.1rem;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(168,85,247,.08));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.7rem;flex-shrink:0}
+.jb-head{padding:.9rem 1.1rem;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(78,115,194,.2));border-bottom:1px solid rgba(139,167,255,.22);display:flex;align-items:center;gap:.7rem;flex-shrink:0}
+.jb-head > div[style*="flex:1"] > div:first-child{color:#fff !important}
+.jb-head button{color:#fff !important;opacity:.92}
 .jb-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#5b21b6,#4E73C2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:#fff;flex-shrink:0;border:2px solid rgba(168,85,247,.5);box-shadow:0 0 12px rgba(168,85,247,.35)}
-.jb-page-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .6rem;border-radius:20px;font-size:.66rem;font-weight:700;background:rgba(168,85,247,.12);color:#c084fc;border:1px solid rgba(168,85,247,.25);margin-top:.2rem}
+.jb-page-tag{display:inline-flex;align-items:center;gap:.3rem;padding:.18rem .6rem;border-radius:20px;font-size:.66rem;font-weight:700;background:rgba(78,115,194,.22);color:#fff;border:1px solid rgba(139,167,255,.45);margin-top:.2rem}
 .jb-msgs{flex:1;overflow-y:auto;padding:.8rem 1rem;display:flex;flex-direction:column;gap:.6rem;scrollbar-width:thin;scrollbar-color:rgba(168,85,247,.3) transparent}
 .jb-msg{padding:.7rem .95rem;border-radius:14px;font-size:.81rem;line-height:1.7;max-width:90%;word-break:break-word;animation:jbMsgIn .22s ease}
 @keyframes jbMsgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.jb-msg.bot{background:rgba(124,58,237,.1);border:1px solid rgba(168,85,247,.2);color:var(--text);align-self:flex-start;border-radius:4px 14px 14px 14px}
-.jb-msg.user{background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(168,85,247,.18));color:var(--text);align-self:flex-end;border-radius:14px 4px 14px 14px;text-align:right}
-.jb-chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 1rem .4rem;border-top:1px solid var(--border);align-content:flex-start;min-height:40px}
-.jb-chip{padding:.28rem .72rem;border-radius:20px;font-size:.7rem;font-weight:700;border:1.5px solid rgba(168,85,247,.35);color:#c084fc;background:rgba(168,85,247,.07);cursor:pointer;transition:var(--tr);white-space:nowrap}
-.jb-chip:hover{background:rgba(168,85,247,.22);border-color:rgba(168,85,247,.7)}
-.jb-input-row{display:flex;gap:.5rem;padding:.6rem .9rem .9rem;border-top:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,.08)}
-.jb-input-row input{flex:1;padding:.6rem .85rem;border-radius:11px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text);font-family:inherit;font-size:.82rem;direction:rtl;transition:.18s}
-.jb-input-row input:focus{outline:none;border-color:#4E73C2;box-shadow:0 0 0 2px rgba(168,85,247,.15)}
+.jb-msg.bot{background:rgba(74,99,195,.24);border:1px solid rgba(139,167,255,.3);color:#f3f7ff;align-self:flex-start;border-radius:4px 14px 14px 14px}
+.jb-msg.user{background:linear-gradient(135deg,rgba(124,58,237,.48),rgba(78,115,194,.42));border:1px solid rgba(139,167,255,.35);color:#f8fbff;align-self:flex-end;border-radius:14px 4px 14px 14px;text-align:right}
+.jb-chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 1rem .4rem;border-top:1px solid rgba(139,167,255,.22);align-content:flex-start;min-height:40px}
+.jb-chip{padding:.28rem .72rem;border-radius:20px;font-size:.7rem;font-weight:700;border:1.5px solid rgba(139,167,255,.45);color:#dbeafe;background:rgba(78,115,194,.2);cursor:pointer;transition:var(--tr);white-space:nowrap}
+.jb-chip:hover{background:rgba(78,115,194,.34);border-color:rgba(191,219,254,.85)}
+.jb-input-row{display:flex;gap:.5rem;padding:.6rem .9rem .9rem;border-top:1px solid rgba(139,167,255,.22);flex-shrink:0;background:rgba(15,23,42,.45)}
+.jb-input-row input{flex:1;padding:.6rem .85rem;border-radius:11px;border:1.5px solid rgba(139,167,255,.35);background:rgba(15,23,42,.72);color:#f8fbff;font-family:inherit;font-size:.82rem;direction:rtl;transition:.18s}
+.jb-input-row input::placeholder{color:#a9b8df}
+.jb-input-row input:focus{outline:none;border-color:#7B9ED4;box-shadow:0 0 0 2px rgba(123,158,212,.25)}
 .jb-send{padding:.6rem 1rem;border-radius:11px;border:none;background:linear-gradient(135deg,#1E3A8A,#4E73C2);color:#fff;cursor:pointer;font-size:.88rem;transition:var(--tr)}
 .jb-send:hover{background:linear-gradient(135deg,#6d28d9,#9333ea)}
-.jb-file-label{padding:.58rem .65rem;border-radius:9px;border:1.5px dashed rgba(168,85,247,.4);background:rgba(168,85,247,.06);color:#c084fc;cursor:pointer;font-size:.85rem;transition:var(--tr);display:flex;align-items:center}
-.jb-file-label:hover{background:rgba(168,85,247,.16)}
+.jb-file-label{padding:.58rem .65rem;border-radius:9px;border:1.5px dashed rgba(139,167,255,.45);background:rgba(78,115,194,.16);color:#dbeafe;cursor:pointer;font-size:.85rem;transition:var(--tr);display:flex;align-items:center}
+.jb-file-label:hover{background:rgba(78,115,194,.28)}
 .jb-loader{display:flex;gap:5px;align-self:flex-start;padding:.65rem .9rem;background:rgba(124,58,237,.1);border-radius:4px 14px 14px 14px}
 .jb-loader span{width:7px;height:7px;border-radius:50%;background:#4E73C2;animation:jbDot 1.2s infinite both}
 .jb-loader span:nth-child(2){animation-delay:.2s}
@@ -2509,7 +2512,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
   <div class="jb-head">
     <div class="jb-avatar"><i class="fa-solid fa-robot"></i></div>
     <div style="flex:1;min-width:0">
-      <div style="font-size:.9rem;font-weight:900;color:var(--text)">روبوت جنان — مساعدك الذكي</div>
+      <div style="font-size:.9rem;font-weight:900;color:#fff">روبوت جنان — مساعدك الذكي</div>
       <div id="jb-page-tag" class="jb-page-tag"><i class="fa-solid fa-circle" style="font-size:.45rem;color:#22c55e"></i> جاهز للمساعدة</div>
     </div>
     <button onclick="clearJenanBot()" title="بداية جديدة" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;padding:.3rem .5rem;border-radius:6px" title="مسح"><i class="fa-solid fa-rotate-right"></i></button>
@@ -2939,7 +2942,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
 
       <!-- Hero Banner -->
       <div class="hub-hero">
-        <div class="hub-hero-badge"><i class="fa-solid fa-brain" style="margin-left:.4rem"></i>مدعوم بالذكاء الاصطناعي</div>
+        <div class="hub-hero-badge"><i class="fa-solid fa-brain" style="margin-left:.4rem"></i>مدعوم بـ APL</div>
         <h1 class="hub-hero-title">اتخذ قراراتك التجارية<br/>بأرقام حقيقية ودقيقة</h1>
         <p class="hub-hero-sub">منصة متكاملة تجمع تحليل المشاريع + دراسات الجدوى الاقتصادية + استشارات رأس المال — في مكان واحد</p>
         <div class="hub-hero-stats">
@@ -3155,7 +3158,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
           <!-- ─── الفاصل ─── -->
           <div class="anlys-sep"></div>
 
-          <!-- ─── تحليل بالذكاء ─── -->
+          <!-- ─── تحليل بـ APL ─── -->
           <div class="anlys-col anlys-col-gold" onclick="startProjectAnalysisWizard('premium')">
             <div class="anlys-top-bar anlys-bar-gold"></div>
             <div class="anlys-head">
@@ -3237,7 +3240,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
 
     </div>
 
-    <!-- ===== PAID ANALYSIS → تحليل مشروع بالذكاء الاصطناعي (مدفوع) ===== -->
+    <!-- ===== PAID ANALYSIS → تحليل مشروع بـ APL (مدفوع) ===== -->
     <div class="page" id="page-paid-analysis">
       <!-- Hero Section -->
       <div style="background:linear-gradient(135deg,#0d0328 0%,#180840 45%,#0d0228 100%);border-radius:22px;padding:2.75rem 2.5rem 2.25rem;position:relative;overflow:hidden;border:1px solid rgba(124,58,237,.3);box-shadow:0 20px 60px rgba(0,0,0,.5);margin-bottom:2rem">
@@ -3258,7 +3261,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
         <div style="position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:2rem;flex-wrap:wrap">
           <div style="flex:1;min-width:200px">
             <div style="display:inline-flex;align-items:center;gap:.45rem;background:rgba(124,58,237,.18);border:1px solid rgba(168,85,247,.35);color:#d8b4fe;border-radius:30px;padding:.28rem 1rem;font-size:.69rem;font-weight:800;letter-spacing:.04em;margin-bottom:1.1rem">
-              <i class="fa-solid fa-brain" style="font-size:.65rem"></i> تحليل احترافي · مدعوم بالذكاء الاصطناعي · جنان بيز
+              <i class="fa-solid fa-brain" style="font-size:.65rem"></i> تحليل احترافي · مدعوم بـ APL · جنان بيز
             </div>
             <h2 style="font-size:1.7rem;font-weight:900;color:#fff;margin:0 0 .75rem;line-height:1.35">
               تحليل <span style="background:linear-gradient(90deg,#c084fc,#e879f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">مشروعك</span> باحترافية المستشار
@@ -4507,10 +4510,10 @@ window.addEventListener('load', _restoreLastPageAfterReload);
             ⛔ <strong style="color:#f87171">تحذير:</strong> ممنوع منعاً باتاً كتابة اسم المشروع أو عنوانه الدقيق أو رقم تواصل في أي حقل إعلاني. المخالفة تؤدي إلى حذف الإعلان فوراً.
           </div>
 
-          <!-- زر تحليل الذكاء الاصطناعي -->
+          <!-- زر تحليل APL -->
           <button class="inv-analyze-btn" onclick="analyzeInvestorSellForm()">
             <i class="fa-solid fa-robot"></i>
-            حلّل أرقامي بالذكاء الاصطناعي — اقترح السعر المناسب
+            حلّل أرقامي بـ APL — اقترح السعر المناسب
           </button>
 
           <button onclick="submitListingForm()" style="width:100%;padding:.9rem;border-radius:12px;border:none;background:linear-gradient(135deg,#065f46,#10b981);color:#fff;font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer">
@@ -4627,10 +4630,10 @@ window.addEventListener('load', _restoreLastPageAfterReload);
           <div>
             <h2 style="font-size:1.5rem;font-weight:900;color:#fff;margin-bottom:.4rem">
               <i class="fa-solid fa-wand-magic-sparkles" style="color:#ec4899;margin-left:.5rem"></i>
-              استوديو التصميم بالذكاء الاصطناعي
+              استوديو التصميم بـ APL
             </h2>
             <p style="color:rgba(255,255,255,.7);font-size:.88rem;margin:0">
-              صف علامتك التجارية وسيُنشئ الذكاء الاصطناعي تصميمك الاحترافي فوراً — شعار، هوية، سوشيال، وأكثر
+              صف علامتك التجارية وسيُنشئ APL تصميمك الاحترافي فوراً — شعار، هوية، سوشيال، وأكثر
             </p>
             <div class="ds-stats">
               <div class="ds-stat"><span class="ds-stat-num">DALL-E 3</span><span class="ds-stat-lbl">محرك التصميم</span></div>
@@ -4715,19 +4718,19 @@ window.addEventListener('load', _restoreLastPageAfterReload);
 
         <button class="ds-gen-btn" id="ds-gen-btn" onclick="generateDesignAI()">
           <i class="fa-solid fa-wand-magic-sparkles"></i>
-          ولّد تصميمي بالذكاء الاصطناعي
+          ولّد تصميمي بـ APL
         </button>
 
         <div class="ds-ai-loader" id="ds-loader">
           <div class="ds-ai-spinner"></div>
-          <p id="ds-loader-msg">يعمل الذكاء الاصطناعي على إنشاء تصميمك...<br><small style="opacity:.6">قد يستغرق 15-30 ثانية</small></p>
+          <p id="ds-loader-msg">يعمل APL على إنشاء تصميمك...<br><small style="opacity:.6">قد يستغرق 15-30 ثانية</small></p>
         </div>
 
         <div class="ds-result-area" id="ds-result">
           <div class="ds-section-title" style="margin-bottom:.75rem">
             <i class="fa-solid fa-check-circle" style="color:#22c55e"></i> تصميمك جاهز!
           </div>
-          <img id="ds-result-img" class="ds-result-img" src="" alt="تصميم مولّد بالذكاء الاصطناعي"/>
+          <img id="ds-result-img" class="ds-result-img" src="" alt="تصميم مولّد بـ APL"/>
           <p id="ds-result-note" style="font-size:.75rem;color:#888;margin-top:.6rem;line-height:1.6"></p>
           <div class="ds-result-actions">
             <button class="ds-dl-btn" onclick="downloadDesignAI()"><i class="fa-solid fa-download"></i> تحميل PNG</button>
@@ -4740,7 +4743,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
         <i class="fa-solid fa-shield-halved"></i>
         <div>
           <h4>تصميمك ملكك حصراً</h4>
-          <p>كل تصميم يُنشأ بشكل فريد لك بالذكاء الاصطناعي — لا يُشارَك مع أي عميل آخر. حمّله مباشرة بصيغة PNG.</p>
+          <p>كل تصميم يُنشأ بشكل فريد لك بـ APL — لا يُشارَك مع أي عميل آخر. حمّله مباشرة بصيغة PNG.</p>
         </div>
       </div>
 
@@ -5849,7 +5852,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
           <input type="file" accept=".json,.csv" multiple onchange="smartFileSelected(this)">
           <div class="stat-upload-icon" style="font-size:2.4rem">🧠</div>
           <div class="stat-upload-title">اسحب ملفاتك هنا أو انقر للاختيار</div>
-          <div class="stat-upload-sub">الذكاء يتعرف تلقائياً على نوع كل ملف — JSON أو CSV — يمكنك رفع أكثر من ملف دفعة واحدة</div>
+          <div class="stat-upload-sub">APL يتعرف تلقائياً على نوع كل ملف — JSON أو CSV — يمكنك رفع أكثر من ملف دفعة واحدة</div>
         </div>
         <!-- الملفات المرفوعة -->
         <div id="stats-all-files" style="margin-bottom:1.25rem"></div>
@@ -5863,7 +5866,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem">
           <i class="fa-solid fa-database" style="font-size:1.4rem;color:#4E73C2"></i>
           <div>
-            <div style="font-size:.82rem;font-weight:800;color:var(--text)">قاعدة بيانات الذكاء</div>
+            <div style="font-size:.82rem;font-weight:800;color:var(--text)">قاعدة بيانات APL</div>
             <div style="font-size:.75rem;color:var(--muted)" id="stats-db-summary">لا توجد بيانات مرفوعة بعد — يعمل بالمعدلات الافتراضية للسوق السعودي</div>
           </div>
           <button onclick="statsClearAll()" style="margin-right:auto;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#ef4444;border-radius:9px;padding:.35rem .85rem;font-family:'Tajawal',sans-serif;font-size:.78rem;font-weight:700;cursor:pointer">
@@ -5899,7 +5902,7 @@ window.addEventListener('load', _restoreLastPageAfterReload);
             </div>
             <ul class="roadmap-items">
               <li class="done">✅ تحليل المشروع المالي (7 خطوات)</li>
-              <li class="done">✅ تحليل AI بالذكاء الاصطناعي</li>
+              <li class="done">✅ تحليل AI بـ APL</li>
               <li class="done">✅ إعداد دراسة الجدوى</li>
               <li class="done">✅ قسم الإدارة والمتابعة</li>
               <li class="done">✅ نظام الإشعارات والتسويق</li>
@@ -6284,7 +6287,7 @@ const pageMap = {
   home:    {title:'نظرة عامة',    sub:'مرحباً بك في منصة جنان بيز'},
   hub:     {title:'تحليل المشاريع ودراسات الجدوى', sub:'اختر الخدمة المناسبة لمشروعك'},
   robot:   {title:'تحليل مشروع — محرك التحليل الاقتصادي', sub:'تقرير مالي فوري — اكتشف جدوى مشروعك وأرقامه قبل أي استثمار'},
-  'paid-analysis': {title:'تحليل مشروع احترافي بالذكاء الاصطناعي', sub:'تحليل SWOT شامل · خطة تسويق · فرص السوق · جاهزيتك للمستثمر'},
+  'paid-analysis': {title:'تحليل مشروع احترافي بـ APL', sub:'تحليل SWOT شامل · خطة تسويق · فرص السوق · جاهزيتك للمستثمر'},
   projectcopilot: {title:'روبوت المشاريع',sub:'مساعدك الذكي خطوة بخطوة من الفكرة حتى التشغيل'},
   analysis:{title:'إعداد دراسات الجدوى الاقتصادية', sub:'حلّل مشروعك واعرف مدى ربحيته قبل أي استثمار'},
   academy: {title:'جنان للأعمال', sub:'مكتبة · دورات · أدوات مالية ذكية'},
@@ -6663,29 +6666,162 @@ async function generateDesignAI() {
   const result = document.getElementById('ds-result');
   btn.disabled = true;
   loader.style.display = 'flex';
+  document.getElementById('ds-loader-msg').innerHTML = 'يُنشئ APL تصميمك...<br><small style="opacity:.6">جارٍ المعالجة...</small>';
   result.style.display = 'none';
 
+  // محاولة API أولاً — إن فشلت نستخدم المولّد المحلي
   try {
     const token = localStorage.getItem('sb_token') || '';
-    const resp = await fetch('/api/generate-design', {
-      method: 'POST',
+    const ctrl  = new AbortController();
+    const tid   = setTimeout(() => ctrl.abort(), 8000); // 8 ث timeout
+    const resp  = await fetch('/api/generate-design', {
+      method: 'POST', signal: ctrl.signal,
       headers: {'Content-Type':'application/json','Authorization':'Bearer '+token},
       body: JSON.stringify({design_type:_dsType, business_name:brand, sector, primary_color:color, style:_dsStyle, description:desc})
     });
+    clearTimeout(tid);
     const data = await resp.json();
-    if (!resp.ok || !data.success) throw new Error(data.detail || 'خطأ في التوليد');
-
+    if (!resp.ok || !data.success) throw new Error(data.detail || 'API error');
     _dsB64 = data.image_b64;
     document.getElementById('ds-result-img').src = 'data:image/png;base64,' + _dsB64;
     document.getElementById('ds-result-note').textContent = data.revised_prompt || '';
-    loader.style.display = 'none';
-    result.style.display = 'block';
-  } catch(e) {
-    loader.style.display = 'none';
-    showToast('⚠ ' + (e.message || 'فشل التوليد — تحقق من الاتصال'));
-  } finally {
-    btn.disabled = false;
+  } catch(_apiErr) {
+    // API غير متاح — توليد محلي بالـ Canvas
+    try {
+      await new Promise(r => setTimeout(r, 600)); // تأخير بصري
+      const dataUrl = _generateDesignLocal(brand, sector, color, _dsType, _dsStyle);
+      _dsB64 = dataUrl.split(',')[1];
+      document.getElementById('ds-result-img').src = dataUrl;
+      const typeNames = {logo:'شعار',stationery:'هوية بصرية',bizcard:'بطاقة أعمال',story:'ستوري',social:'بوست',cover:'غلاف',snapchat:'سناب',youtube:'Thumbnail',banner:'بنر',offer:'عروض',seasonal:'موسمي',event:'فلاير',menu:'منيو',packaging:'تغليف',product:'منتج',signage:'واجهة',infographic:'إنفوجرافيك',certificate:'شهادة',tshirt:'تي شيرت',motion:'موشن',presentation:'عرض',catalogue:'كتالوج',print:'مطبوعات',ebook:'غلاف كتاب'};
+      document.getElementById('ds-result-note').textContent = `تصميم ${typeNames[_dsType]||_dsType} • ${brand}${sector?' • '+sector:''}`;
+    } catch(localErr) {
+      loader.style.display = 'none';
+      btn.disabled = false;
+      showToast('⚠ فشل التوليد: ' + localErr.message);
+      return;
+    }
   }
+
+  loader.style.display = 'none';
+  result.style.display = 'block';
+  btn.disabled = false;
+}
+
+// ─── مولّد التصاميم المحلي (Canvas) ──────────────────────────────────────
+function _generateDesignLocal(brand, sector, color, type, style) {
+  const DIM = {
+    logo:[800,800], stationery:[1200,800], bizcard:[900,500],
+    story:[540,960], social:[800,800], cover:[820,312],
+    snapchat:[540,960], youtube:[1280,720], banner:[1200,400],
+    offer:[800,800], seasonal:[800,800], event:[800,1100],
+    menu:[800,1100], packaging:[800,1000], product:[800,800],
+    signage:[1200,600], infographic:[800,1200], certificate:[1200,850],
+    tshirt:[800,900], motion:[800,800], presentation:[1280,720],
+    catalogue:[800,1100], print:[850,1100], ebook:[600,900]
+  };
+  const [W,H] = DIM[type]||[800,800];
+  const cv = document.createElement('canvas');
+  cv.width=W; cv.height=H;
+  const c = cv.getContext('2d');
+
+  // أدوات اللون
+  const h2r = h => [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+  const clamp = v => Math.min(255,Math.max(0,Math.round(v)));
+  const dk = (h,f=0.55)=>{ const [r,g,b]=h2r(h); return `rgb(${clamp(r*f)},${clamp(g*f)},${clamp(b*f)})`; };
+  const lt = (h,f=1.5)=> { const [r,g,b]=h2r(h); return `rgb(${clamp(r*f)},${clamp(g*f)},${clamp(b*f)})`; };
+  const ra = (h,a)=>     { const [r,g,b]=h2r(h); return `rgba(${r},${g},${b},${a})`; };
+
+  const circle=(x,y,r,fill)=>{ c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fillStyle=fill;c.fill(); };
+  const txt=(t,x,y,font,fill,align='center',base='middle')=>{ c.font=font;c.fillStyle=fill;c.textAlign=align;c.textBaseline=base;c.fillText(t,x,y); };
+  const line=(x1,y1,x2,y2,stroke,lw=1)=>{ c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.strokeStyle=stroke;c.lineWidth=lw;c.stroke(); };
+
+  const initials = brand.split(/\s+/).map(w=>w[0]||'').slice(0,2).join('').toUpperCase()||brand[0].toUpperCase();
+  const fnt = `"Segoe UI","Arial",sans-serif`;
+
+  if (style==='minimalist') {
+    // ── مينيمال: أبيض نظيف ──
+    c.fillStyle='#fafafa'; c.fillRect(0,0,W,H);
+    c.fillStyle=color; c.fillRect(0,0,W,H*0.006);
+    circle(W/2,H*0.37,H*0.145,ra(color,0.1));
+    circle(W/2,H*0.37,H*0.11,ra(color,0.14));
+    txt(initials,W/2,H*0.37,`bold ${H*0.1}px ${fnt}`,color);
+    txt(brand,W/2,H*0.6,`600 ${H*0.052}px ${fnt}`,'#1a1a2e');
+    if(sector){ line(W*0.38,H*0.69,W*0.62,H*0.69,ra(color,0.4)); txt(sector,W/2,H*0.77,`${H*0.026}px ${fnt}`,'#888'); }
+    txt('Jenan Biz',W/2,H*0.93,`${H*0.018}px ${fnt}`,ra(color,0.35));
+
+  } else if (style==='classic') {
+    // ── كلاسيكي: أزرق داكن + ذهبي ──
+    const gold='#d4af37';
+    c.fillStyle='#0f172a'; c.fillRect(0,0,W,H);
+    const brd=W*0.045;
+    c.strokeStyle=gold; c.lineWidth=1.8; c.strokeRect(brd,brd,W-brd*2,H-brd*2);
+    c.lineWidth=0.6; c.strokeRect(brd+9,brd+9,W-brd*2-18,H-brd*2-18);
+    line(W*0.2,H*0.24,W*0.8,H*0.24,ra(gold,0.5));
+    line(W*0.2,H*0.76,W*0.8,H*0.76,ra(gold,0.5));
+    c.beginPath(); c.arc(W/2,H*0.38,H*0.095,0,Math.PI*2); c.strokeStyle=gold; c.lineWidth=1.5; c.stroke();
+    txt(initials,W/2,H*0.38,`bold ${H*0.09}px Georgia,serif`,gold);
+    txt(brand,W/2,H*0.58,`bold ${H*0.05}px Georgia,serif`,'#fff');
+    txt('── ✦ ──',W/2,H*0.68,`${H*0.024}px Georgia,serif`,gold);
+    if(sector) txt(sector.toUpperCase(),W/2,H*0.76,`${H*0.021}px Georgia,serif`,ra(gold,0.7));
+
+  } else if (style==='bold') {
+    // ── جريء: نصفان + دائرة ضخمة ──
+    c.fillStyle=color; c.fillRect(0,0,W,H*0.5);
+    c.fillStyle='#111'; c.fillRect(0,H*0.5,W,H*0.5);
+    circle(W/2,H*0.5,H*0.24,dk(color,0.7));
+    circle(W/2,H*0.5,H*0.19,color);
+    txt(initials,W/2,H*0.5,`900 ${H*0.17}px "Arial Black",Arial`,   '#fff');
+    c.shadowColor='rgba(0,0,0,.5)'; c.shadowBlur=20;
+    txt(brand.toUpperCase(),W/2,H*0.72,`900 ${H*0.054}px "Arial Black",Arial`,'#fff');
+    c.shadowBlur=0;
+    c.fillStyle=color; c.fillRect(W*0.15,H*0.785,W*0.7,4);
+    if(sector) txt(sector,W/2,H*0.86,`${H*0.027}px ${fnt}`,'rgba(255,255,255,.6)');
+
+  } else if (style==='elegant') {
+    // ── فاخر: تدرج داكن + خطوط ذهبية ──
+    const gold='#d4af37';
+    const g=c.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#1a0a2e'); g.addColorStop(0.5,dk(color,0.45)); g.addColorStop(1,'#0d0d1a');
+    c.fillStyle=g; c.fillRect(0,0,W,H);
+    circle(W*0.05,H*0.05,H*0.45,ra(color,0.04));
+    circle(W*0.95,H*0.95,H*0.4,ra(color,0.04));
+    c.beginPath(); c.arc(W/2,H*0.37,H*0.125,0,Math.PI*2);
+    const rg=c.createLinearGradient(W/2-H*.13,H*.37,W/2+H*.13,H*.37);
+    rg.addColorStop(0,gold); rg.addColorStop(1,'#f5d76e');
+    c.strokeStyle=rg; c.lineWidth=2; c.stroke();
+    txt(initials,W/2,H*0.37,`300 ${H*0.09}px Georgia,serif`,gold);
+    const lg=c.createLinearGradient(W*0.2,0,W*0.8,0);
+    lg.addColorStop(0,'transparent'); lg.addColorStop(0.5,gold); lg.addColorStop(1,'transparent');
+    c.strokeStyle=lg; c.lineWidth=0.8; c.beginPath(); c.moveTo(W*0.2,H*0.57); c.lineTo(W*0.8,H*0.57); c.stroke();
+    txt(brand,W/2,H*0.67,`300 ${H*0.048}px Georgia,serif`,'#fff');
+    if(sector) txt(sector,W/2,H*0.77,`${H*0.022}px Georgia,serif`,gold);
+    txt('Jenan Biz ✦',W/2,H*0.93,`${H*0.017}px Georgia,serif`,ra(gold,0.4));
+
+  } else {
+    // ── عصري (افتراضي): تدرج + دوائر هندسية ──
+    const g=c.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,dk(color,0.55)); g.addColorStop(0.65,color); g.addColorStop(1,lt(color,1.25));
+    c.fillStyle=g; c.fillRect(0,0,W,H);
+    circle(W*0.88,H*0.12,H*0.38,'rgba(255,255,255,0.06)');
+    circle(W*0.1, H*0.88,H*0.3, 'rgba(255,255,255,0.04)');
+    circle(W*0.88,H*0.12,H*0.22,'rgba(255,255,255,0.04)');
+    circle(W/2,H*0.37,H*0.145,'rgba(255,255,255,0.2)');
+    circle(W/2,H*0.37,H*0.112,'rgba(255,255,255,0.15)');
+    c.shadowColor='rgba(0,0,0,.25)'; c.shadowBlur=12;
+    txt(initials,W/2,H*0.37,`bold ${H*0.1}px ${fnt}`,'#fff');
+    c.shadowBlur=0;
+    c.shadowColor='rgba(0,0,0,.3)'; c.shadowBlur=18;
+    txt(brand,W/2,H*0.62,`bold ${H*0.053}px ${fnt}`,'#fff');
+    c.shadowBlur=0;
+    if(sector){
+      c.fillStyle='rgba(255,255,255,0.45)';c.fillRect(W*0.36,H*0.705,W*0.28,1);
+      txt(sector,W/2,H*0.76,`${H*0.026}px ${fnt}`,'rgba(255,255,255,.82)');
+    }
+    c.fillStyle='rgba(0,0,0,0.2)'; c.fillRect(0,H*0.9,W,H*0.1);
+    txt('Designed by Jenan Biz',W/2,H*0.95,`${H*0.018}px ${fnt}`,'rgba(255,255,255,0.35)');
+  }
+
+  return cv.toDataURL('image/png');
 }
 
 function downloadDesignAI() {
@@ -6724,7 +6860,7 @@ const SW_ITEMS = [
   {cat:'accounting', logo:'📊', name:'Zoho Books', desc:'حلول محاسبية ذكية مع دعم ضريبة القيمة المضافة السعودية', rating:4.6, reviews:8200, price:'مجاني حتى 1000 فاتورة', free:true},
   {cat:'crm',        logo:'🤝', name:'Salesforce CRM', desc:'منصة إدارة علاقات العملاء الأولى عالمياً لفرق المبيعات', rating:4.7, reviews:31000, price:'من 150 ر.س/مستخدم/شهر', free:false},
   {cat:'crm',        logo:'🧲', name:'HubSpot CRM', desc:'إدارة العملاء والمبيعات والتسويق في منصة واحدة مجانية', rating:4.5, reviews:19500, price:'مجاني', free:true},
-  {cat:'design',     logo:'🎨', name:'Canva Pro', desc:'تصميم احترافي بالذكاء الاصطناعي لكل احتياجات عملك', rating:4.9, reviews:45000, price:'من 55 ر.س/شهر', free:false},
+  {cat:'design',     logo:'🎨', name:'Canva Pro', desc:'تصميم احترافي بـ APL لكل احتياجات عملك', rating:4.9, reviews:45000, price:'من 55 ر.س/شهر', free:false},
   {cat:'design',     logo:'✏️', name:'Adobe Express', desc:'تصميم سريع للسوشيال ميديا والمطبوعات بقوالب جاهزة', rating:4.4, reviews:7800, price:'مجاني', free:true},
   {cat:'hr',         logo:'👥', name:'Bayzat', desc:'منصة موارد بشرية سعودية شاملة للرواتب والحضور والعقود', rating:4.6, reviews:3200, price:'من 30 ر.س/موظف/شهر', free:false},
   {cat:'hr',         logo:'📋', name:'Qiwa', desc:'منصة العمل السعودية الرسمية لإدارة العقود والتأشيرات', rating:4.3, reviews:9100, price:'حسب الخدمة', free:false},
@@ -6793,7 +6929,7 @@ const LIB_ITEMS = [
   {cat:'business',type:'seminar',title:'ندوة: كيف تحوّل شركتك الصغيرة إلى علامة تجارية معروفة؟',          tag:'ندوة مسجلة',   date:'نوفمبر 2025', mins:70},
   {cat:'marketing',type:'study', title:'التسويق عبر المؤثرين في السوق السعودي: دراسة وأرقام 2025',         tag:'تسويق',        date:'أكتوبر 2025', pages:26},
   {cat:'legal',   type:'study',  title:'الدليل الشامل لضريبة القيمة المضافة وتقديم الإقرارات الضريبية',    tag:'قانوني',       date:'سبتمبر 2025', pages:60},
-  {cat:'invest',  type:'study',  title:'الذكاء الاصطناعي والاستثمار: كيف تستخدم الأدوات الذكية في تحليل الأسواق', tag:'استثمار', date:'أغسطس 2025', pages:34},
+  {cat:'invest',  type:'study',  title:'APL والاستثمار: كيف تستخدم الأدوات الذكية في تحليل الأسواق', tag:'استثمار', date:'أغسطس 2025', pages:34},
 ];
 
 const COURSES = [
@@ -7296,7 +7432,7 @@ function buildLearningPath() {
     { icon:'🚀', title:'مسار ريادة الأعمال', steps:['مقدمة في ريادة الأعمال وبناء الفكرة','كيف تكتب خطة عمل احترافية','أساسيات المحاسبة المالية','استراتيجيات التسويق الرقمي','الحصول على التمويل: من الفكرة إلى الجولة الأولى'] },
     { icon:'📈', title:'مسار تطوير المشروع', steps:['التخطيط المالي الاستراتيجي','إدارة التدفق النقدي وتخطيط السيولة','التسويق الرقمي وبناء الحضور الإلكتروني','إدارة الموارد البشرية للمدير الجديد','الاستثمار العقاري في السوق السعودي 2026'] },
     { icon:'💵', title:'مسار المال الشخصي', steps:['فقه المال: الحلال والحرام في الاستثمار','الاستثمار في الأسهم: من الصفر للاحتراف','ندوة: صناديق الاستثمار المتداولة ETF','تحليل مقارن: الذهب أم العقار أم الأسهم؟','دليل الاستثمار في صناديق الريت'] },
-    { icon:'🏦', title:'مسار الاستثمار المتقدم', steps:['الاستثمار في الأسهم: من الصفر للاحتراف','الاستثمار العقاري في السوق السعودي 2026','الذكاء الاصطناعي والاستثمار','ندوة: صناديق الاستثمار المتداولة ETF','التخطيط المالي الاستراتيجي'] },
+    { icon:'🏦', title:'مسار الاستثمار المتقدم', steps:['الاستثمار في الأسهم: من الصفر للاحتراف','الاستثمار العقاري في السوق السعودي 2026','APL والاستثمار','ندوة: صناديق الاستثمار المتداولة ETF','التخطيط المالي الاستراتيجي'] },
     { icon:'💼', title:'مسار التطوير الوظيفي', steps:['أساسيات المحاسبة المالية للمشاريع الصغيرة','ضريبة القيمة المضافة والزكاة للمحاسب','قانون العمل السعودي من الألف إلى الياء','إدارة الموارد البشرية للمدير الجديد','التخطيط المالي الاستراتيجي'] },
   ];
   const chosen = paths[goal] || paths[0];
@@ -7674,19 +7810,19 @@ const PA_QUESTIONS = [
 
 let paState = { currentGroup: 0, answers: {}, started: false };
 
-/* ─── ويزارد الذكاء الاصطناعي — مختلف تماماً عن المجاني ─────────────────
+/* ─── ويزارد APL — مختلف تماماً عن المجاني ─────────────────
    المجاني: أنت تُدخل أرقامك → نحلل ما عندك
-   الذكاء: أنت تقول هدفك → نقرر ما تحتاجه
+   APL: أنت تقول هدفك → نقرر ما تحتاجه
 ──────────────────────────────────────────────────────────────────────── */
 const PA_AI_QUESTIONS = [
   /* الخطوة 0 — الهدف */
   {
-    title: '🎯 أخبرني هدفك — الذكاء يُصمّم مشروعك',
+    title: '🎯 أخبرني هدفك — APL يُصمّم مشروعك',
     fields: [
       { id:'ai_name',    label:'اسم مشروعك المستقبلي',          type:'text',   placeholder:'مثال: مطعم الشاورما السوري', required:true },
       { id:'ai_type',    label:'نوع النشاط',                     type:'select', options:['مطعم / مقهى','كافيه','صالون حلاقة / تجميل','محل ملابس / أزياء','محل إلكترونيات','بقالة / سوبرماركت','مركز لياقة / جيم','خدمات مهنية','تقنية / تطبيقات','تجارة إلكترونية','أخرى'], required:true },
       { id:'ai_city',    label:'المدينة',                        type:'select', options:['الرياض','جدة','الدمام','مكة المكرمة','المدينة المنورة','الخبر','أبها','تبوك','مدينة أخرى'], required:true },
-      { id:'ai_goal',    label:'الإيراد الشهري الذي تريد تحقيقه (ريال)', type:'number', placeholder:'مثال: 80000 — الذكاء سيُصمم المشروع لتحقيق هذا الرقم', required:true, minVal:1 },
+      { id:'ai_goal',    label:'الإيراد الشهري الذي تريد تحقيقه (ريال)', type:'number', placeholder:'مثال: 80000 — APL سيُصمم المشروع لتحقيق هذا الرقم', required:true, minVal:1 },
       { id:'ai_capital', label:'رأس المال المتاح للاستثمار (ريال)',      type:'number', placeholder:'مثال: 300000 — للمقارنة مع التكاليف المطلوبة', required:true, minVal:1 },
     ]
   },
@@ -7764,7 +7900,7 @@ function startProjectAnalysisWizard(tier = 'free') {
   const tierBadge = document.getElementById('pa-tier-badge');
   if (tierBadge) {
     if (tier === 'premium') {
-      tierBadge.innerHTML = '<i class="fa-solid fa-crown"></i> تحليل مميز بالذكاء';
+      tierBadge.innerHTML = '<i class="fa-solid fa-crown"></i> تحليل مميز بـ APL';
       tierBadge.style.cssText = 'display:inline-flex;align-items:center;gap:.4rem;background:rgba(245,158,11,.16);border:1px solid rgba(245,158,11,.35);color:#fcd34d;border-radius:20px;padding:.2rem .8rem;font-size:.67rem;font-weight:800';
     } else {
       tierBadge.innerHTML = '<i class="fa-solid fa-calculator"></i> تحليل مجاني';
@@ -7939,7 +8075,7 @@ function paNavNext() {
     // ── Loading Spinner between steps ──
     const btn = document.getElementById('pa-next-btn');
     const prevBtn = document.getElementById('pa-prev-btn');
-    const aiMsgs = ['جاري رسم مخطط مشروعك...','الذكاء يحسب الموقع الأمثل...','جاري تصميم هيكل الفريق...'];
+    const aiMsgs = ['جاري رسم مخطط مشروعك...','APL يحسب الموقع الأمثل...','جاري تصميم هيكل الفريق...'];
     const freeMsgs = PA_STEP_PROCESS_MSGS;
     const msgs = paState.tier === 'premium' ? aiMsgs : freeMsgs;
     const msg = msgs[paState.currentGroup] || 'جاري معالجة البيانات...';
@@ -7993,7 +8129,7 @@ function generateProjectAnalysisReport() {
   }, 600);
   const delay = isPremium ? 3200 : 2800;
   const aiProcessMsgs = [
-    'الذكاء يحلل السوق والمنافسة...',
+    'APL يحلل السوق والمنافسة...',
     'جاري حساب المساحة والفريق المطلوبين...',
     'جاري رسم خارطة الطريق التأسيسية...',
     'جاري بناء توقعات النمو 3 سنوات...',
@@ -8157,7 +8293,7 @@ function buildAIRecommendationReport() {
         </div>
       </div>
       <div style="background:rgba(78,115,194,.12);border-radius:10px;padding:.6rem .9rem;font-size:.8rem;color:rgba(255,255,255,.65);line-height:1.7">
-        📋 <strong style="color:#fff">قرأ الذكاء الاصطناعي هدفك</strong> وصمّم هذه الخطة لتحقيق <strong style="color:#4ade80">${fmt(goalRev)} ريال/شهر</strong> في ${cityKey} — بناءً على بيانات السوق السعودي 2026.
+        📋 <strong style="color:#fff">قرأ APL هدفك</strong> وصمّم هذه الخطة لتحقيق <strong style="color:#4ade80">${fmt(goalRev)} ريال/شهر</strong> في ${cityKey} — بناءً على بيانات السوق السعودي 2026.
         ${hasRealData ? `<br><span style="color:#4ade80;font-weight:800">✅ تُستخدم بيانات حقيقية مرفوعة من الإدمن — دقة محسّنة</span>` : `<br><span style="color:rgba(255,200,0,.7);font-size:.75rem">⚡ يُستخدم معدلات السوق الافتراضية — رفع الإحصائيات يُحسّن الدقة</span>`}
       </div>
     </div>
@@ -8295,7 +8431,7 @@ function buildAIRecommendationReport() {
       <strong style="color:#fff">توصية:</strong> لكي تتميز، ركز على ميزة واحدة لا يقدمها أحد المنافسين — سعر أقل، جودة أعلى، أو خدمة أسرع.</div>
     </div>` : ''}
 
-    <!-- نصيحة الذكاء للقيود -->
+    <!-- نصيحة APL للقيود -->
     ${constraintAdvice ? `
     <div style="background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:12px;padding:1rem;margin-bottom:1rem;font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.7">
       ${constraintAdvice}
@@ -9357,7 +9493,7 @@ function buildProjectAnalysisReport() {
       <div class="srbf-date"><i class="fa-solid fa-calendar" style="color:#7B9ED4"></i> ${new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'})}</div>
     </div>
 
-    <!-- قسم التحليل بالذكاء — يتكيّف مع الخطة -->
+    <!-- قسم التحليل بـ APL — يتكيّف مع الخطة -->
     <div class="sr-section" id="pa-ai-section">
       ${paState.tier === 'premium' ? `
       <!-- الخطة المدفوعة: تحليل AI مباشر -->
@@ -11246,7 +11382,7 @@ function generateFeasibilityStudy() {
     btn.disabled = false;
 
     if (fsState.type === 'detailed') {
-      // ═══ دراسة مفصلة — التقرير الفوري بالذكاء الاصطناعي ═══
+      // ═══ دراسة مفصلة — التقرير الفوري بـ APL ═══
       const html = buildDetailedReport();
       document.getElementById('fs-report-container').innerHTML = html;
       showFsStep(3);
@@ -11885,11 +12021,11 @@ function buildSimpleReport() {
     <!-- الترقية إلى دراسة مفصلة -->
     <div class="sr-section">
       <div style="background:linear-gradient(135deg,#0d1e4a,#1E3A8A);border-radius:14px;padding:1.75rem;text-align:center;color:#fff;border:1.5px solid rgba(78,115,194,.4)">
-        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(78,115,194,.3);border:1px solid rgba(123,158,212,.4);color:#b8d0ff;font-size:.69rem;font-weight:800;padding:.2rem .8rem;border-radius:20px;margin-bottom:.85rem"><i class="fa-solid fa-file-chart-column"></i> دراسة جدوى مفصلة بالذكاء الاصطناعي</div>
-        <h3 style="color:#fff;margin:.4rem 0 .5rem;font-size:1.05rem">احصل على دراسة جدوى مفصلة واحترافية بالذكاء الاصطناعي</h3>
+        <div style="display:inline-flex;align-items:center;gap:.5rem;background:rgba(78,115,194,.3);border:1px solid rgba(123,158,212,.4);color:#b8d0ff;font-size:.69rem;font-weight:800;padding:.2rem .8rem;border-radius:20px;margin-bottom:.85rem"><i class="fa-solid fa-file-chart-column"></i> دراسة جدوى مفصلة بـ APL</div>
+        <h3 style="color:#fff;margin:.4rem 0 .5rem;font-size:1.05rem">احصل على دراسة جدوى مفصلة واحترافية بـ APL</h3>
         <p style="font-size:.82rem;color:rgba(200,215,240,.7);margin-bottom:1rem;line-height:1.7">الدراسة المفصلة تشمل: تحليل SWOT · خطة تسويقية · هيكل تشغيلي · جدول إطلاق 90 يوماً · تحليل مخاطر + 3 سيناريوهات · <strong>تحليل ذكاء اصطناعي تلقائي</strong> مخصص لمشروعك</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.6rem;margin:.9rem 0 1.25rem;text-align:right">
-          <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:.65rem .9rem;border:1px solid rgba(123,158,212,.15)"><div style="font-size:.74rem;font-weight:800;color:#7B9ED4;margin-bottom:.2rem"><i class="fa-solid fa-brain" style="margin-left:.3rem"></i>تحليل AI مخصص</div><div style="font-size:.69rem;color:rgba(200,215,240,.6)">رأي الذكاء الاصطناعي في مشروعك</div></div>
+          <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:.65rem .9rem;border:1px solid rgba(123,158,212,.15)"><div style="font-size:.74rem;font-weight:800;color:#7B9ED4;margin-bottom:.2rem"><i class="fa-solid fa-brain" style="margin-left:.3rem"></i>تحليل AI مخصص</div><div style="font-size:.69rem;color:rgba(200,215,240,.6)">رأي APL في مشروعك</div></div>
           <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:.65rem .9rem;border:1px solid rgba(123,158,212,.15)"><div style="font-size:.74rem;font-weight:800;color:#7B9ED4;margin-bottom:.2rem"><i class="fa-solid fa-shield-halved" style="margin-left:.3rem"></i>تحليل المخاطر</div><div style="font-size:.69rem;color:rgba(200,215,240,.6)">3 سيناريوهات + خطة طوارئ</div></div>
           <div style="background:rgba(255,255,255,.06);border-radius:10px;padding:.65rem .9rem;border:1px solid rgba(123,158,212,.15)"><div style="font-size:.74rem;font-weight:800;color:#7B9ED4;margin-bottom:.2rem"><i class="fa-solid fa-chart-gantt" style="margin-left:.3rem"></i>خطة 90 يوماً</div><div style="font-size:.69rem;color:rgba(200,215,240,.6)">خطوات تنفيذية شهر بشهر</div></div>
         </div>
@@ -12318,7 +12454,7 @@ function buildDetailedReport() {
       </ul>
     </div>
 
-    <!-- قسم الذكاء الاصطناعي — يُشغَّل تلقائياً -->
+    <!-- قسم APL — يُشغَّل تلقائياً -->
     <div class="sr-section" id="fs-ai-section">
       <div style="background:linear-gradient(135deg,#1a0a00,#3d1f00);border-radius:14px;padding:1.75rem;color:#fff;position:relative;overflow:hidden;border:1.5px solid rgba(245,158,11,.4)">
         <div style="position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\"><circle cx=\"180\" cy=\"20\" r=\"60\" fill=\"rgba(245,158,11,.06)\"/><circle cx=\"20\" cy=\"80\" r=\"40\" fill=\"rgba(245,158,11,.04)\"/></svg>');background-size:cover;pointer-events:none"></div>
@@ -14336,7 +14472,7 @@ function copyRefLink() {
 function shareRefLink() {
   const val = document.getElementById('ref-link-input').value;
   if (!val || val === 'جارٍ التحميل...') return;
-  const msg = encodeURIComponent(`🎁 انضم معي في منصة جنان بيز — الذكاء الاصطناعي لرواد الأعمال السعوديين!\nسجّل من خلال رابطي وابدأ تجربتك:\n${val}`);
+  const msg = encodeURIComponent(`🎁 انضم معي في منصة جنان بيز — APL لرواد الأعمال السعوديين!\nسجّل من خلال رابطي وابدأ تجربتك:\n${val}`);
   window.open(`https://wa.me/?text=${msg}`, '_blank');
 }
 
@@ -14966,7 +15102,7 @@ const JB_PAGE_INFO = {
   'home'         : {name:'الرئيسية',     chips:['ما خدمات جنان بيز؟','كيف أبدأ؟','ما الخدمة المناسبة لي؟']},
   'entrepreneur' : {name:'ريادة الأعمال', chips:['كيف أفتح مشروعاً؟','ما هي متطلبات الترخيص؟','ما الفرق بين الشركة الفردية والمحدودة؟']},
   'hub'          : {name:'بوابة الخدمات', chips:['ما الفرق بين الخدمات؟','أي خدمة تناسبي؟']},
-  'robot'        : {name:'تحليل المشاريع', chips:['كيف يعمل تحليل الذكاء الاصطناعي؟','ما البيانات المطلوبة؟']},
+  'robot'        : {name:'تحليل المشاريع', chips:['كيف يعمل تحليل APL؟','ما البيانات المطلوبة؟']},
   'paid-analysis': {name:'التحليل المالي', chips:['ما الفرق بين التحليل العادي والمتقدم؟','ما تشمل باقة التحليل؟']},
   'analysis'     : {name:'التحليل المالي', chips:['كيف أقرأ قائمة الدخل والمصروفات؟','ما هي مؤشرات السيولة؟']},
   'academy'      : {name:'الأكاديمية', chips:['أي دورة أبدأ بها؟','ما الفرق بين الدورات؟','كيف أحسب زكاة المال؟']},
@@ -14974,6 +15110,15 @@ const JB_PAGE_INFO = {
   'investor'     : {name:'سوق المشاريع', chips:['كيف أقيّم مشروعاً؟','ما مخاطر الشراء؟','ما نسبة العائد المقبولة؟']},
   'design'       : {name:'التصميم', chips:['كيف أبني هوية بصرية؟','ما عناصر الهوية المرئية؟']},
   'software'     : {name:'البرمجيات', chips:['ما الأدوات المتاحة؟','كيف أختار برنامج المحاسبة؟']},
+  'supply'       : {name:'التوريد', chips:['كيف أختار المورد الأفضل؟','ما معايير التفاوض مع المورد؟']},
+  'compliance'   : {name:'الامتثال', chips:['ما الوثائق المطلوبة للتصحيح؟','كيف أتجنب مخالفات التشغيل؟']},
+  'referral'     : {name:'الإحالات والنقاط', chips:['كيف أزيد الإحالات؟','كيف أحسب العائد من برنامج الإحالة؟']},
+  'reports'      : {name:'تقاريري', chips:['كيف أحفظ تقريري؟','كيف أقرأ ملخص التقرير بسرعة؟']},
+  'projects'     : {name:'مشاريعي', chips:['كيف أتابع تقدم المشروع؟','كيف أرتب أولويات المشروع؟']},
+  'orders'       : {name:'طلباتي', chips:['كيف أتابع حالة الطلب؟','متى يتم تحديث الطلبات؟']},
+  'settings'     : {name:'الإعدادات', chips:['كيف أعدل بياناتي؟','كيف أغير تفضيلات الحساب؟']},
+  'admin'        : {name:'لوحة الإدمن', chips:['ما أهم مؤشرات اليوم؟','ما القسم الأعلى زيارة؟']},
+  'jenan-pro'    : {name:'جنان برو', chips:['ما مميزات جنان برو؟','كيف أبدأ في نظام ERP؟']},
 };
 
 function toggleJenanBot() {
@@ -15142,3 +15287,5 @@ function _jbSyncPage() {
 </script>
 </body>
 </html>
+
+
